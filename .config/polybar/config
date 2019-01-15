@@ -1,0 +1,80 @@
+[bar/drkbar]
+bottom = false
+width = 100%
+height = 14px
+offset-x = 0
+offset-y = 0
+background = #111111
+foreground = #FFFFFF
+radius = 0.0
+line-size = 1
+border-size = 0
+padding = 0
+module-margin = 0
+
+font-0 = PowerlineSymbols:size=9;2
+font-1 = Source Code Pro:size=8;2
+
+modules-left = workspaces xwindow
+modules-right = sep1 mpd sep2 cpu sep3 ram internet sep2 volume clock
+
+[module/workspaces]
+type = custom/script
+exec = . ~/.config/polybar/wsp.sh
+interval = 0.5
+
+[module/chkws1]
+type = custom/script
+exec = . ~/.config/polybar/ws1.sh
+interval = 1
+
+[module/xwindow]
+type = internal/xwindow
+label = " %title%"
+
+[module/mpd]
+type = custom/script
+exec = . ~/.config/polybar/mpd.sh
+interval = 0.5
+
+[module/sep1]
+type = custom/text
+content = "%{F#444444}%{B#444444}"
+
+[module/sep2]
+type = custom/text
+content = "%{F#444444}%{F#FFFFFF B#444444} "
+
+[module/cpu]
+type = internal/cpu
+format = <label>
+label = CPU: %percentage%%
+interval = 0.5
+
+[module/sep3]
+type = custom/text
+content = "  "
+
+[module/ram]
+type = internal/memory
+label = "RAM: %percentage_used%% "
+interval = 1
+
+[module/internet]
+type = custom/script
+exec = . ~/.config/polybar/internet.sh
+interval = 2
+
+[module/volume]
+type = internal/alsa
+master-sounddddcard = default
+speaker-soundcard = default
+headphone-soundcard = default
+interval = 1
+label-volume = "VOL: %percentage%% "
+label-muted = "VOL: Mute "
+
+[module/clock]
+type = custom/script
+exec = . ~/.config/polybar/clock.sh
+interval = 1
