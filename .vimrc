@@ -1,5 +1,5 @@
 syntax on
 set number
-colorscheme BusyBee
+colorscheme inkpot
 let g:powerline_pycmd="py3"
 :set laststatus=2
