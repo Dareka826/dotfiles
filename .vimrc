@@ -24,3 +24,4 @@ ino <Right> <Nop>
 vno <Left> <Nop>
 vno <Down> <Nop>
 vno <Up> <Nop>
+vno <Right> <Nop>
