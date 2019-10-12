@@ -3,14 +3,14 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-#env:
+env:
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  #TERM: xterm-256color
+  TERM: xterm-256color
 
 window:
   # Window dimensions (changes require restart)
@@ -34,8 +34,8 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 2
-    y: 2
+    x: 5
+    y: 5
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
@@ -45,7 +45,7 @@ window:
   # Values for `decorations`:
   #     - full: Borders and title bar
   #     - none: Neither borders nor title bar
-  decorations: none
+  decorations: full #none
 
   # Startup Mode (changes require restart)
   #
@@ -59,7 +59,7 @@ window:
   #title: Alacritty
 
   # Window class (Linux only):
-  #class: Alacritty
+  class: Alacritty
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -147,33 +147,33 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
-# Colors (Tomorrow Night Bright)
+# Colors
 colors:
   primary:
-    background: '0x000000'
-    foreground: '0xFFFFFF'
+    background: '0x0C0D1E'
+    foreground: '0xEEE1E9'
 
   # Normal colors
   normal:
-    black:   '0x686868'
-    red:     '0xFF0000'
-    green:   '0x00FF00'
-    yellow:  '0xFFFF00'
-    blue:    '0x0000FF'
-    magenta: '0xFF00FF'
-    cyan:    '0x00FFFF'
-    white:   '0xFFFFFF'
+    black:   '0x0C0D1E' #'0x686868'
+    red:     '0x404385' #'0xFF0000'
+    green:   '0x625F99' #'0x00FF00'
+    yellow:  '0x8F729D' #'0xFFFF00'
+    blue:    '0xB77AA3' #'0x0000FF'
+    magenta: '0xA491AC' #'0xFF00FF'
+    cyan:    '0xD0AFC3' #'0x00FFFF'
+    white:   '0xEEE1E9' #'0xFFFFFF'
 
   # Bright colors
   bright:
-    black:   '0x686868'
-    red:     '0xFF0000'
-    green:   '0x00FF00'
-    yellow:  '0xFFFF00'
-    blue:    '0x0000FF'
-    magenta: '0xFF00FF'
-    cyan:    '0x00FFFF'
-    white:   '0xFFFFFF'
+    black:   '0x0C0D1E' #'0x686868'
+    red:     '0x404385' #'0xFF0000'
+    green:   '0x625F99' #'0x00FF00'
+    yellow:  '0x8F729D' #'0xFFFF00'
+    blue:    '0xB77AA3' #'0x0000FF'
+    magenta: '0xA491AC' #'0xFF00FF'
+    cyan:    '0xD0AFC3' #'0x00FFFF'
+    white:   '0xEEE1E9' #'0xFFFFFF'
 
   # Dim colors
   #
@@ -265,8 +265,8 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
+shell:
+  program: /usr/bin/zsh
 #  args:
 #    - --login
 
