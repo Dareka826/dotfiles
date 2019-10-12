@@ -15,4 +15,4 @@ else
 fi
 ip link show $eth0 | grep 'state UP' >/dev/null && int=$eth0 || int=$wifi
 
-ping -c 1 8.8.8.8 >/dev/null 2>&1 && printf "%s" "%{F${netCol}}%{F${foreground} B${netCol}} $int connected " || echo "%{F${netCol}}%{F${foreground} B${netCol}} $int disconnected "
+ping -c 1 archlinux.org >/dev/null 2>&1 && printf "%s" "%{F${netCol}}%{F${foreground} B${netCol}} $int connected " || echo "%{F${netCol}}%{F${foreground} B${netCol}} $int disconnected "
