@@ -55,6 +55,29 @@ bindsym Mod1+p exec ~/Tools/lock_sus.sh
 bindsym Mod1+o exec mpc toggle
 bindsym Mod1+c exec cmus-remote -u
 
+mode "media"
+{
+	# Volume
+	bindsym Up         exec cmus-remote -v +2%
+	bindsym Down       exec cmus-remote -v -2%
+	bindsym Shift+Up   exec cmus-remote -v +10%
+	bindsym Shift+Down exec cmus-remote -v -10%
+
+	bindsym Left  exec cmus-remote -r # Prev
+	bindsym Right exec cmus-remote -n # Next
+
+	bindsym p       exec cmus-remote -u # Toggle pause
+	bindsym Shift+p exec cmus-remote -U # Pause if playing
+	bindsym s       exec cmus-remote -s # Stop
+	bindsym Return  exec cmus-remote -p # Play
+
+	# back to normal: Escape or Mod1+Shift+m
+	bindsym Escape mode "default"
+	bindsym Mod1+Shift+m mode "default"
+}
+
+bindsym Mod1+Shift+m mode "media"
+
 # volume controls
 bindsym ctrl+Up exec amixer -q sset Master 2%+
 bindsym ctrl+Down exec amixer -q sset Master 2%-
