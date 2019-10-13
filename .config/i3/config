@@ -53,6 +53,7 @@ bindsym Mod1+l exec ~/Tools/lock.sh
 bindsym Mod1+p exec ~/Tools/lock_sus.sh
 
 bindsym Mod1+o exec mpc toggle
+bindsym Mod1+c exec cmus-remote -u
 
 # volume controls
 bindsym ctrl+Up exec amixer -q sset Master 2%+
