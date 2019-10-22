@@ -19,6 +19,7 @@ colorscheme inkpot
 set t_Co=256
 let g:airline_theme='violet'
 let g:airline_powerline_fonts = 1
+let g:ycm_confirm_extra_conf = 0
 set guifont=Source\ Code\ Pro:h11
 
 set encoding=utf-8
