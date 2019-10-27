@@ -1,27 +1,10 @@
 # i3 config file (v4)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-default_border pixel 2
-default_floating_border pixel 2
+# 2 pixels
+default_border pixel 0
+default_floating_border pixel 0
 gaps inner 15
-
-set_from_resource $color0 color0 #0C0D1E
-set_from_resource $color1 color1 #404385
-set_from_resource $color2 color2 #625F99
-set_from_resource $color3 color3 #8F729D
-set_from_resource $color4 color4 #B77AA3
-set_from_resource $color5 color5 #A491AC
-set_from_resource $color6 color6 #D0AFC3
-set_from_resource $color7 color7 #EEE1E9
-
-# class					border  bground text    indicator child_border
-client.focused			$color2 $color2 $color6 $color2   $color2
-client.focused_inactive $color0 $color0 $color6 $color0   $color0
-client.unfocused		$color1 $color1 $color6 $color1   $color1
-client.urgent			$color4 $color4 $color7 $color4   $color4
-client.placeholder		$color0 $color0 $color6 $color0   $color0
-
-client.background		#333333
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -32,9 +15,9 @@ floating_modifier Mod1
 
 # start a terminal
 bindsym Mod1+Return exec alacritty
+bindsym Mod1+Shift+Return exec cool-retro-term
 bindsym ctrl+F2 exec gmrun
 bindsym Mod1+b exec alacritty -e ranger
-bindsym Mod1+n exec alacritty -e ncmpcpp
 
 # screenshots
 bindsym ctrl+F12 exec ~/Tools/screenshot
@@ -52,7 +35,7 @@ bindsym Mod1+m exec rofi -show window -i
 bindsym Mod1+l exec ~/Tools/lock.sh
 bindsym Mod1+p exec ~/Tools/lock_sus.sh
 
-bindsym Mod1+o exec mpc toggle
+# bindsym Mod1+o exec mpc toggle
 bindsym Mod1+c exec cmus-remote -u
 
 mode "media"
@@ -81,7 +64,7 @@ bindsym Mod1+Shift+m mode "media"
 # volume controls
 bindsym ctrl+Up exec amixer -q sset Master 2%+
 bindsym ctrl+Down exec amixer -q sset Master 2%-
-bindsym ctrl+Return exec amixer -q sset Master toggle
+bindsym ctrl+Shift+Return exec amixer -q sset Master toggle
 
 # change focus
 bindsym Mod1+Left focus left
