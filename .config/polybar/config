@@ -16,7 +16,17 @@ font-0 = PowerlineSymbols:size=9;2
 font-1 = Source Code Pro:size=8;2
 
 modules-left = workspaces xwindow
-modules-right = sep1 mpd sep2 cpu sep3 ram internet sep2 volume clock
+modules-right = sep1 cmus-light sep2 cpu sep3 ram internet sep2 volume clock
+
+[module/cmus-light]
+type = custom/script
+exec = . ~/.config/polybar/cmus-light.sh
+interval = 1
+
+[module/cmus]
+type = custom/script
+exec = . ~/.config/polybar/cmus.sh
+interval = 1
 
 [module/workspaces]
 type = custom/script
