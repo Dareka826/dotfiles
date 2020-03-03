@@ -1,10 +1,35 @@
 # i3 config file (v4)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-# 2 pixels
 default_border pixel 0
-default_floating_border pixel 0
-gaps inner 15
+default_floating_border normal 0
+
+# class                 border  bground text    indicator child_border
+client.focused          #6633FF #6633FF #FFFFFF #6633FF   #6633FF
+client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
+client.unfocused        #222222 #222222 #BBBBBB #222222   #222222
+client.urgent           #FF0000 #FF0000 #FFFFFF #FF0000   #FF0000
+client.placeholder      #000000 #000000 #FFFFFF #000000   #000000
+
+client.background       #222222
+
+# gaps inner 50
+gaps inner 10
+mode "GAPS" 
+{
+	bindsym P gaps inner all plus 5
+	bindsym M gaps inner all minus 5
+	bindsym Ctrl+P gaps outer all plus 5
+	bindsym Ctrl+M gaps outer all minus 5
+	bindsym T gaps inner all toggle 50
+	bindsym Ctrl+T gaps inner all toggle 10
+
+	bindsym Mod1+g mode "default"
+	bindsym Escape mode "default"
+	bindsym Return mode "default"
+}
+
+bindsym Mod1+g mode "GAPS"
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -38,7 +63,7 @@ bindsym Mod1+p exec ~/Tools/lock_sus.sh
 # bindsym Mod1+o exec mpc toggle
 bindsym Mod1+c exec cmus-remote -u
 
-mode "media"
+mode "MEDIA"
 {
 	# Volume
 	bindsym Up         exec cmus-remote -v +2%
@@ -59,12 +84,16 @@ mode "media"
 	bindsym Mod1+Shift+m mode "default"
 }
 
-bindsym Mod1+Shift+m mode "media"
+bindsym Mod1+Shift+m mode "MEDIA"
 
 # volume controls
-bindsym ctrl+Up exec amixer -q sset Master 2%+
-bindsym ctrl+Down exec amixer -q sset Master 2%-
-bindsym ctrl+Shift+Return exec amixer -q sset Master toggle
+# bindsym ctrl+Up exec amixer -q sset Master 2%+
+# bindsym ctrl+Down exec amixer -q sset Master 2%-
+# bindsym ctrl+Shift+Return exec amixer -q sset Master toggle
+bindsym ctrl+Up exec pamixer -i 5 --allow-boost
+bindsym ctrl+Down exec pamixer -d 5 --allow-boost
+bindsym ctrl+Shift+Return exec pamixer -t --allow-boost
+# bindsym ctrl+Shift+Return exec alacritty -e ncpamixer
 
 # change focus
 bindsym Mod1+Left focus left
@@ -77,6 +106,11 @@ bindsym Mod1+Shift+Left move left
 bindsym Mod1+Shift+Down move down
 bindsym Mod1+Shift+Up move up
 bindsym Mod1+Shift+Right move right
+# move focused window by one
+bindsym Mod1+Ctrl+Shift+Left move left 1
+bindsym Mod1+Ctrl+Shift+Down move down 1
+bindsym Mod1+Ctrl+Shift+Up move up 1
+bindsym Mod1+Ctrl+Shift+Right move right 1
 
 # split in horizontal orientation
 bindsym Mod1+h split h
@@ -174,6 +208,36 @@ bindsym Mod4+Shift+8 move container to workspace $ws18
 bindsym Mod4+Shift+9 move container to workspace $ws19
 bindsym Mod4+Shift+0 move container to workspace $ws20
 
+# Hentai
+set $wsH0 "へんたい"
+set $wsH1 "へんたい-2"
+set $wsH2 "へんたい-3"
+set $wsH3 "へんたい-4"
+set $wsH4 "へんたい-5"
+
+mode "へんたい"
+{
+	# Workspaces
+	bindsym Mod1+1 workspace $wsH0
+	bindsym Mod1+2 workspace $wsH1
+	bindsym Mod1+3 workspace $wsH2
+	bindsym Mod1+4 workspace $wsH3
+	bindsym Mod1+5 workspace $wsH4
+
+	# Move container to workspace
+	bindsym Mod1+Shift+1 move container to workspace $wsH0
+	bindsym Mod1+Shift+2 move container to workspace $wsH1
+	bindsym Mod1+Shift+3 move container to workspace $wsH2
+	bindsym Mod1+Shift+4 move container to workspace $wsH3
+	bindsym Mod1+Shift+5 move container to workspace $wsH4
+	
+	# Turn off hentai navigation mode
+	bindsym Escape mode "default"
+	bindsym Mod1+Shift+H mode "default"
+}
+
+bindsym Mod1+Shift+H mode "へんたい"
+
 # reload the configuration file
 bindsym Mod1+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -181,20 +245,20 @@ bindsym Mod1+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym Mod1+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
-mode "resize"
+# RESIZE window (you can also use the mouse for that)
+mode "RESIZE"
 {
 	# Change dimensions by 10 px
-	bindsym Left resize shrink width 10 px
-	bindsym Down resize grow height 10 px
-	bindsym Up resize shrink height 10 px
-	bindsym Right resize grow width 10 px
+	bindsym Left RESIZE shrink width 10 px
+	bindsym Down RESIZE grow height 10 px
+	bindsym Up RESIZE shrink height 10 px
+	bindsym Right RESIZE grow width 10 px
 	
 	# Change dimensions by 1 px
-	bindsym Shift+Left resize shrink width 1 px
-	bindsym Shift+Down resize grow height 1 px
-	bindsym Shift+Up resize shrink height 1 px
-	bindsym SHift+Right resize grow width 1 px
+	bindsym Shift+Left RESIZE shrink width 1 px
+	bindsym Shift+Down RESIZE grow height 1 px
+	bindsym Shift+Up RESIZE shrink height 1 px
+	bindsym SHift+Right RESIZE grow width 1 px
 	
 	# back to normal: Enter or Escape or Mod1+r
 	bindsym Return mode "default"
@@ -202,4 +266,4 @@ mode "resize"
 	bindsym Mod1+r mode "default"
 }
 
-bindsym Mod1+r mode "resize"
+bindsym Mod1+r mode "RESIZE"
