@@ -38,14 +38,14 @@ window:
     y: 5
 
   # Spread additional padding evenly around the terminal content.
-  dynamic_padding: false
+  dynamic_padding: true
 
   # Window decorations
   #
   # Values for `decorations`:
   #     - full: Borders and title bar
   #     - none: Neither borders nor title bar
-  decorations: full #none
+  decorations: none
 
   # Startup Mode (changes require restart)
   #
@@ -77,7 +77,7 @@ scrolling:
   # to allow mouse scrolling for applications like `man`.
   #
   # Specifying `0` will disable faux scrolling.
-  faux_multiplier: 3
+  multiplier: 3
 
   # Scroll to the bottom when new text is written to the terminal.
   auto_scroll: false
@@ -149,31 +149,32 @@ draw_bold_text_with_bright_colors: true
 
 # Colors
 colors:
+  # Default colors
   primary:
-    background: '0x0C0D1E'
-    foreground: '0xEEE1E9'
+    background: '0x0c0d1e'
+    foreground: '0xeee1e9'
 
   # Normal colors
   normal:
-    black:   '0x0C0D1E' #'0x686868'
-    red:     '0x404385' #'0xFF0000'
-    green:   '0x625F99' #'0x00FF00'
-    yellow:  '0x8F729D' #'0xFFFF00'
-    blue:    '0xB77AA3' #'0x0000FF'
-    magenta: '0xA491AC' #'0xFF00FF'
-    cyan:    '0xD0AFC3' #'0x00FFFF'
-    white:   '0xEEE1E9' #'0xFFFFFF'
+    black:   '0x0c0d1e'
+    red:     '0x404385'
+    green:   '0x625f99'
+    yellow:  '0x8f729d'
+    blue:    '0xb77aa3'
+    magenta: '0xa491ac'
+    cyan:    '0xd0afc3'
+    white:   '0xeee1e9'
 
   # Bright colors
   bright:
-    black:   '0x0C0D1E' #'0x686868'
-    red:     '0x404385' #'0xFF0000'
-    green:   '0x625F99' #'0x00FF00'
-    yellow:  '0x8F729D' #'0xFFFF00'
-    blue:    '0xB77AA3' #'0x0000FF'
-    magenta: '0xA491AC' #'0xFF00FF'
-    cyan:    '0xD0AFC3' #'0x00FFFF'
-    white:   '0xEEE1E9' #'0xFFFFFF'
+    black:   '0xa69da3'
+    red:     '0x404385'
+    green:   '0x625f99'
+    yellow:  '0x8f729d'
+    blue:    '0xb77aa3'
+    magenta: '0xa491ac'
+    cyan:    '0xd0afc3'
+    white:   '0xeee1e9'
 
   # Dim colors
   #
