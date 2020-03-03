@@ -7,16 +7,6 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-# Restore wallpaper, Run compositor, run polybar
-nitrogen --restore
-compton -c &
-polybar drkbar &
-# mpd
-
-# Restore colors and start discord
-wal -R
-apulse discord &
-
 # Disable power saving and mouse acceleration
 xset -dpms
 xset s off
@@ -26,10 +16,7 @@ xset m 0 0
 fcitx &
 # animated-wallpaper ~/Wallpapers/Nitori_geddan_youmu.mp4 &
 
-# Open a file with workspace layout
-leafpad ~/_________open_windows.txt &
-
-# Load the x resources
+# Load Xresources
 xrdb ~/.Xresources
 
 # Start jack
@@ -39,7 +26,20 @@ xrdb ~/.Xresources
 ckb-next -b &
 
 # Notification daemon
-/usr/lib/xfce4/notifyd/xfce4-notifyd &
+dunst &
+
+# Restore wallpaper, compton
+nitrogen --restore
+compton &
+
+# Restore colors and start discord
+wal -R
+discord &
+
+# Polybar
+. ~/.config/polybar/start-polybar.sh &
+
+leafpad open.txt &
 
 # Start the wm
-exec i3 
+exec i3
