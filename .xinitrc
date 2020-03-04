@@ -28,7 +28,7 @@ ckb-next -b &
 dunst &
 
 # Restore colors, wallpaper, compton
-wal -R
+wal -R -n
 nitrogen --restore
 #compton &
 picom &
