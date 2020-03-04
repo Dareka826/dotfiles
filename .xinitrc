@@ -30,7 +30,8 @@ dunst &
 # Restore colors, wallpaper, compton
 wal -R
 nitrogen --restore
-compton &
+#compton &
+picom &
 
 # Start discord
 discord &
