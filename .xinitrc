@@ -14,7 +14,6 @@ xset m 0 0
 
 # Start the input method
 fcitx &
-# animated-wallpaper ~/Wallpapers/Nitori_geddan_youmu.mp4 &
 
 # Load Xresources
 xrdb ~/.Xresources
@@ -28,18 +27,18 @@ ckb-next -b &
 # Notification daemon
 dunst &
 
-# Restore wallpaper, compton
+# Restore colors, wallpaper, compton
+wal -R
 nitrogen --restore
 compton &
 
-# Restore colors and start discord
-wal -R
+# Start discord
 discord &
 
 # Polybar
 . ~/.config/polybar/start-polybar.sh &
 
-leafpad open.txt &
+#leafpad open.txt &
 
 # Start the wm
 exec i3
