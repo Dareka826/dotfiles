@@ -13,7 +13,7 @@ antigen bundle git
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigne bundle softmoth/zsh-vim-mode
+antigen bundle softmoth/zsh-vim-mode
 
 antigen theme fishy
 antigen apply
