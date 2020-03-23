@@ -3,6 +3,8 @@
 
 default_border pixel 0
 default_floating_border normal 0
+for_window [class="Alacritty"] border pixel 5
+for_window [class="Xfce4-terminal"] border pixel 5
 
 # class                 border  bground text    indicator child_border
 client.focused          #6633FF #6633FF #FFFFFF #6633FF   #6633FF
