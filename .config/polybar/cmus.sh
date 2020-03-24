@@ -1,38 +1,27 @@
-#! /bin/sh
+#!/bin/sh
 
-QUERY="$(cmus-remote -C status)"
-
-if [ "$QUERY" = "" ]
-then
-	printf "%s" "%{B#444444} cmus off %{B#222222} --:--:--/--:--:-- "
-else
-	TITLE=`echo "$QUERY" | awk '$1 == "file" { print $0 }' | perl -pe "s|file .*/(.*?)$|\1|g"`
-	if [ "$TITLE" == "" ]
-	then
-		printf "%s" "%{B#444444} cmus off %{B#222222} --:--:--/--:--:-- "
+cmus-remote -C status | awk '
+$1=="file" { $1=""; sub(/.*\//,""); title = $0 }
+$1=="tag" && $2=="title" { sub("tag title ",""); title = $0 }
+$1=="tag" && $2=="tracknumber" { tracknum = $3 }
+$1=="duration" { dur = $2 }
+$1=="position" { pos = $2 }
+function stohms(t) {
+    s = t%60
+    m = ((t-s)/60)%60
+    h = (t-m*60-s)/3600
+    if(h<10) h = "0"h
+    if(m<10) m = "0"m
+    if(s<10) s = "0"s
+    return h ":" m ":" s
+}
+END {
+	if(dur!=0)
+	{
+		if(tracknum == 0) tracknum = "?"
+		lef = dur-pos
+		printf("%%{B#444444} %s. %s %%{B#222222} -%s/%s ", tracknum, title, stohms(lef), stohms(dur))
+	}
 	else
-		TITLE=`echo "$QUERY" | awk '$1 == "tag" && $2 == "title" { for(i = 3; i < NF; i = i+1) printf("%s ", $i); printf $NF }'`
-		
-		TRACK=`echo "$QUERY" | awk '$1 == "tag" && $2 == "tracknumber" { print $3 }'`
-		if [ "$TRACK" = "" ]
-		then
-			TRACK="?"
-		fi
-		TRACK=$TRACK.
-		
-		if [ "$TITLE" = "" ]
-		then
-			TITLE=`echo "$QUERY" | awk '$1 == "file" { print $0 }' | perl -pe "s|file .*/(.*?)$|\1|g"`
-		fi
-		
-		DURATION=`echo "$QUERY" | awk '$1 == "duration" { print $2 }'`
-		POSITION=`echo "$QUERY" | awk '$1 == "position" { print $2 }'`
-		LEFT=`echo "$DURATION-$POSITION" | bc`
-		
-		DUR=`date -d@$DURATION -u +%H:%M:%S`
-		LEF=`date -d@$LEFT -u +%H:%M:%S`
-		
-		printf "%s" "%{B#444444} $TRACK $TITLE %{B#222222} -$LEF/$DUR "
-	fi
-fi
-
+		printf("%%{B#444444} cmus off %%{B#222222} --:--:--/--:--:-- ")
+}'
