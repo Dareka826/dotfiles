@@ -18,6 +18,17 @@ antigen bundle softmoth/zsh-vim-mode
 antigen theme fishy
 antigen apply
 
+MODE_CURSOR_SEARCH="underline"
+
+MODE_INDICATOR_VIINS='%F{7}INSERT'
+MODE_INDICATOR_VICMD='%F{2}NORMAL'
+MODE_INDICATOR_REPLACE='%F{4}REPLACE'
+MODE_INDICATOR_SEARCH='%F{5}SEARCH'
+MODE_INDICATOR_VISUAL='%F{6}VISUAL'
+MODE_INDICATOR_VLINE='%F{6}V-LINE'
+
+RPROMPT="${RPROMPT}"' ${MODE_INDICATOR_PROMPT}'
+
 # Path variable
 export PATH=$PATH:~/Tools/:~/.cargo/bin:~/.gem/ruby/2.6.0/bin:~/go/bin
 
@@ -30,16 +41,6 @@ cat ~/.cache/wal/sequences
 get-pgp-key()
 {
 	sudo pacman-key --recv-keys $1
-}
-
-vidlen()
-{
-	ffprobe "$1" 2>&1 | fgrep Duration | perl -pe 's|^.*?Duration: (.*?),.*?$|\1|'
-}
-
-sign-apk()
-{
-	java -jar ~/android_sign_apk/signapk.jar ~/android_sign_apk/certificate.pem ~/android_sign_apk/key.pk8 $1 $1-signed
 }
 
 # Some aliases
