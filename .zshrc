@@ -45,15 +45,10 @@ get-pgp-key()
 
 # Some aliases
 alias 7zc="env LANG=C 7z"
-alias curllo="curl -L -O"
 alias clo="curl -L -O"
 alias ytd="youtube-dl"
 alias ytdx="youtube-dl -x"
-alias adfhd="anime dl -q 1080p"
-alias awfhd="anime dl -q 1080p --play mpv"
 alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
+alias pvpn="protonvpn"
 # 7z split into 7.99MB volumes for discord upload
 alias 7zds="7z -v8181K"
-
-# personal
-alias nyaa="cat"
