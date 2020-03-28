@@ -52,3 +52,7 @@ alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-ti
 alias pvpn="protonvpn"
 # 7z split into 7.99MB volumes for discord upload
 alias 7zds="7z -v8181K"
+
+# Aliases, because I'm dumb
+alias rm="remove-confirm" # A custom script in path
+alias remove="rm"
