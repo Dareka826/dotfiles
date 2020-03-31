@@ -1,4 +1,5 @@
 # Dareka826's .zshrc
+tabs 4
 
 # Antigen stuff
 source ~/.antigen.zsh
@@ -54,5 +55,6 @@ alias pvpn="protonvpn"
 alias 7zds="7z -v8181K"
 
 # Aliases, because I'm dumb
-alias rm="remove-confirm" # A custom script in path
-alias remove="rm"
+#alias rm="remove-confirm" # A custom script in path
+#alias remove="rm"
+alias rm="rm -i"v
