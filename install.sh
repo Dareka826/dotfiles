@@ -16,7 +16,7 @@ cp -i df/.xinitrc ~/.xinitrc
 cp -i df/.Xresources ~/.Xresources
 
 # ~/.config
-cp -ri df/.config ~/.config
+cp -ri df/.config ~/
 
 # wal + wallpaper
 mkdir -p ~/Wallpapers
@@ -29,7 +29,7 @@ oomox-cli -m all ~/.config/oomox/colors/Rin
 # cursor
 mkdir -p ~/.icons
 cd ~/.icons
-curl -LO https://github.com/Dareka826/Suwako_Cursor_Linux_Port/blob/master/Suwako_Cursor.tar.gz
+curl -LO https://github.com/Dareka826/Suwako_Cursor_Linux_Port/raw/master/Suwako_Cursor.tar.gz
 tar -xf Suwako_Cursor.tar.gz
 rm -rf Suwako_Cursor.tar.gz
 
