@@ -1,14 +1,5 @@
 #!/bin/sh
 
-# install necessary components
-sudo pacman -S git curl vim zsh python-pywal
-mkdir -p ~/src
-git clone https://aur.archlinux.org/yay.git ~/src/yay
-cd ~/src/yay
-makepkg -si
-cd ~
-yay -S oomox polybar
-
 # zsh
 cp -i df/.zshrc ~/.zshrc
 curl -L git.io/antigen > ~/.antigen.zsh
