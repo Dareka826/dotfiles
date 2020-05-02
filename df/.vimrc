@@ -15,7 +15,12 @@ filetype plugin on
 
 syntax on
 
+let g:ycm_confirm_extra_conf='false'
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+
 colorscheme inkpot
+highlight Normal guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
 set t_Co=256
 let g:airline_theme='violet'
 let g:airline_powerline_fonts = 1
@@ -46,3 +51,4 @@ vno <Left> <Nop>
 vno <Down> <Nop>
 vno <Up> <Nop>
 vno <Right> <Nop>
+

@@ -30,8 +30,8 @@ BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
 BackgroundDarkness=0.900000
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
 ScrollingUnlimited=TRUE
-
 ColorCursor=#eeeee1e1e9e9
 ColorForeground=#eeeee1e1e9e9
 ColorBackground=#0c0c0d0d1e1e
 ColorPalette=#0c0c0d0d1e1e;#404043438585;#62625f5f9999;#8f8f72729d9d;#b7b77a7aa3a3;#a4a49191acac;#d0d0afafc3c3;#eeeee1e1e9e9;#a6a69d9da3a3;#404043438585;#62625f5f9999;#8f8f72729d9d;#b7b77a7aa3a3;#a4a49191acac;#d0d0afafc3c3;#eeeee1e1e9e9
+

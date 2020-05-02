@@ -1,4 +1,5 @@
 # Dareka826's .zshrc
+
 tabs 4
 
 # Antigen stuff
@@ -13,8 +14,8 @@ CASE_SENSITIVE="false"
 antigen bundle git
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle softmoth/zsh-vim-mode
+antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen theme fishy
 antigen apply
@@ -44,6 +45,16 @@ get-pgp-key()
 	sudo pacman-key --recv-keys $1
 }
 
+vidlen()
+{
+	ffprobe "$1" 2>&1 | fgrep Duration | perl -pe 's|^.*?Duration: (.*?),.*?$|\1|'
+}
+
+sign-apk()
+{
+	java -jar ~/android_sign_apk/signapk.jar ~/android_sign_apk/certificate.pem ~/android_sign_apk/key.pk8 $1 $1-signed
+}
+
 # Some aliases
 alias 7zc="env LANG=C 7z"
 alias clo="curl -L -O"
@@ -55,4 +66,7 @@ alias pvpn="protonvpn"
 alias 7zd="7z -v8181K"
 
 # Aliases, because I'm dumb
+#alias rm="remove-confirm" # A sript in ~/Tools
+#alias remove="rm"
 alias rm="rm -i"
+
