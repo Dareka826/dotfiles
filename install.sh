@@ -25,7 +25,7 @@ curl -L https://i.imgur.com/z4ffOWb.png -o ~/Wallpapers/71123408_p0.png
 wal -i ~/Wallpapers/71123408_p0.png
 
 # oomox
-oomox-cli -m all ~/.config/oomox/colors/Rin
+# oomox-cli -m all ~/.config/oomox/colors/Rin
 
 # cursor
 mkdir -p ~/.icons
