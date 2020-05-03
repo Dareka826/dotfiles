@@ -4,13 +4,14 @@ rm -rf df
 mkdir df
 
 # ZSH
-cp -i ~/.zshrc		df/.zshrc
+cp -i ~/.zshrc				df/.zshrc
 # VIM
-cp -i ~/.vimrc		df/.vimrc
+cp -i ~/.vimrc				df/.vimrc
+cp -i ~/.ycm_extra_conf.py	df/.ycm_extra_conf.py
 # XINITRC
-cp -i ~/.xinitrc	df/.xinitrc
+cp -i ~/.xinitrc			df/.xinitrc
 # XRESOURCES
-cp -i ~/.Xresources	df/.Xresources
+cp -i ~/.Xresources			df/.Xresources
 
 # ~/.config
 mkdir -p df/.config/alacritty
