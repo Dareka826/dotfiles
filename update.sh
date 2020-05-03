@@ -38,6 +38,7 @@ cp -i ~/.config/mpv/mpv.conf				df/.config/mpv/mpv.conf
 cp -i ~/.config/mpv/input.conf				df/.config/mpv/input.conf
 # oomox
 cp -i ~/.config/oomox/colors/Rin			df/.config/oomox/colors/Rin
+cp -i ~/.config/oomox/colors/RinN			df/.config/oomox/colors/RinN
 # polybar
 cp -i ~/.config/polybar/*					df/.config/polybar/
 # ranger
