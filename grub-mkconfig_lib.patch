@@ -1,0 +1,14 @@
+*** grub-mkconfig_lib	2020-05-03 15:05:42.167478233 +0200
+--- grub-mkconfig_lib_new	2020-05-03 15:03:15.642766867 +0200
+***************
+*** 239,244 ****
+--- 239,247 ----
+  
+  version_test_gt ()
+  {
++   [ "$(echo "$1" | grep -o "linux$")" = "linux" ] && return 0
++   [ "$(echo "$2" | grep -o "linux$")" = "linux" ] && return 1
++   
+    version_test_gt_a="`echo "$1" | sed -e "s/[^-]*-//"`"
+    version_test_gt_b="`echo "$2" | sed -e "s/[^-]*-//"`"
+    version_test_gt_cmp=gt
