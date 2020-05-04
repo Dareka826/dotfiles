@@ -1,5 +1,4 @@
 # Dareka826's .zshrc
-
 tabs 4
 
 # Antigen stuff
@@ -14,7 +13,7 @@ CASE_SENSITIVE="false"
 antigen bundle git
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle softmoth/zsh-vim-mode
+#antigen bundle softmoth/zsh-vim-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen theme fishy
@@ -22,12 +21,12 @@ antigen apply
 
 MODE_CURSOR_SEARCH="underline"
 
-MODE_INDICATOR_VIINS='%F{7}INSERT'
-MODE_INDICATOR_VICMD='%F{2}NORMAL'
-MODE_INDICATOR_REPLACE='%F{4}REPLACE'
-MODE_INDICATOR_SEARCH='%F{5}SEARCH'
-MODE_INDICATOR_VISUAL='%F{6}VISUAL'
-MODE_INDICATOR_VLINE='%F{6}V-LINE'
+#MODE_INDICATOR_VIINS='%F{7}INSERT'
+#MODE_INDICATOR_VICMD='%F{2}NORMAL'
+#MODE_INDICATOR_REPLACE='%F{4}REPLACE'
+#MODE_INDICATOR_SEARCH='%F{5}SEARCH'
+#MODE_INDICATOR_VISUAL='%F{6}VISUAL'
+#MODE_INDICATOR_VLINE='%F{6}V-LINE'
 
 RPROMPT="${RPROMPT}"' ${MODE_INDICATOR_PROMPT}'
 
@@ -35,9 +34,9 @@ RPROMPT="${RPROMPT}"' ${MODE_INDICATOR_PROMPT}'
 export PATH=$PATH:~/Tools/:~/.cargo/bin:~/.gem/ruby/2.6.0/bin:~/go/bin
 
 # Wal theme
-cat ~/.cache/wal/sequences
-. ~/.cache/wal/colors.sh
-. ~/.cache/wal/colors-tty.sh
+#cat ~/.cache/wal/sequences
+#. ~/.cache/wal/colors.sh
+#. ~/.cache/wal/colors-tty.sh
 
 # Some functions
 get-pgp-key()
