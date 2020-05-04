@@ -19,13 +19,12 @@ let g:ycm_confirm_extra_conf='false'
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 
 colorscheme inkpot
-highlight Normal guibg=NONE ctermbg=NONE
-highlight LineNr guibg=NONE ctermbg=NONE
+highlight Normal ctermbg=NONE
+highlight LineNr ctermbg=NONE
 set t_Co=256
 let g:airline_theme='violet'
 let g:airline_powerline_fonts = 0
 let g:ycm_confirm_extra_conf = 0
-set guifont=Source\ Code\ Pro:h11
 
 set encoding=utf-8
 set number

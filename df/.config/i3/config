@@ -17,7 +17,8 @@ client.placeholder      #000000 #000000 #FFFFFF #000000   #000000
 client.background       #222222
 
 # gaps inner 50
-gaps inner 10
+# gaps inner 10
+gaps inner 25
 mode "GAPS" 
 {
 	bindsym P gaps inner all plus 5
