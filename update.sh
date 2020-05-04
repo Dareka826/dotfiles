@@ -24,6 +24,7 @@ mkdir -p df/.config/polybar
 mkdir -p df/.config/ranger
 mkdir -p df/.config/vis/colors
 mkdir -p df/.config/xfce4/terminal
+mkdir -p df/.config/gtk-3.0
 
 # alacritty
 cp -i ~/.config/alacritty/alacritty.yml		df/.config/alacritty/alacritty.yml
@@ -52,4 +53,7 @@ cp -i ~/.config/xfce4/terminal/terminalrc	df/.config/xfce4/terminal/terminalrc
 cp -i ~/.config/chromium-flags.conf			df/.config/chromium-flags.conf
 # picom
 cp -i ~/.config/picom.conf					df/.config/picom.conf
+
+# gtk.css
+cp -i ~/.config/gtk-3.0/gtk.css				df/.config/gtk-3.0/gtk.css
 
