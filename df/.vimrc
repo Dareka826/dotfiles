@@ -18,7 +18,8 @@ syntax on
 let g:ycm_confirm_extra_conf='false'
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 
-colorscheme inkpot
+" colorscheme inkpot
+colorscheme molokai
 highlight Normal ctermbg=NONE
 highlight LineNr ctermbg=NONE
 set t_Co=256

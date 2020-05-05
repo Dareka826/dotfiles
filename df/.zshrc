@@ -36,7 +36,7 @@ export PATH=$PATH:~/Tools/:~/.cargo/bin:~/.gem/ruby/2.6.0/bin:~/go/bin
 # Wal theme
 #cat ~/.cache/wal/sequences
 #. ~/.cache/wal/colors.sh
-#. ~/.cache/wal/colors-tty.sh
+[ $(tty | grep -o tty) ] && . ~/.cache/wal/colors-tty.sh
 
 # Some functions
 get-pgp-key()
