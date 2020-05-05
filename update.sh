@@ -4,14 +4,14 @@ rm -rf df
 mkdir df
 
 # ZSH
-cp -i ~/.zshrc				df/.zshrc
+cp ~/.zshrc				df/.zshrc
 # VIM
-cp -i ~/.vimrc				df/.vimrc
-cp -i ~/.ycm_extra_conf.py	df/.ycm_extra_conf.py
+cp ~/.vimrc				df/.vimrc
+cp ~/.ycm_extra_conf.py	df/.ycm_extra_conf.py
 # XINITRC
-cp -i ~/.xinitrc			df/.xinitrc
+cp ~/.xinitrc			df/.xinitrc
 # XRESOURCES
-cp -i ~/.Xresources			df/.Xresources
+cp ~/.Xresources			df/.Xresources
 
 # ~/.config
 mkdir -p df/.config/alacritty
@@ -25,35 +25,39 @@ mkdir -p df/.config/ranger
 mkdir -p df/.config/vis/colors
 mkdir -p df/.config/xfce4/terminal
 mkdir -p df/.config/gtk-3.0
+mkdir -p df/.config/kitty
 
 # alacritty
-cp -i ~/.config/alacritty/alacritty.yml		df/.config/alacritty/alacritty.yml
+cp ~/.config/alacritty/alacritty.yml		df/.config/alacritty/alacritty.yml
 # CMUS
-cp -i ~/.config/cmus/drk826.theme			df/.config/cmus/drk826.theme
+cp ~/.config/cmus/drk826.theme			df/.config/cmus/drk826.theme
 # dunst
-cp -i ~/.config/dunst/dunstrc				df/.config/dunst/dunstrc
+cp ~/.config/dunst/dunstrc				df/.config/dunst/dunstrc
 # i3
-cp -i ~/.config/i3/config					df/.config/i3/config
+cp ~/.config/i3/config					df/.config/i3/config
 # mpv
-cp -i ~/.config/mpv/mpv.conf				df/.config/mpv/mpv.conf
-cp -i ~/.config/mpv/input.conf				df/.config/mpv/input.conf
+cp ~/.config/mpv/mpv.conf				df/.config/mpv/mpv.conf
+cp ~/.config/mpv/input.conf				df/.config/mpv/input.conf
 # oomox
-cp -i ~/.config/oomox/colors/Rin			df/.config/oomox/colors/Rin
-cp -i ~/.config/oomox/colors/RinN			df/.config/oomox/colors/RinN
+cp ~/.config/oomox/colors/Rin			df/.config/oomox/colors/Rin
+cp ~/.config/oomox/colors/RinN			df/.config/oomox/colors/RinN
 # polybar
-cp -i ~/.config/polybar/*					df/.config/polybar/
+cp ~/.config/polybar/*					df/.config/polybar/
 # ranger
-cp -i ~/.config/ranger/rc.conf				df/.config/ranger/rc.conf
+cp ~/.config/ranger/rc.conf				df/.config/ranger/rc.conf
 # vis
-cp -i ~/.config/vis/colors/*				df/.config/vis/colors/
-cp -i ~/.config/vis/config					df/.config/vis/config
+cp ~/.config/vis/colors/*				df/.config/vis/colors/
+cp ~/.config/vis/config					df/.config/vis/config
 # xfce4-terminal
-cp -i ~/.config/xfce4/terminal/terminalrc	df/.config/xfce4/terminal/terminalrc
+cp ~/.config/xfce4/terminal/terminalrc	df/.config/xfce4/terminal/terminalrc
 # chromium flags
-cp -i ~/.config/chromium-flags.conf			df/.config/chromium-flags.conf
+cp ~/.config/chromium-flags.conf			df/.config/chromium-flags.conf
 # picom
-cp -i ~/.config/picom.conf					df/.config/picom.conf
+cp ~/.config/picom.conf					df/.config/picom.conf
 
 # gtk.css
-cp -i ~/.config/gtk-3.0/gtk.css				df/.config/gtk-3.0/gtk.css
+cp ~/.config/gtk-3.0/gtk.css				df/.config/gtk-3.0/gtk.css
+
+# kitty
+cp ~/.config/kitty/kitty.conf			df/.config/kitty/kitty.conf
 
