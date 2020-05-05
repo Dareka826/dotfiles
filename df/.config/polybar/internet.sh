@@ -1,3 +1,4 @@
+#!/bin/sh
 foreground="#FFFFFF"
 foreOff="#FF0000"
 background="#222222"
