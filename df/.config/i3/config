@@ -43,10 +43,9 @@ font pango:monospace 8
 floating_modifier Mod1
 
 # start a terminal
-bindsym Mod1+Return exec alacritty
-bindsym Mod1+Shift+Return exec cool-retro-term
+#bindsym Mod1+Return exec alacritty
+bindsym Mod1+Return exec kitty
 bindsym ctrl+F2 exec gmrun
-bindsym Mod1+b exec alacritty -e ranger
 
 # screenshots
 bindsym ctrl+F12 exec ~/Tools/screenshot
