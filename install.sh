@@ -8,8 +8,7 @@ curl -L git.io/antigen > ~/.antigen.zsh
 cp -i df/.vimrc ~/.vimrc
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 mkdir -p ~/.vim/colors
-#curl -L https://raw.githubusercontent.com/ciaranm/inkpot/master/colors/inkpot.vim -o ~/.vim/colors/inkpot.vim
-curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -o ~/.vim/colors/molokai.vim
+curl -L https://raw.githubusercontent.com/ciaranm/inkpot/master/colors/inkpot.vim -o ~/.vim/colors/inkpot.vim
 cp -i df/.ycm_extra_conf.py ~/.ycm_extra_conf.py
 
 # xinitrc
