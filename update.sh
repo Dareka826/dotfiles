@@ -61,3 +61,5 @@ cp ~/.config/gtk-3.0/gtk.css				df/.config/gtk-3.0/gtk.css
 # kitty
 cp ~/.config/kitty/kitty.conf			df/.config/kitty/kitty.conf
 
+# firefox
+cp ~/.mozilla/firefox/a4a2pjuk.default-release/chrome/*		df/.mozilla/firefox/ur-profile/chrome/
