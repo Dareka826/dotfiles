@@ -3,9 +3,6 @@
 
 default_border pixel 0
 default_floating_border normal 0
-# for_window [class="Alacritty"] border pixel 4
-# for_window [class="Xfce4-terminal"] border pixel 4
-# for_window [class="Viter.py"] border pixel 4
 
 # class                 border  bground text    indicator child_border
 client.focused          #6633FF #6633FF #FFFFFF #6633FF   #6633FF
@@ -19,24 +16,10 @@ client.background       #222222
 bindsym Mod1+z exec chromium
 bindsym Mod1+Shift+z exec chromium --incognito
 
-# gaps inner 50
+bindsym Mod1+Ctrl+m move position center
+
 # gaps inner 10
 gaps inner 25
-mode "GAPS" 
-{
-	bindsym P gaps inner all plus 5
-	bindsym M gaps inner all minus 5
-	bindsym Ctrl+P gaps outer all plus 5
-	bindsym Ctrl+M gaps outer all minus 5
-	bindsym T gaps inner all toggle 50
-	bindsym Ctrl+T gaps inner all toggle 10
-
-	bindsym Mod1+g mode "default"
-	bindsym Escape mode "default"
-	bindsym Return mode "default"
-}
-
-bindsym Mod1+g mode "GAPS"
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -46,51 +29,24 @@ font pango:monospace 8
 floating_modifier Mod1
 
 # start a terminal
-#bindsym Mod1+Return exec alacritty
-bindsym Mod1+Return exec kitty
+bindsym Mod1+Return exec alacritty
 bindsym ctrl+F2 exec gmrun
 
 # screenshots
-bindsym ctrl+F12 exec ~/Tools/screenshot
+bindsym ctrl+F12 exec ~/.local/bin/screenshot
 
 # kill focused window
 bindsym Mod1+Shift+q kill
 
 # start dmenu and rofi (a program launcher)
 # bindsym Mod1+d exec ~/Tools/dmenu_wal
-# bindsym Mod1+m exec rofi -show run -i
-# bindsym Mod1+Ctrl+m exec rofi -show window -i
 bindsym Mod1+d exec rofi -show run -i
 bindsym Mod1+m exec rofi -show window -i
 
-bindsym Mod1+l exec ~/Tools/lock.sh
-bindsym Mod1+p exec ~/Tools/lock_sus.sh
+bindsym Mod1+l exec ~/.local/bin/lock.sh
+bindsym Mod1+p exec ~/.local/bin/lock_sus.sh
 
-# bindsym Mod1+o exec mpc toggle
 bindsym Mod1+c exec cmus-remote -u
-
-mode "MEDIA"
-{
-	# Volume
-	bindsym Up         exec cmus-remote -v +2%
-	bindsym Down       exec cmus-remote -v -2%
-	bindsym Shift+Up   exec cmus-remote -v +10%
-	bindsym Shift+Down exec cmus-remote -v -10%
-
-	bindsym Left  exec cmus-remote -r # Prev
-	bindsym Right exec cmus-remote -n # Next
-
-	bindsym p       exec cmus-remote -u # Toggle pause
-	bindsym Shift+p exec cmus-remote -U # Pause if playing
-	bindsym s       exec cmus-remote -s # Stop
-	bindsym Return  exec cmus-remote -p # Play
-
-	# back to normal: Escape or Mod1+Shift+m
-	bindsym Escape mode "default"
-	bindsym Mod1+Shift+m mode "default"
-}
-
-bindsym Mod1+Shift+m mode "MEDIA"
 
 # Media keys
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 --allow-boost
@@ -134,8 +90,8 @@ bindsym Mod1+v split v
 bindsym Mod1+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym Mod1+s layout stacking
-bindsym Mod1+w layout tabbed
+#bindsym Mod1+s layout stacking
+#bindsym Mod1+w layout tabbed
 bindsym Mod1+e layout toggle split
 
 # toggle tiling / floating
@@ -223,16 +179,8 @@ bindsym Mod4+Shift+0 move container to workspace $ws20
 # Anime (watching)
 set $wsA0 "アニメ"
 
-mode "アニメ"
-{
-	bindsym Mod1+1 workspace $wsA0
-	bindsym Mod1+Shift+1 move container to workspace $wsA0
-
-	bindsym Escape mode "default"
-	bindsym Mod1+Shift+A mode "default"
-}
-
-bindsym Mod1+Shift+A mode "アニメ"
+bindsym Mod4+a workspace $wsA0
+bindsym Mod4+Shift+a move container to workspace $wsA0
 
 # Hentai
 set $wsH0 "変態"
@@ -286,8 +234,7 @@ mode "RESIZE"
 	bindsym Shift+Up RESIZE shrink height 1 px
 	bindsym SHift+Right RESIZE grow width 1 px
 	
-	# back to normal: Enter or Escape or Mod1+r
-	bindsym Return mode "default"
+	# back to normal: Escape or Mod1+r
 	bindsym Escape mode "default"
 	bindsym Mod1+r mode "default"
 }
