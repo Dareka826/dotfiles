@@ -35,3 +35,6 @@ curl -LO https://github.com/Dareka826/Suwako_Cursor_Linux_Port/raw/master/Suwako
 tar -xf Suwako_Cursor.tar.gz
 rm -rf Suwako_Cursor.tar.gz
 
+# custom scripts
+mkdir -p ~/.local/bin
+cp -i df/.local/bin/* ~/.local/bin/

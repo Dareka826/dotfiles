@@ -1,0 +1,4 @@
+#! /bin/sh
+
+kill $(cat ~/Wallpapers/.anipid)
+rm -f ~/Wallpapers/.anipid
