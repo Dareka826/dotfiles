@@ -36,6 +36,7 @@ set softtabstop=0 noexpandtab
 set shiftwidth=4
 set rnu
 set showcmd
+set cc=80
 
 no <Left> <Nop>
 no <Down> <Nop>
