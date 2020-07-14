@@ -9,6 +9,10 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'baskerville/vim-sxhkdrc'
+Plugin 'mzlogin/vim-smali'
+Plugin 'rubixninja314/vim-mcfunction'
+Plugin 'ap/vim-css-color'
 
 call vundle#end()
 filetype plugin on
@@ -20,8 +24,8 @@ let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 
 " colorscheme inkpot
 colorscheme molokai
-highlight Normal ctermbg=NONE
-highlight LineNr ctermbg=NONE
+" highlight Normal ctermbg=NONE
+" highlight LineNr ctermbg=NONE
 set t_Co=256
 let g:airline_theme='violet'
 let g:airline_powerline_fonts = 0
@@ -36,6 +40,7 @@ set softtabstop=0 noexpandtab
 set shiftwidth=4
 set rnu
 set showcmd
+set cursorline
 set cc=80
 
 no <Left> <Nop>

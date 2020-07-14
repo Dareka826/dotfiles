@@ -1,6 +1,8 @@
 # Dareka826's .zshrc
 tabs 4
 
+export EDITOR=nvim
+
 # Antigen stuff
 source ~/.antigen.zsh
 antigen use oh-my-zsh
@@ -13,25 +15,23 @@ CASE_SENSITIVE="false"
 antigen bundle git
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
-#antigen bundle softmoth/zsh-vim-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle softmoth/zsh-vim-mode
 
 antigen theme fishy
 antigen apply
 
 MODE_CURSOR_SEARCH="underline"
-
-#MODE_INDICATOR_VIINS='%F{7}INSERT'
-#MODE_INDICATOR_VICMD='%F{2}NORMAL'
-#MODE_INDICATOR_REPLACE='%F{4}REPLACE'
-#MODE_INDICATOR_SEARCH='%F{5}SEARCH'
-#MODE_INDICATOR_VISUAL='%F{6}VISUAL'
-#MODE_INDICATOR_VLINE='%F{6}V-LINE'
-
+MODE_INDICATOR_VIINS='%F{7}INSERT'
+MODE_INDICATOR_VICMD='%F{2}NORMAL'
+MODE_INDICATOR_REPLACE='%F{4}REPLACE'
+MODE_INDICATOR_SEARCH='%F{5}SEARCH'
+MODE_INDICATOR_VISUAL='%F{6}VISUAL'
+MODE_INDICATOR_VLINE='%F{6}V-LINE'
 RPROMPT="${RPROMPT}"' ${MODE_INDICATOR_PROMPT}'
 
 # Path variable
-export PATH=$PATH:~/Tools/:~/.cargo/bin:~/.gem/ruby/2.6.0/bin:~/go/bin
+export PATH=$PATH:~/.local/bin:~/.cargo/bin:~/.gem/ruby/2.6.0/bin:~/go/bin
 
 # Wal theme
 #cat ~/.cache/wal/sequences
@@ -68,4 +68,9 @@ alias 7zd="7z -v8181K"
 #alias rm="remove-confirm" # A sript in ~/Tools
 #alias remove="rm"
 alias rm="rm -i"
+alias rearti="taffy --rename-fs \"%R - %T\""
+
+tatrf() {
+	taffy --artist $1 --title $2 --rename-fs "%R - %T" $3
+}
 
