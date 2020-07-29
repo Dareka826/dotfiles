@@ -6,11 +6,11 @@ i3lock \
 	--force-clock \
 \
 	--ringvercolor=222222ff \
-	--ringwrongcolor=ff6633ff \
-	--ringcolor=6633ffff \
+	--ringwrongcolor=ff6600ff \
+	--ringcolor=ff22aaff \
 \
-	--keyhlcolor=ff6633ff \
-	--bshlcolor=ff6633ff \
+	--keyhlcolor=66ff00ff \
+	--bshlcolor=111111ff \
 \
 	--insidevercolor=00000000 \
 	--insidewrongcolor=00000000 \
@@ -26,8 +26,8 @@ i3lock \
 	--timepos="w-25:h-55" \
 	--datepos="tx:ty+30" \
 \
-	--timecolor=ff6633ff \
-	--datecolor=ff6633ff \
+	--timecolor=66ff00ff \
+	--datecolor=ff22aaff \
 \
 	--datestr="%A %m/%Y" \
 \
