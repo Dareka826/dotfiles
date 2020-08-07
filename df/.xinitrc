@@ -4,6 +4,7 @@
 xset -dpms
 xset s off
 xset m 0 0
+xset r rate 300 60
 
 # Start the input method
 fcitx &
