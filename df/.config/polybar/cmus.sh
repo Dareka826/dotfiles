@@ -20,8 +20,8 @@ END {
 	{
 		if(tracknum == 0) tracknum = "?"
 		lef = dur-pos
-		printf("%%{B#444444} %s. %s %%{B#222222} -%s/%s ", tracknum, title, stohms(lef), stohms(dur))
+		printf("%%{B#333333} %s. %s %%{B#222222} -%s/%s ", tracknum, title, stohms(lef), stohms(dur))
 	}
 	else
-		printf("%%{B#444444} cmus off %%{B#222222} --:--:--/--:--:-- ")
+		printf("%%{B#333333} cmus off %%{B#222222} --:--:--/--:--:-- ")
 }'

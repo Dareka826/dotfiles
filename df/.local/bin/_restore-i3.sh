@@ -20,4 +20,10 @@ i3-resurrect restore -w 17 --layout-only
 i3-resurrect restore -w 18 --layout-only
 i3-resurrect restore -w 19 --layout-only
 i3-resurrect restore -w 20 --layout-only
+i3-resurrect restore -w アニメ --layout-only
+i3-resurrect restore -w 変態 --layout-only
+i3-resurrect restore -w 変態2 --layout-only
+i3-resurrect restore -w 変態3 --layout-only
+i3-resurrect restore -w 変態4 --layout-only
+i3-resurrect restore -w 変態5 --layout-only
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#QT_QPA_PLATFORMTHEME=gtk2
+
 # Disable power saving and mouse acceleration
 xset -dpms
 xset s off

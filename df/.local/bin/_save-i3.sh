@@ -20,4 +20,11 @@ i3-resurrect save -w 17 --swallow=class,instance,title --layout-only
 i3-resurrect save -w 18 --swallow=class,instance,title --layout-only
 i3-resurrect save -w 19 --swallow=class,instance,title --layout-only
 i3-resurrect save -w 20 --swallow=class,instance,title --layout-only
+i3-resurrect save -w アニメ --swallow=class,instance,title --layout-only
+i3-resurrect save -w 変態 --swallow=class,instance,title --layout-only
+i3-resurrect save -w 変態2 --swallow=class,instance,title --layout-only
+i3-resurrect save -w 変態3 --swallow=class,instance,title --layout-only
+i3-resurrect save -w 変態4 --swallow=class,instance,title --layout-only
+i3-resurrect save -w 変態5 --swallow=class,instance,title --layout-only
 
+notify-send -u critical "Saved i3 layout"

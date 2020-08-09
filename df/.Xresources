@@ -45,13 +45,3 @@ rofi.color-active: #00000000, #FFEEE1E9, #00000000, #FFB77AA3, #FFEEE1E9
 !                  'bg'       'border'   'sep'
 rofi.color-window: #CC0C0D1E, #FFB77AA3, #FFB77AA3
 
-! URxvt
-URxvt.cursorColor: #EEE1E9
-URxvt.font: xft:Source Code Pro:style=regular:size=11
-URxvt.letterSpace: 0
-URxvt.lineSpace: 0
-URxvt.internalBorder: 15
-URxvt.scrollBar: false
-URxvt.depth: 32
-URxvt.transparent: false
-URxvt.background: [90]#0C0D1E

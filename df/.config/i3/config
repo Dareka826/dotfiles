@@ -1,17 +1,19 @@
 # i3 config file (v4)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-default_border pixel 0
-default_floating_border normal 0
+default_border pixel 2
+default_floating_border normal 2
 
 # class                 border  bground text    indicator child_border
-client.focused          #6633FF #6633FF #FFFFFF #6633FF   #6633FF
+client.focused          #6600FF #6600FF #FFFFFF #33EECC   #6600FF
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
-client.unfocused        #222222 #222222 #BBBBBB #222222   #222222
-client.urgent           #FF0000 #FF0000 #FFFFFF #FF0000   #FF0000
-client.placeholder      #000000 #000000 #FFFFFF #000000   #000000
+client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
+client.urgent           #BB0000 #BB0000 #FFFFFF #BB0000   #BB0000
+client.placeholder      #000000 #000000 #FFFFFF #222222   #222222
 
 client.background       #222222
+
+focus_on_window_activation urgent
 
 bindsym Mod1+z exec chromium
 bindsym Mod1+Shift+z exec chromium --incognito
