@@ -6,7 +6,8 @@ if [ $(id -u) = "0" ]; then
 	pacman -Syu
 	# Essential
 	pacman -S zsh mpv neovim python3 gcc clang git cmus alsa pulseaudio ffmpeg \
-		elinks curl aria2 go ranger imagemagick
+		elinks curl aria2 go ranger imagemagick pulseaudio-alsa fakeroot make \
+		cmake python-pywal
 	# Graphical
 	pacman -S xorg-server chromium i3-gaps dunst alacritty xfce4-terminal \
 		leafpad nitrogen lxappearance sxiv ueberzug picom
