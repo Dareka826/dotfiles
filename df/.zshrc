@@ -12,8 +12,11 @@ antigen bundle git
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-syntax-highlighting
-
 antigen bundle softmoth/zsh-vim-mode
+
+antigen theme fishy
+antigen apply
+
 MODE_INDICATOR_VIINS='I'
 MODE_INDICATOR_VICMD='N'
 MODE_INDICATOR_REPLACE='R'
@@ -21,9 +24,6 @@ MODE_INDICATOR_SEARCH='S'
 MODE_INDICATOR_VISUAL='V'
 MODE_INDICATOR_VLINE='L'
 PROMPT="$MODE_INDICATOR_PROMPT $PROMPT"
-
-antigen theme fishy
-antigen apply
 
 # Path variable
 export PATH=$PATH:~/.local/bin:~/go/bin
