@@ -6,9 +6,10 @@ if [ $(id -u) = "0" ]; then
 	pacman -Syu
 	# Essential
 	pacman -S zsh mpv neovim python3 gcc clang git cmus alsa pulseaudio ffmpeg \
-		elinks curl aria2 go
+		elinks curl aria2 go ranger
 	# Graphical
-	pacman -S chromium i3-gaps dunst alacritty xfce4-terminal leafpad
+	pacman -S xorg-server chromium i3-gaps dunst alacritty xfce4-terminal \
+		leafpad nitrogen lxappearance sxiv ueberzug picom
 else
 	# We're not root (2nd stage)
 	# yay
@@ -16,8 +17,8 @@ else
 	git clone https://aur.archlinux.org/yay.git
 	cd yay ; makepkg -si
 	cd .. ; rm -rf yay
-	# polybar
-	yay -S polybar
+	# polybar + oomox/themix
+	yay -S polybar themix-git
 	# unflac
 	go get -u git.sr.ht/~ft/unflac
 fi
