@@ -43,25 +43,29 @@ else
 fi
 
 # Run confirmation dialog
-dialog --title "[ Warning ]" --defaultno --yesno \
-	"Do you really want to continue?" $DIALOGH $DIALOGW
-[ $? = "1" ] && exit
+printf '> Do you really want to continue? [N/y]: '
+read ANS
+[ "$ANS" = "y" -o "$ANS" = "Y" -o "$ANS" = "yes" ] || exit
 
-# Ask if installing bare essentials
-MINIMAL="no"
-dialog --title "[ Configuration ]" --defaultno --yesno "Install only the essentials?" $DIALOGH $DIALOGW
-[ $? = "0" ] && MINIMAL="yes" || MINIMAL="no"
+# Ask if installing essentials
+MINIMAL="yes"
+printf '> Install only the essentials? [Y/n]: '
+read ANS
+[ "$ANS" = "n" -o "$ANS" = "N" -o "$ANS" = "no" ] && MINIMAL="no"
 
 GRAPHICAL="no"
 if [ "$MINIMAL" = "no" ]; then
 	# Ask if installing graphical
-	dialog --title "[ Configuration ]" --defaultno --yesno "Install a graphical environment?" $DIALOGH $DIALOGW
-	[ $? = "0" ] && GRAPHICAL="yes" || GRAPHICAL="no"
+	printf '> Install a graphical environment? [N/y]: '
+	read ANS
+	[ "$ANS" = "y" -o "$ANS" = "Y" -o "$ANS" = "yes" ] && GRAPHICAL="yes"
 fi
 
+# Ask if copying dotfiles
 CONFCOPY="yes"
-dialog --title "[ Configuration ]" --yesno "Copy the config files?" $DIALOGH $DIALOGW
-[ $? = "0" ] && CONFCOPY="yes" || CONFCOPY="no"
+printf '> Copy the dotfiles? [Y/n]: '
+read ANS
+[ "$ANS" = "n" -o "$ANS" = "N" -o "$ANS" = "no" ] && CONFCOPY="no"
 
 # Install
 
