@@ -29,7 +29,8 @@ PROMPT="$MODE_INDICATOR_PROMPT $PROMPT"
 export PATH=$PATH:~/.local/bin:~/go/bin
 
 # Wal theme
-[ $(tty | grep -o tty) ] && . ~/.cache/wal/colors-tty.sh || cat ~/.cache/wal/sequences
+#[ $(tty | grep -o tty) ] && . ~/.cache/wal/colors-tty.sh || cat ~/.cache/wal/sequences
+[ "$TERM" = "linux" ] && ~/themes/rand-theme.sh || ~/themes/rand-theme.sh
 
 # Functions
 get-pgp-key() { sudo pacman-key --recv-keys $1 }
