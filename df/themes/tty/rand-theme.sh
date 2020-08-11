@@ -1,7 +1,7 @@
 #!/bin/sh
 # Randomly execute a file with .theme.sh extension
 
-cd ~/themes
+cd ~/themes/tty
 # Get the number of theme scripts
 NUM=$(ls -1 *.theme.sh | wc -l)
 # Generate a pseudo-random number from 1 to $NUM

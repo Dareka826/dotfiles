@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo -ne   '\e]11;#191E27\e\\' #BG
 echo -ne   '\e]10;#E5C7E9\e\\' #FG

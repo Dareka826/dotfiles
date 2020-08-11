@@ -59,7 +59,7 @@ cp ~/Wallpapers/lockscreen1.png				df/Wallpapers/
 cp ~/Wallpapers/lockscreen1.svg				df/Wallpapers/
 
 mkdir df/themes
-cp ~/themes/*								df/themes/
+cp -r ~/themes/*							df/themes/
 
 mkdir -p df/.local/bin
 cp ~/.local/bin/_save-i3.sh					df/.local/bin/
