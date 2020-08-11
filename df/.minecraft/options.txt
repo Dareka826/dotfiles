@@ -75,7 +75,7 @@ key_key.pickItem:key.mouse.middle
 key_key.command:key.keyboard.slash
 key_key.screenshot:key.keyboard.f2
 key_key.togglePerspective:key.keyboard.f5
-key_key.smoothCamera:key.keyboard.unknown
+key_key.smoothCamera:key.keyboard.f8
 key_key.fullscreen:key.keyboard.f11
 key_key.spectatorOutlines:key.keyboard.unknown
 key_key.swapHands:key.keyboard.f
@@ -92,11 +92,6 @@ key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
 key_of.key.zoom:key.keyboard.c
-key_gui.xaero_open_map:key.keyboard.m
-key_gui.xaero_open_settings:key.keyboard.right.bracket
-key_gui.xaero_map_zoom_in:key.keyboard.unknown
-key_gui.xaero_map_zoom_out:key.keyboard.unknown
-key_gui.xaero_quick_confirm:key.keyboard.right.shift
 key_gui.xaero_switch_waypoint_set:key.keyboard.unknown
 key_gui.xaero_instant_waypoint:key.keyboard.keypad.add
 key_gui.xaero_toggle_slime:key.keyboard.unknown
@@ -111,6 +106,11 @@ key_gui.xaero_zoom_out:key.keyboard.o
 key_gui.xaero_new_waypoint:key.keyboard.b
 key_gui.xaero_display_all_sets:key.keyboard.unknown
 key_gui.xaero_minimap_settings:key.keyboard.y
+key_gui.xaero_open_map:key.keyboard.m
+key_gui.xaero_open_settings:key.keyboard.right.bracket
+key_gui.xaero_map_zoom_in:key.keyboard.unknown
+key_gui.xaero_map_zoom_out:key.keyboard.unknown
+key_gui.xaero_quick_confirm:key.keyboard.right.shift
 soundCategory_master:1.0
 soundCategory_music:0.0
 soundCategory_record:1.0
