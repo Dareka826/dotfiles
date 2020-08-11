@@ -48,7 +48,7 @@ cp -i df/.local/bin/*					~/.local/bin/
 
 # Themes
 mkdir ~/themes
-cp -i df/themes/*						~/themes/
+cp -ir df/themes/*						~/themes/
 
 # Minecraft
 mkdir ~/.minecraft
