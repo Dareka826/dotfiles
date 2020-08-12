@@ -1,8 +1,5 @@
 #!/bin/sh
 
-DIALOGW=50
-DIALOGH=6
-
 # Atelier lakeside theme
 if [ "$TERM" = "linux" ]; then
 	printf '%b' '\e]P0161B1D
@@ -72,7 +69,7 @@ read ANS
 # Base
 sudo pacman -Syu
 sudo pacman -S zsh neovim python3 gcc clang git elinks curl aria2 ranger make \
-	fakeroot cmake vim
+	fakeroot cmake vim rsync
 
 if [ "$MINIMAL" = "no" ]; then
 	# Install extra
