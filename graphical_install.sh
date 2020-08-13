@@ -74,7 +74,7 @@ sudo pacman -S zsh neovim python3 gcc clang git elinks curl aria2 ranger make \
 if [ "$MINIMAL" = "no" ]; then
 	# Install extra
 	sudo pacman -S mpv cmus ffmpeg alsa pulseaudio pulseaudio-alsa imagemagick \
-		python-pywal go
+		python-pywal go mlocate
 	go get -u git.sr.ht/~ft/unflac
 
 	# Install yay
@@ -86,9 +86,10 @@ fi
 if [ "$GRAPHICAL" = "yes" ]; then
 	# Instal grpahical environment
 	sudo pacman -S xorg-server chromium i3-gaps dunst alacritty xfce4-terminal \
-		leafpad nitrogen lxappearance sxiv ueberzug picom mupdf
+		leafpad nitrogen lxappearance sxiv ueberzug picom mupdf xorg-xinit \
+		rofi zathura zathura-pdf-mupdf mupdf gmrun
 	# polybar + oomox/themix
-	yay -S polybar themix-git
+	yay -S polybar themix-full-git
 fi
 
 [ "$CONFCOPY" = "yes" ] && ./install.sh
