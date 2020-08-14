@@ -23,7 +23,7 @@ dunst &
 # Restore colors, wallpaper, picom, redshift
 wal -R -n
 nitrogen --restore
-picom &
+picom --experimental-backends &
 #redshift &
 
 # Start discord
