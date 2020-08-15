@@ -35,13 +35,6 @@ wal -i ~/Wallpapers/71123408_p0.png
 # Oomox
 # oomox-cli -m all ~/.config/oomox/colors/RinN
 
-# Suwako cursor
-mkdir ~/.icons
-cd ~/.icons
-curl -LO https://github.com/Dareka826/Suwako_Cursor_Linux_Port/raw/master/Suwako_Cursor.tar.gz
-tar -xf Suwako_Cursor.tar.gz
-rm -rf Suwako_Cursor.tar.gz
-
 # Custom scripts
 mkdir -p ~/.local/bin
 cp -i df/.local/bin/*					~/.local/bin/
@@ -53,4 +46,11 @@ cp -ir df/themes/*						~/themes/
 # Minecraft
 mkdir ~/.minecraft
 cp -i df/.minecraft/*					~/.minecraft/
+
+# Suwako cursor
+mkdir ~/.icons
+cd ~/.icons
+curl -LO https://github.com/Dareka826/Suwako_Cursor_Linux_Port/raw/master/Suwako_Cursor.tar.gz
+tar -xf Suwako_Cursor.tar.gz
+rm -rf Suwako_Cursor.tar.gz
 
