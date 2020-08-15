@@ -35,6 +35,11 @@ cp ~/.config/gtk-3.0/gtk.css				df/.config/gtk-3.0/
 mkdir df/.config/i3
 cp ~/.config/i3/config						df/.config/i3/
 
+mkdir df/.config/bspwm
+cp ~/.config/bspwm/bspwmrc					df/.config/bspwm/
+mkdir df/.config/sxhkd
+cp ~/.config/sxhkd/sxhkdrc					df/.config/sxhkd/
+
 mkdir df/.config/mpv
 cp ~/.config/mpv/mpv.conf					df/.config/mpv/
 cp ~/.config/mpv/input.conf					df/.config/mpv/
