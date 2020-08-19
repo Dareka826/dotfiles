@@ -11,6 +11,11 @@ curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.v
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 cp -i df/.vim/.ycm_extra_conf.py		~/.vim/
 
+# Neovim
+mkdir -p ~/.config/nvim
+ln -s ~/.vimrc ~/.config/nvim/init.vim
+ln -s ~/.vim/colors ~/.config/nvim/colors
+
 # X files
 cp -i df/.xinitrc						~/
 cp -i df/.Xresources					~/
