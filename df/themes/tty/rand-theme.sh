@@ -10,4 +10,4 @@ IDX=$(( $(od -An -N1 -tu1 /dev/urandom) % $NUM + 1 ))
 THF=$(ls -1 *.theme.sh | sed -n "${IDX}p")
 
 # Apply the theme
-./$THF
+bash $THF
