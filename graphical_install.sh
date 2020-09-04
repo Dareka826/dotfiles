@@ -69,12 +69,12 @@ read ANS
 # Base
 sudo pacman -Syu
 sudo pacman -S zsh neovim python3 gcc clang git elinks curl aria2 ranger make \
-	fakeroot cmake vim rsync
+	fakeroot cmake vim rsync patch
 
 if [ "$MINIMAL" = "no" ]; then
 	# Install extra
 	sudo pacman -S mpv cmus ffmpeg alsa pulseaudio pulseaudio-alsa imagemagick \
-		python-pywal go mlocate pandoc lynx
+		python-pywal go mlocate pandoc lynx opusfile
 	go get -u git.sr.ht/~ft/unflac
 
 	# Install yay
