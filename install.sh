@@ -32,6 +32,8 @@ cp -ri df/.config						~/
 # Wallpapers
 mkdir ~/Wallpapers
 cp df/Wallpapers/*						~/Wallpapers
+# CREDIT: Mauve on pixiv, @MauveSR on twitter
+# IAMGE ON PIXIV: https://pixiv.net/artworks/71123408
 curl -L https://i.imgur.com/z4ffOWb.png -o ~/Wallpapers/71123408_p0.png
 
 # Wal
