@@ -6,7 +6,7 @@ default_floating_border normal 2
 
 # class                 border  bground text    indicator child_border
 #client.focused          #6600FF #6600FF #FFFFFF #33EECC   #6600FF
-client.focused          #A17152 #A17152 #FFFFFF #33EECC   #A17152
+client.focused          #A17152 #A17152 #FFFFFF #FBD177   #A17152
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
 client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
 client.urgent           #BB0000 #BB0000 #FFFFFF #BB0000   #BB0000
