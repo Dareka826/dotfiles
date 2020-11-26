@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ls -Q1 *.* | sort -R | tr "\n" " " | xargs mpv
