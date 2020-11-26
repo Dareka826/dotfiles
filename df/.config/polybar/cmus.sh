@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cmus-remote -C status | awk '
+cmus-remote -Q | awk '
 $1=="file" { $1=""; sub(/.*\//,""); title = $0 }
 $1=="tag" && $2=="title" { sub("tag title ",""); title = $0 }
 $1=="tag" && $2=="tracknumber" { tracknum = $3 }

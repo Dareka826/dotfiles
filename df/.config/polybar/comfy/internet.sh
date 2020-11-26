@@ -1,6 +1,6 @@
 #!/bin/sh
 foreground="#201610"
-foreOff="#FBD177"
+foreOff="#FF0000"
 background="#DD9E67"
 ADDR="8.8.8.8"
 
