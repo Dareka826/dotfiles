@@ -16,8 +16,8 @@ END {
 	if(dur!=0)
 	{
 		lef = dur-pos
-		printf("%%{B#222222} -%s/%s ", stohms(lef), stohms(dur))
+		printf(" -%s/%s ", stohms(lef), stohms(dur))
 	}
 	else
-		printf("%%{B#222222} --:--:--/--:--:-- ")
+		printf(" --:--:--/--:--:-- ")
 }'
