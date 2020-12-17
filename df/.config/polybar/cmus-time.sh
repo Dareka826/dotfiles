@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cmus-remote -Q | awk '
+cmus-remote -C status | awk '
 $1=="duration" { dur = $2 }
 $1=="position" { pos = $2 }
 function stohms(t) {

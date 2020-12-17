@@ -2,9 +2,9 @@
 
 # tracknum, title, artist, album
 
-cmus-remote -Q 2>&1 | grep "cmus is not running" >/dev/null 2>&1 && notify-send "cmus off" && exit 0
+cmus-remote -C status | grep "cmus is not running" >/dev/null 2>&1 && notify-send "cmus off" && exit 0
 
-notify-send "$(cmus-remote -Q | awk '
+notify-send "$(cmus-remote -C status | awk '
 $1=="file" { $1=""; sub(/.*\//,""); title = $0 }
 $1=="tag" && $2=="title" { sub("tag title ",""); title = $0 }
 $1=="tag" && $2=="album" { sub("tag album ",""); album = $0 }
