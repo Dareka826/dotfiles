@@ -21,40 +21,41 @@ syntax on
 
 let g:ycm_confirm_extra_conf='false'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-
-" colorscheme inkpot
-" colorscheme molokai
-" highlight Normal ctermbg=NONE
-" highlight LineNr ctermbg=NONE
-set t_Co=256
-let g:airline_theme='violet'
-let g:airline_powerline_fonts = 0
 let g:ycm_confirm_extra_conf = 0
 
+let mapleader=" "
+
+" colorscheme inkpot
+colorscheme molokai
+highlight Normal ctermbg=NONE
+highlight LineNr ctermbg=NONE
+
+"set t_Co=256
+let g:airline_theme='violet'
+let g:airline_powerline_fonts = 0
+
 set encoding=utf-8
-set number
+set fileencodings=utf-8,sjis,euc-jp,default
+set number rnu
 set autoindent
 set noerrorbells
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
-set rnu
 set showcmd
 set cursorline
 set cc=80
+set ignorecase
+set splitbelow splitright
 
-no <Left> <Nop>
-no <Down> <Nop>
-no <Up> <Nop>
-no <Right> <Nop>
-
-ino <Left> <Nop>
-ino <Down> <Nop>
-ino <Up> <Nop>
-ino <Right> <Nop>
-
-vno <Left> <Nop>
-vno <Down> <Nop>
-vno <Up> <Nop>
-vno <Right> <Nop>
+" Disable arrow keys
+inoremap <Up> <Nop>
+vnoremap <Up> <Nop>
+inoremap <Down> <Nop>
+vnoremap <Down> <Nop>
+inoremap <Left> <Nop>
+vnoremap <Right> <Nop>
+vnoremap <Left> <Nop>
+inoremap <Right> <Nop>
+" B-A-<Start>
 
