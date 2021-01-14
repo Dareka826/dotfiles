@@ -20,12 +20,6 @@ ln -s ~/.vim/colors ~/.config/nvim/colors
 cp -i df/.xinitrc						~/
 cp -i df/.Xresources					~/
 
-# Tmux
-cp -i df/.tmux.conf						~/
-
-# Color palette
-cp -i df/.palette.txt					~/
-
 # Config
 cp -ri df/.config						~/
 
@@ -41,23 +35,9 @@ curl -L https://i.imgur.com/z4ffOWb.png -o ~/Wallpapers/71123408_p0.png
 #  IMAGE: https://www.pixiv.net/artworks/83517721
 curl -L https://i.imgur.com/vGx6mrE.png -o ~/Wallpapers/83517721_p0.png
 
-# Wal
-wal -i ~/Wallpapers/71123408_p0.png
-
-# Oomox
-# oomox-cli -m all ~/.config/oomox/colors/RinN
-
-# Custom scripts
-mkdir -p ~/.local/bin
-cp -i df/.local/bin/*					~/.local/bin/
-
 # Themes
 mkdir ~/themes
 cp -ir df/themes/*						~/themes/
-
-# Minecraft
-mkdir ~/.minecraft
-cp -i df/.minecraft/*					~/.minecraft/
 
 # Suwako cursor
 mkdir ~/.icons
