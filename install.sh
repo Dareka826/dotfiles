@@ -1,15 +1,15 @@
 #!/bin/sh
 
 # Zsh
-cp -i df/.zshrc							~/
+cp -i df/.zshrc ~/
 curl -L git.io/antigen > ~/.antigen.zsh
 
 # Vim
-cp -i df/.vimrc							~/
+cp -i df/.vimrc ~/
 mkdir -p ~/.vim/colors
 curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -o ~/.vim/colors/molokai.vim
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-cp -i df/.vim/.ycm_extra_conf.py		~/.vim/
+cp -i df/.vim/.ycm_extra_conf.py ~/.vim/
 
 # Neovim
 mkdir -p ~/.config/nvim
@@ -17,15 +17,15 @@ ln -s ~/.vimrc ~/.config/nvim/init.vim
 ln -s ~/.vim/colors ~/.config/nvim/colors
 
 # X files
-cp -i df/.xinitrc						~/
-cp -i df/.Xresources					~/
+cp -i df/.xinitrc ~/
+cp -i df/.Xresources ~/
 
 # Config
-cp -ri df/.config						~/
+cp -ri df/.config ~/
 
 # Wallpapers
 mkdir ~/Wallpapers
-cp df/Wallpapers/*						~/Wallpapers
+cp df/Wallpapers/* ~/Wallpapers
 
 # ARTIST: Mauve on pixiv, @MauveSR on twitter
 #  IMAGE: https://pixiv.net/artworks/71123408
@@ -35,9 +35,9 @@ curl -L https://i.imgur.com/z4ffOWb.png -o ~/Wallpapers/71123408_p0.png
 #  IMAGE: https://www.pixiv.net/artworks/83517721
 curl -L https://i.imgur.com/vGx6mrE.png -o ~/Wallpapers/83517721_p0.png
 
-# Themes
+# Console themes
 mkdir ~/themes
-cp -ir df/themes/*						~/themes/
+cp -ir df/themes/* ~/themes/
 
 # Suwako cursor
 mkdir ~/.icons
