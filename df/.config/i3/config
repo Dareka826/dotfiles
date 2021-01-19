@@ -1,54 +1,54 @@
-# i3 config file (v4)
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# i3 config file
 
+# Gaps
+gaps inner 0 # 10 25 50
+
+# Border
 default_border pixel 2
 default_floating_border normal 2
 
+# Border colors
 # class                 border  bground text    indicator child_border
-#client.focused          #6600FF #6600FF #FFFFFF #33EECC   #6600FF
-client.focused          #A17152 #A17152 #FFFFFF #FBD177   #A17152
+client.focused          #6600FF #6600FF #FFFFFF #33EECC   #6600FF
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
 client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
 client.urgent           #BB0000 #BB0000 #FFFFFF #BB0000   #BB0000
 client.placeholder      #000000 #000000 #FFFFFF #222222   #222222
-
 client.background       #222222
 
 focus_on_window_activation urgent
 
-bindsym Mod1+z exec chromium
-bindsym Mod1+Shift+z exec chromium --incognito
+# Browser
+bindsym Mod1+z exec firefox
+bindsym Mod1+Shift+z exec firefox -private-window
+bindsym Mod1+Ctrl+Shift+z exec chromium --incognito
 
 bindsym Mod1+Ctrl+m move position center
 
-# gaps inner 10
-gaps inner 25
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
+# Window title font
 font pango:monospace 8
 
-# Use Mouse+Mod1 to drag floating windows to their wanted position
+# Mouse+Mod1 floating window drag
 floating_modifier Mod1
 
-# start a terminal
+# Terminal
 bindsym Mod1+Return exec alacritty
-bindsym ctrl+F2 exec gmrun
 
-# screenshots
+# Run dialog
+bindsym Mod1+d exec dmenu_run -i
+bindsym Mod1+m exec ~/.local/bin/select-window
+bindsym Mod1+g exec gmrun
+
+# Screenshot
 bindsym ctrl+F12 exec ~/.local/bin/screenshot
 
-# kill focused window
+# Kill focused window
 bindsym Mod1+Shift+q kill
 
-# start dmenu and rofi (a program launcher)
-# bindsym Mod1+d exec ~/Tools/dmenu_wal
-bindsym Mod1+d exec rofi -show run -i
-bindsym Mod1+m exec rofi -show window -i
-
+# Lock screen
 bindsym Mod1+l exec ~/.local/bin/lock.sh
-bindsym Mod1+p exec ~/.local/bin/lock_sus.sh
 
+# Play/pause cmus
 bindsym Mod1+c exec cmus-remote -u
 
 # Media keys
@@ -61,201 +61,137 @@ bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioNext exec cmus-remote -n
 bindsym XF86AudioPrev exec cmus-remote -r
 
-# volume controls
-bindsym ctrl+Up exec --no-startup-id pamixer -i 5 --allow-boost
-bindsym ctrl+Down exec --no-startup-id pamixer -d 5 --allow-boost
-bindsym ctrl+Shift+Return exec --no-startup-id pamixer -t --allow-boost
+# Volume control
+bindsym Ctrl+Up exec --no-startup-id pamixer -i 5 --allow-boost
+bindsym Ctrl+Down exec --no-startup-id pamixer -d 5 --allow-boost
+bindsym Ctrl+Shift+Return exec --no-startup-id pamixer -t --allow-boost
 
-# change focus
+# Change focus
 bindsym Mod1+Left focus left
 bindsym Mod1+Down focus down
 bindsym Mod1+Up focus up
 bindsym Mod1+Right focus right
 
-# move focused window
+# Move focused window
 bindsym Mod1+Shift+Left move left
 bindsym Mod1+Shift+Down move down
 bindsym Mod1+Shift+Up move up
 bindsym Mod1+Shift+Right move right
-# move focused window by one
-bindsym Mod1+Ctrl+Shift+Left move left 1
-bindsym Mod1+Ctrl+Shift+Down move down 1
-bindsym Mod1+Ctrl+Shift+Up move up 1
-bindsym Mod1+Ctrl+Shift+Right move right 1
 
-# split in horizontal orientation
+# Move focused window by one pixel
+bindsym Mod1+Ctrl+Shift+Left move left 1 px
+bindsym Mod1+Ctrl+Shift+Down move down 1 px
+bindsym Mod1+Ctrl+Shift+Up move up 1 px
+bindsym Mod1+Ctrl+Shift+Right move right 1 px
+
+# Split
 bindsym Mod1+h split h
-
-# split in vertical orientation
 bindsym Mod1+v split v
 
-# enter fullscreen mode for the focused container
+# Toggle fullscreen
 bindsym Mod1+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-#bindsym Mod1+s layout stacking
-#bindsym Mod1+w layout tabbed
-bindsym Mod1+e layout toggle split
+# Change layout
+bindsym Mod1+t layout tabbed
 
-# toggle tiling / floating
+# Toggle tiling / floating
 bindsym Mod1+Shift+space floating toggle
 
-# change focus between tiling / floating windows
+# Change focus between tiling / floating windows
 bindsym Mod1+space focus mode_toggle
 
-# focus the parent container
+# Focus the parent container
 bindsym Mod1+a focus parent
 
-# focus the child container
-#bindsym Mod1+d focus child
+# Focus the child container
+bindsym Mod1+shift+a focus child
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+# Switch to workspace
+bindsym Mod1+1 workspace 1
+bindsym Mod1+2 workspace 2
+bindsym Mod1+3 workspace 3
+bindsym Mod1+4 workspace 4
+bindsym Mod1+5 workspace 5
+bindsym Mod1+6 workspace 6
+bindsym Mod1+7 workspace 7
+bindsym Mod1+8 workspace 8
+bindsym Mod1+9 workspace 9
+bindsym Mod1+0 workspace 10
 
-set $ws11 "11"
-set $ws12 "12"
-set $ws13 "13"
-set $ws14 "14"
-set $ws15 "15"
-set $ws16 "16"
-set $ws17 "17"
-set $ws18 "18"
-set $ws19 "19"
-set $ws20 "20"
+bindsym Mod4+1 workspace 11
+bindsym Mod4+2 workspace 12
+bindsym Mod4+3 workspace 13
+bindsym Mod4+4 workspace 14
+bindsym Mod4+5 workspace 15
+bindsym Mod4+6 workspace 16
+bindsym Mod4+7 workspace 17
+bindsym Mod4+8 workspace 18
+bindsym Mod4+9 workspace 19
+bindsym Mod4+0 workspace 20
 
-set $ws21 "21"
-set $ws22 "22"
-set $ws23 "23"
-set $ws24 "24"
-set $ws25 "25"
-set $ws26 "26"
-set $ws27 "27"
-set $ws28 "28"
-set $ws29 "29"
-set $ws30 "30"
+bindsym Mod4+q workspace 21
+bindsym Mod4+w workspace 22
+bindsym Mod4+e workspace 23
+bindsym Mod4+r workspace 24
+bindsym Mod4+t workspace 25
+bindsym Mod4+y workspace 26
+bindsym Mod4+u workspace 27
+bindsym Mod4+i workspace 28
+bindsym Mod4+o workspace 29
+bindsym Mod4+p workspace 30
 
-# switch to workspace
-bindsym Mod1+1 workspace $ws1
-bindsym Mod1+2 workspace $ws2
-bindsym Mod1+3 workspace $ws3
-bindsym Mod1+4 workspace $ws4
-bindsym Mod1+5 workspace $ws5
-bindsym Mod1+6 workspace $ws6
-bindsym Mod1+7 workspace $ws7
-bindsym Mod1+8 workspace $ws8
-bindsym Mod1+9 workspace $ws9
-bindsym Mod1+0 workspace $ws10
+bindsym Mod4+a workspace "アニメ"
 
-bindsym Mod4+1 workspace $ws11
-bindsym Mod4+2 workspace $ws12
-bindsym Mod4+3 workspace $ws13
-bindsym Mod4+4 workspace $ws14
-bindsym Mod4+5 workspace $ws15
-bindsym Mod4+6 workspace $ws16
-bindsym Mod4+7 workspace $ws17
-bindsym Mod4+8 workspace $ws18
-bindsym Mod4+9 workspace $ws19
-bindsym Mod4+0 workspace $ws20
+# Move focused container to workspace
+bindsym Mod1+Shift+1 move container to workspace 1
+bindsym Mod1+Shift+2 move container to workspace 2
+bindsym Mod1+Shift+3 move container to workspace 3
+bindsym Mod1+Shift+4 move container to workspace 4
+bindsym Mod1+Shift+5 move container to workspace 5
+bindsym Mod1+Shift+6 move container to workspace 6
+bindsym Mod1+Shift+7 move container to workspace 7
+bindsym Mod1+Shift+8 move container to workspace 8
+bindsym Mod1+Shift+9 move container to workspace 9
+bindsym Mod1+Shift+0 move container to workspace 10
 
-bindsym Mod4+q workspace $ws21
-bindsym Mod4+w workspace $ws22
-bindsym Mod4+e workspace $ws23
-bindsym Mod4+r workspace $ws24
-bindsym Mod4+t workspace $ws25
-bindsym Mod4+y workspace $ws26
-bindsym Mod4+u workspace $ws27
-bindsym Mod4+i workspace $ws28
-bindsym Mod4+o workspace $ws29
-bindsym Mod4+p workspace $ws30
+bindsym Mod4+Shift+1 move container to workspace 11
+bindsym Mod4+Shift+2 move container to workspace 12
+bindsym Mod4+Shift+3 move container to workspace 13
+bindsym Mod4+Shift+4 move container to workspace 14
+bindsym Mod4+Shift+5 move container to workspace 15
+bindsym Mod4+Shift+6 move container to workspace 16
+bindsym Mod4+Shift+7 move container to workspace 17
+bindsym Mod4+Shift+8 move container to workspace 18
+bindsym Mod4+Shift+9 move container to workspace 19
+bindsym Mod4+Shift+0 move container to workspace 20
 
-# move focused container to workspace
-bindsym Mod1+Shift+1 move container to workspace $ws1
-bindsym Mod1+Shift+2 move container to workspace $ws2
-bindsym Mod1+Shift+3 move container to workspace $ws3
-bindsym Mod1+Shift+4 move container to workspace $ws4
-bindsym Mod1+Shift+5 move container to workspace $ws5
-bindsym Mod1+Shift+6 move container to workspace $ws6
-bindsym Mod1+Shift+7 move container to workspace $ws7
-bindsym Mod1+Shift+8 move container to workspace $ws8
-bindsym Mod1+Shift+9 move container to workspace $ws9
-bindsym Mod1+Shift+0 move container to workspace $ws10
+bindsym Mod4+Shift+q move container to workspace 21
+bindsym Mod4+Shift+w move container to workspace 22
+bindsym Mod4+Shift+e move container to workspace 23
+bindsym Mod4+Shift+r move container to workspace 24
+bindsym Mod4+Shift+t move container to workspace 25
+bindsym Mod4+Shift+y move container to workspace 26
+bindsym Mod4+Shift+u move container to workspace 27
+bindsym Mod4+Shift+i move container to workspace 28
+bindsym Mod4+Shift+o move container to workspace 29
+bindsym Mod4+Shift+p move container to workspace 30
 
-bindsym Mod4+Shift+1 move container to workspace $ws11
-bindsym Mod4+Shift+2 move container to workspace $ws12
-bindsym Mod4+Shift+3 move container to workspace $ws13
-bindsym Mod4+Shift+4 move container to workspace $ws14
-bindsym Mod4+Shift+5 move container to workspace $ws15
-bindsym Mod4+Shift+6 move container to workspace $ws16
-bindsym Mod4+Shift+7 move container to workspace $ws17
-bindsym Mod4+Shift+8 move container to workspace $ws18
-bindsym Mod4+Shift+9 move container to workspace $ws19
-bindsym Mod4+Shift+0 move container to workspace $ws20
+bindsym Mod4+Shift+a move container to workspace "アニメ"
 
-bindsym Mod4+Shift+q move container to workspace $ws21
-bindsym Mod4+Shift+w move container to workspace $ws22
-bindsym Mod4+Shift+e move container to workspace $ws23
-bindsym Mod4+Shift+r move container to workspace $ws24
-bindsym Mod4+Shift+t move container to workspace $ws25
-bindsym Mod4+Shift+y move container to workspace $ws26
-bindsym Mod4+Shift+u move container to workspace $ws27
-bindsym Mod4+Shift+i move container to workspace $ws28
-bindsym Mod4+Shift+o move container to workspace $ws29
-bindsym Mod4+Shift+p move container to workspace $ws30
+# Prev/next workspace
+bindsym Mod1+n workspace next
+bindsym Mod1+b workspace prev
 
-# Anime (watching)
-set $wsA0 "アニメ"
-
-bindsym Mod4+a workspace $wsA0
-bindsym Mod4+Shift+a move container to workspace $wsA0
-
-# Hentai
-set $wsH0 "変態"
-set $wsH1 "変態2"
-set $wsH2 "変態3"
-set $wsH3 "変態4"
-set $wsH4 "変態5"
-
-mode "変態"
-{
-	# Workspaces
-	bindsym Mod1+1 workspace $wsH0
-	bindsym Mod1+2 workspace $wsH1
-	bindsym Mod1+3 workspace $wsH2
-	bindsym Mod1+4 workspace $wsH3
-	bindsym Mod1+5 workspace $wsH4
-
-	# Move container to workspace
-	bindsym Mod1+Shift+1 move container to workspace $wsH0
-	bindsym Mod1+Shift+2 move container to workspace $wsH1
-	bindsym Mod1+Shift+3 move container to workspace $wsH2
-	bindsym Mod1+Shift+4 move container to workspace $wsH3
-	bindsym Mod1+Shift+5 move container to workspace $wsH4
-	
-	# Turn off hentai navigation mode
-	bindsym Escape mode "default"
-	bindsym Mod1+Shift+H mode "default"
-}
-
-bindsym Mod1+Shift+H mode "変態"
-
-# reload the configuration file
+# Reload the configuration file
 bindsym Mod1+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym Mod1+Shift+r restart
-# exit i3 (logs you out of your X session)
+
+# Exit i3 (logs you out of your X session)
 bindsym Mod1+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# RESIZE window (you can also use the mouse for that)
+# Resize window
 mode "RESIZE"
 {
 	# Change dimensions by 10 px
@@ -263,16 +199,17 @@ mode "RESIZE"
 	bindsym Down RESIZE grow height 10 px
 	bindsym Up RESIZE shrink height 10 px
 	bindsym Right RESIZE grow width 10 px
-	
+
 	# Change dimensions by 1 px
 	bindsym Shift+Left RESIZE shrink width 1 px
 	bindsym Shift+Down RESIZE grow height 1 px
 	bindsym Shift+Up RESIZE shrink height 1 px
 	bindsym SHift+Right RESIZE grow width 1 px
-	
-	# back to normal: Escape or Mod1+r
+
+	# Exit RESIZE mode
 	bindsym Escape mode "default"
 	bindsym Mod1+r mode "default"
 }
 
 bindsym Mod1+r mode "RESIZE"
+
