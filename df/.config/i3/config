@@ -106,6 +106,10 @@ bindsym Mod1+a focus parent
 # Focus the child container
 bindsym Mod1+shift+a focus child
 
+# Move workspaces between monitors
+bindsym Mod1+shift+minus move workspace to output left
+bindsym Mod1+shift+equal move workspace to output right
+
 # Switch to workspace
 bindsym Mod1+1 workspace 1
 bindsym Mod1+2 workspace 2
