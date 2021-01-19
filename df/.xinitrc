@@ -1,12 +1,17 @@
 #!/bin/sh
 
-#QT_QPA_PLATFORMTHEME=gtk2
+# fcitx
+export GTK_IM_MODULE="fcitx"
+export QT_IM_MODULE="fcitx"
+export XMODIFIERS="@im=fcitx"
+
+# Qt style
+export QT_STYLE_OVERRIDE=kvantum
 
 # Disable power saving and mouse acceleration
 xset -dpms
 xset s off
 xset m 0 0
-xset r rate 300 60
 
 # Start the input method
 fcitx &
@@ -23,20 +28,22 @@ dunst &
 # Restore colors, wallpaper, picom, redshift
 wal -R -n
 nitrogen --restore
-picom --experimental-backends &
-#redshift &
+picom &
 
 # Start discord
 discord &
 
 # Polybar
-. ~/.config/polybar/start-polybar.sh &
+~/.config/polybar/start-polybar.sh &
 
-# Set saturation to 116%
-#vibrant-cli DVI-D-0 1.16
+# Create a bashrc in /tmp
+cp ~/.bashrc /tmp/
 
-#leafpad ~/___layout.txt &
+# Pulseaudio force mic to be at 55% (because of WebRTC)
+while sleep 0.1; do pacmd set-source-volume alsa_input.pci-0000_00_1f.3.analog-stereo 36045; done &
+
+# Newsboat
+alacritty -e "newsboat" &
 
 # Start the wm
 exec i3
-#exec bspwm
