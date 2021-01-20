@@ -244,3 +244,13 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice lucid wait'0a'
 zinit light MichaelAquilina/zsh-you-should-use
 
+# ===========
+# = Compile =
+# ===========
+
+# Compile zshrc if newer than compiled version or if it doesn't exist
+{ [[ ! -e ~/.zshrc.zwc ]] || \
+{ [[ $(date +%y%m%d%H%M%S -r ~/.zshrc) -gt \
+	$(date +%y%m%d%H%M%S -r ~/.zshrc.zwc) ]] } } && \
+	zcompile ~/.zshrc || :
+
