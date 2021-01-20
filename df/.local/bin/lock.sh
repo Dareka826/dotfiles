@@ -1,15 +1,16 @@
 #! /bin/sh
 
 i3lock \
-	-i ~/Wallpapers/lockscreen1.png \
+	-i ~/Wallpapers/lockscreen2.png \
 	--indicator \
 	--force-clock \
+	-S 0 \
 \
 	--ringvercolor=222222ff \
-	--ringwrongcolor=ff6600ff \
-	--ringcolor=ff22aaff \
+	--ringwrongcolor=EE99BB \
+	--ringcolor=DD5588FF \
 \
-	--keyhlcolor=66ff00ff \
+	--keyhlcolor=FFFFFFFF \
 	--bshlcolor=111111ff \
 \
 	--insidevercolor=00000000 \
@@ -22,14 +23,14 @@ i3lock \
 	--verifcolor=00000000 \
 	--wrongcolor=00000000 \
 \
-	--indpos="20+r:h-r-20" \
-	--timepos="w-25:h-55" \
-	--datepos="tx:ty+30" \
+	 --indpos="x+20+r:y+h-r-20" \
+	 --timepos="x+w-25:y+h-55" \
+	 --datepos="tx:ty+30" \
 \
-	--timecolor=66ff00ff \
-	--datecolor=ff22aaff \
+	--timecolor=DD5588FF \
+	--datecolor=FF22AAFF \
 \
-	--datestr="%A %m/%Y" \
+	--datestr="%A %d/%m/%Y" \
 \
 	--time-align 2 \
 	--date-align 2 \
