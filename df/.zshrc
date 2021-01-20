@@ -238,7 +238,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice lucid wait'!0b'
 zinit light zsh-users/zsh-syntax-highlighting
 
-zinit ice lucid wait'0a' \
+zinit ice lucid wait'0c' \
 	atload"bindkey '^[[A' history-substring-search-up" \
 	atload"bindkey '^[[B' history-substring-search-down"
 zinit light zsh-users/zsh-history-substring-search
