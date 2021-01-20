@@ -57,6 +57,7 @@ _prompt_git() {
 	local git_status="$(git --no-optional-locks status --untracked-files='no' --porcelain)"
 	echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
 	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
+	echo "$git_status" | grep -E "^\ *A" >/dev/null && echo -n "%F{yellow}+"
 
 	# Print s if stash used
 	[[ -n "$(git stash list)" ]] && echo -n "%F{yellow}s" || :
