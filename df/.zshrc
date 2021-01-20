@@ -25,14 +25,13 @@ _short_pwd() {
 	local pwd=("${(s:/:)PWD/#$HOME/~}")
 
 	# If more than one directory in path
-	if [ ${#pwd} -gt 1 ]; then
+	[[ ${#pwd} -gt 1 ]] && \
 		for (( i=1 ; i<$#pwd ; i++ )); do
-			# If element begins with a '.', keep one character more
+			# If element begins with a '.', keep two characters
 			[[ "$pwd[$i]" = .* ]] && \
 				pwd[$i]="${pwd[$i][1,2]}" || \
 				pwd[$i]="${pwd[$i][1]}"
 		done
-	fi
 
 	# Join the array back using "/"
 	echo "${(j:/:)pwd}"
@@ -40,8 +39,7 @@ _short_pwd() {
 
 # Don't display username and hostname if not over ssh
 _prompt_user_host() {
-	[ -n "${SSH_CLIENT}" ] && \
-		echo "%n@%m "
+	[[ -n "${SSH_CLIENT}" ]] && echo "%n@%m " || :
 }
 
 # Git status in prompt
@@ -51,7 +49,7 @@ _prompt_git() {
 
 	# Print branch (shorten if over 14 chars long)
 	local git_branch="$(git branch --show-current)"
-	[ "${#git_branch}" -gt 24 ] && \
+	[[ "${#git_branch}" -gt 24 ]] && \
 		git_branch="${git_branch:0:21}..."
 	echo -n " ${git_branch:-no branch}"
 
@@ -61,11 +59,11 @@ _prompt_git() {
 	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
 
 	# Print s if stash used
-	[ -n "$(git stash list)" ] && echo -n "%F{yellow}s"
+	[[ -n "$(git stash list)" ]] && echo -n "%F{yellow}s" || :
 }
 
 # Set prompt
-local path_color="green"; [ $UID -eq 0 ] && path_color="red" # Path color based on priviledges
+local path_color="green"; [[ $UID -eq 0 ]] && path_color="red" # Path color based on priviledges
 PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f )%(!.#.>) '
 
 # ===============
@@ -107,12 +105,11 @@ compinit	# Initialize completion
 
 # Change cursor shape based on insertion mode
 function zle-keymap-select {
-	if [ ${KEYMAP} = vicmd ] || [ $1 = 'block' ]; then
-		echo -ne '\e[1 q'
-	elif [ ${KEYMAP} = main ] || [ ${KEYMAP} = viins ] || \
-		[ ${KEYMAP} = '' ] || [ $1 = 'beam' ]; then
-		echo -ne '\e[5 q'
-	fi
+	{ [[ ${KEYMAP} = vicmd ]] || [[ $1 = 'block' ]] } && \
+		echo -ne '\e[1 q' || \
+	{ [[ ${KEYMAP} = main ]] || [[ ${KEYMAP} = viins ]] || \
+		[[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]] } && \
+		echo -ne '\e[5 q' || :
 }
 zle -N zle-keymap-select # Set widget
 
