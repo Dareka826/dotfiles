@@ -12,10 +12,6 @@ setopt HIST_IGNORE_ALL_DUPS		# Remove older duplicates
 setopt HIST_IGNORE_SPACE		# Remove lines that start with a space
 setopt HIST_VERIFY				# Confirm after history substitution
 
-# Vim keys
-bindkey -v
-export KEYTIMEOUT=1
-
 # ==========
 # = Prompt =
 # ==========
@@ -75,6 +71,10 @@ PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?..
 # ===============
 # = Keybindings =
 # ===============
+
+# Vim keys
+bindkey -v
+export KEYTIMEOUT=1
 
 # History search
 bindkey '^R' history-incremental-pattern-search-backward
