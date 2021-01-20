@@ -99,12 +99,14 @@ zstyle ':completion:*' menu select			# Use menu select unconditionally
 #zstyle ':completion:*' rehash true			# Update hash every call
 zstyle ':completion:*' matcher-list \
 	'm:{a-zA-Z}={A-Za-z}' \
-	'r:|=*' 'l:|=* r:|=*' # Match specification
+	'r:|=*' 'l:|=* r:|=*'					# Match specification
 zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
 setopt COMPLETE_ALIASES
-compinit	# Initialize completion
+compinit									# Initialize completion
 
-### Cursor shape
+# ================
+# = Cursor shape =
+# ================
 
 # Change cursor shape based on insertion mode
 function zle-keymap-select {
@@ -117,9 +119,7 @@ function zle-keymap-select {
 zle -N zle-keymap-select # Set widget
 
 # Line init widget sets cursor to beam
-zle-line-init() {
-	echo -ne "\e[5 q"
-}
+zle-line-init() { echo -ne "\e[5 q" }
 zle -N zle-line-init # Set widget
 
 # =======================
