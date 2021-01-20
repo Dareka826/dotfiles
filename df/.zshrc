@@ -1,20 +1,8 @@
 # Rin's .zshrc
 
-### Plugins
-source ~/.antigen.zsh
-
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle MichaelAquilina/zsh-you-should-use
-
-antigen apply
-
-# Zsh history substring search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-### History
+# ===========
+# = History =
+# ===========
 
 HISTFILE=~/.zsh_history			# History file
 HISTSIZE=10000					# Max lines in history file
@@ -28,8 +16,10 @@ setopt HIST_VERIFY				# Confirm after history substitution
 bindkey -v
 export KEYTIMEOUT=1
 
-### Prompt
-#
+# ==========
+# = Prompt =
+# ==========
+
 setopt PROMPT_SUBST	# Enable substitution in prompt
 
 # Shorten current path
@@ -82,7 +72,9 @@ _prompt_git() {
 local path_color="green"; [ $UID -eq 0 ] && path_color="red" # Path color based on priviledges
 PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f )%(!.#.>) '
 
-### Keybindings
+# ===============
+# = Keybindings =
+# ===============
 
 # History search
 bindkey '^R' history-incremental-pattern-search-backward
@@ -96,7 +88,9 @@ bindkey '^[[F' end-of-line			# End
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^v' edit-command-line
 
-### Completion
+# ==============
+# = Completion =
+# ==============
 
 autoload -U compinit
 zmodload zsh/complist
@@ -128,7 +122,9 @@ zle-line-init() {
 }
 zle -N zle-line-init # Set widget
 
-### Aliases & Functions
+# =======================
+# = Aliases & Functions =
+# =======================
 
 # ls -> exa
 alias ls="exa -F"
@@ -200,4 +196,24 @@ _gnu_time() {
 	/usr/bin/time -f"%e real\t%U user\t%S sys" "$@"
 }
 alias time="_gnu_time" # Override time keyword
+
+# ===========
+# = Plugins =
+# ===========
+
+source ~/.zinit/bin/zinit.zsh
+
+zinit ice lucid wait'!0c' atload'_zsh_autosuggest_start'
+zinit light zsh-users/zsh-autosuggestions
+
+zinit ice lucid wait'!0b'
+zinit light zsh-users/zsh-syntax-highlighting
+
+zinit ice lucid wait'0a' \
+	atload"bindkey '^[[A' history-substring-search-up" \
+	atload"bindkey '^[[B' history-substring-search-down"
+zinit light zsh-users/zsh-history-substring-search
+
+zinit ice lucid wait'0a'
+zinit light MichaelAquilina/zsh-you-should-use
 

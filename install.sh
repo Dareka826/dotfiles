@@ -2,7 +2,8 @@
 
 # Zsh
 cp -i df/.zshrc ~/
-curl -L git.io/antigen > ~/.antigen.zsh
+mkdir ~/.zinit
+git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
 
 # Vim
 cp -i df/.vimrc ~/
