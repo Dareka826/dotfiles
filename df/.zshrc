@@ -74,13 +74,16 @@ PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?..
 bindkey -v
 export KEYTIMEOUT=1
 
-# History search
-bindkey '^R' history-incremental-pattern-search-backward
-# Line editor keys
-bindkey "^?" backward-delete-char	# Backspace
-bindkey '^[[3~' delete-char			# Delete
-bindkey '^[[H' beginning-of-line	# Home
-bindkey '^[[F' end-of-line			# End
+bindkey '^R' history-incremental-pattern-search-backward	# History search
+bindkey '^[[D' backward-char								# Left
+bindkey '^[[C' forward-char									# Right
+bindkey "^?" backward-delete-char							# Backspace
+bindkey '^[[3~' delete-char									# Delete
+bindkey '^[[H' beginning-of-line							# Home
+bindkey '^[[F' end-of-line									# End
+bindkey '^[[Z' reverse-menu-complete						# Shift-Tab
+bindkey '^[[5~' beginning-of-buffer-or-history				# PageUp
+bindkey '^[[6~' end-of-buffer-or-history					# PageDown
 
 # Edit line in vim buffer
 autoload edit-command-line; zle -N edit-command-line
