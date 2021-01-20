@@ -197,11 +197,31 @@ alias trfs="taffy --rename-fs \"%R - %T\""
 # Xournal++ different system theme
 alias xournalpp="XDG_CONFIG_HOME=/home/$USER/.xournalpp/theme /usr/bin/xournalpp"
 
-# Time program
-_gnu_time() {
-	/usr/bin/time -f"%e real\t%U user\t%S sys" "$@"
+# Time in nanoseconds
+# $1 = Command to be run
+# $2 = How many times to take the average from (default: 1000)
+nstime() {
+	[[ -z "$1" ]] && return 1 # Exit if no command
+
+	# Display short help
+	[[ "$1" = "-h" ]] && echo "$0 cmd [repeat_num]" && return
+
+	local AMOUNT=1000
+	[[ -n "$2" ]] && AMOUNT=$2 # Set AMOUNT to $2 if non empty
+
+	echo "$AMOUNT x $1" # Print what is being measured
+	local TIME_AVG=0 TS # Define variables
+
+	repeat $AMOUNT; do
+		TS=$(date +%s%N) # Time start
+		eval "$1" >/dev/null 2>&1 # Run $1 with no output
+		(( TIME_AVG+=($(date +%s%N) - TS) )) # Add measured time to TIME_AVG
+	done
+	(( TIME_AVG/=AMOUNT )) # Calculate the average
+
+	# Display output
+	echo "$0 $TIME_AVG ns ~= $((TIME_AVG / 1000000)) ms"
 }
-alias time="_gnu_time" # Override time keyword
 
 # ===========
 # = Plugins =
