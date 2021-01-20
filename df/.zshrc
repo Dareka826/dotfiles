@@ -64,7 +64,7 @@ _prompt_git() {
 
 # Set prompt
 local path_color="green"; [[ $UID -eq 0 ]] && path_color="red" # Path color based on priviledges
-PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f )%(!.#.>) '
+PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f)%(!.#.>) '
 
 # ===============
 # = Keybindings =
