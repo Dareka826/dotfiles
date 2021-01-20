@@ -10,8 +10,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'baskerville/vim-sxhkdrc'
-Plugin 'mzlogin/vim-smali'
-Plugin 'rubixninja314/vim-mcfunction'
+"Plugin 'mzlogin/vim-smali'
+"Plugin 'rubixninja314/vim-mcfunction'
 Plugin 'ap/vim-css-color'
 
 call vundle#end()
@@ -27,8 +27,8 @@ let mapleader=" "
 
 " colorscheme inkpot
 colorscheme molokai
-highlight Normal ctermbg=NONE
-highlight LineNr ctermbg=NONE
+"highlight Normal ctermbg=NONE
+"highlight LineNr ctermbg=NONE
 
 "set t_Co=256
 let g:airline_theme='violet'
@@ -57,5 +57,4 @@ inoremap <Left> <Nop>
 vnoremap <Right> <Nop>
 vnoremap <Left> <Nop>
 inoremap <Right> <Nop>
-" B-A-<Start>
 
