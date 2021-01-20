@@ -138,35 +138,41 @@ alias rm="rm -i"
 alias mv="mv -i"
 
 # Directory aliases
-alias ce="cd /mnt/drive_e"
-alias cm="cd /mnt/drive_e/Music"
-alias ct="cd /mnt/drive_e/_T"
-alias cc="cd ~/.config"
-alias cb="cd ~/.local/bin"
-alias cr="cd /mnt/drive_e/repos"
-alias ca="cd /mnt/drive_e/a"
-alias cs="cd /mnt/drive_e/src"
-alias cg="cd /mnt/drive_e/Games"
+alias  ce="cd /mnt/drive_e"
+alias  cm="cd /mnt/drive_e/Music"
+alias  ct="cd /mnt/drive_e/_T"
+alias  cc="cd ~/.config"
+alias  cb="cd ~/.local/bin"
+alias  cr="cd /mnt/drive_e/repos"
+alias  ca="cd /mnt/drive_e/a"
+alias  cs="cd /mnt/drive_e/src"
+alias  cg="cd /mnt/drive_e/Games"
 alias csc="cd /mnt/drive_e/_school"
 
 # Git aliases
-alias  g="git"
-alias gs="git status"
-alias gc="git commit"
-alias ga="git add"
-alias gl="git log"
-alias gp="git push"
+alias   g="git"
+alias  gs="git status"
+alias  gc="git commit"
+alias  ga="git add"
+alias gap="git add -p"
+alias  gd="git diff"
+alias  gl="git log"
+alias gco="git checkout"
+alias  gp="git pull"
+alias gpu="git push"
 
 # Aliases
-alias clo="curl -L -O"
+alias clo="curl -LO"
 alias ytd="youtube-dl --embed-thumbnail"
 alias ytdx="youtube-dl -x"
 alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
 alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
+
 # Quick vim and ranger shortcuts
 alias v="nvim"
 alias r="ranger"
+
 # Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
 
