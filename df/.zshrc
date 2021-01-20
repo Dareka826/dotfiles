@@ -54,7 +54,8 @@ _prompt_git() {
 	echo -n " ${git_branch:-no branch}"
 
 	# Print + if modified/added, print - if deleted
-	local git_status="$(git --no-optional-locks status --untracked-files='no' --porcelain)"
+	local git_status="$(git --no-optional-locks status --porcelain)"
+	echo "$git_status" | grep -E "^\ *\?" >/dev/null && echo -n "%F{15}?"
 	echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
 	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
 	echo "$git_status" | grep -E "^\ *A" >/dev/null && echo -n "%F{yellow}+"
