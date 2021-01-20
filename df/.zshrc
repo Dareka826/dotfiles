@@ -1,39 +1,143 @@
 # Rin's .zshrc
-export EDITOR=nvim
 
-# Antigen stuff
+### Plugins
 source ~/.antigen.zsh
-_ANTIGEN_WARN_DUPLICATES=false
-
-# TODO: remove oh-my-zsh
-antigen use oh-my-zsh
-CASE_SENSITIVE="false"
 
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle MichaelAquilina/zsh-you-should-use
 
-antigen theme fishy
 antigen apply
 
+# Zsh history substring search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+### History
+
+HISTFILE=~/.zsh_history			# History file
+HISTSIZE=10000					# Max lines in history file
+SAVEHIST=$HISTSIZE				# Max history lines appended by a single shell
+setopt INC_APPEND_HISTORY		# Don't wait for exit to write history
+setopt HIST_IGNORE_ALL_DUPS		# Remove older duplicates
+setopt HIST_IGNORE_SPACE		# Remove lines that start with a space
+setopt HIST_VERIFY				# Confirm after history substitution
+
+# Vim keys
 bindkey -v
+export KEYTIMEOUT=1
 
-# Path variable
-export PATH=$PATH:~/.local/bin:~/go/bin
+### Prompt
+#
+setopt PROMPT_SUBST	# Enable substitution in prompt
 
-# Functions
-get-pgp-key() { sudo pacman-key --recv-keys $1 }
-file_perms() { chmod a-x,a=rwX,og-w -R * }
+# Shorten current path
+_short_pwd() {
+	# Replace user's home with a '~', split path by '/'
+	# and put it all in an array
+	local pwd=("${(s:/:)PWD/#$HOME/~}")
 
-# Aliases
-alias clo="curl -L -O"
-alias ytd="youtube-dl --embed-thumbnail"
-alias ytdx="youtube-dl -x"
-alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
-alias mpva="mpv --video=no"
+	# If more than one directory in path
+	if [ ${#pwd} -gt 1 ]; then
+		for (( i=1 ; i<$#pwd ; i++ )); do
+			# If element begins with a '.', keep one character more
+			[[ "$pwd[$i]" = .* ]] && \
+				pwd[$i]="${pwd[$i][1,2]}" || \
+				pwd[$i]="${pwd[$i][1]}"
+		done
+	fi
 
-# Confirm rm and mv
+	# Join the array back using "/"
+	echo "${(j:/:)pwd}"
+}
+
+# Don't display username and hostname if not over ssh
+_prompt_user_host() {
+	[ -n "${SSH_CLIENT}" ] && \
+		echo "%n@%m "
+}
+
+# Git status in prompt
+_prompt_git() {
+	# Print nothing and return if not in a working tree
+	! git rev-parse --is-inside-work-tree >/dev/null 2>&1 && return
+
+	# Print branch (shorten if over 14 chars long)
+	local git_branch="$(git branch --show-current)"
+	[ "${#git_branch}" -gt 24 ] && \
+		git_branch="${git_branch:0:21}..."
+	echo -n " ${git_branch:-no branch}"
+
+	# Print + if modified/added, print - if deleted
+	local git_status="$(git --no-optional-locks status --untracked-files='no' --porcelain)"
+	echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
+	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
+
+	# Print s if stash used
+	[ -n "$(git stash list)" ] && echo -n "%F{yellow}s"
+}
+
+# Set prompt
+local path_color="green"; [ $UID -eq 0 ] && path_color="red" # Path color based on priviledges
+PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f )%(!.#.>) '
+
+### Keybindings
+
+# History search
+bindkey '^R' history-incremental-pattern-search-backward
+# Line editor keys
+bindkey "^?" backward-delete-char	# Backspace
+bindkey '^[[3~' delete-char			# Delete
+bindkey '^[[H' beginning-of-line	# Home
+bindkey '^[[F' end-of-line			# End
+
+# Edit line in vim buffer
+autoload edit-command-line; zle -N edit-command-line
+bindkey -M vicmd '^v' edit-command-line
+
+### Completion
+
+autoload -U compinit
+zmodload zsh/complist
+zstyle ':completion:*' menu select			# Use menu select unconditionally
+#zstyle ':completion:*' rehash true			# Update hash every call
+zstyle ':completion:*' matcher-list \
+	'm:{a-zA-Z}={A-Za-z}' \
+	'r:|=*' 'l:|=* r:|=*' # Match specification
+zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
+setopt COMPLETE_ALIASES
+compinit	# Initialize completion
+
+### Cursor shape
+
+# Change cursor shape based on insertion mode
+function zle-keymap-select {
+	if [ ${KEYMAP} = vicmd ] || [ $1 = 'block' ]; then
+		echo -ne '\e[1 q'
+	elif [ ${KEYMAP} = main ] || [ ${KEYMAP} = viins ] || \
+		[ ${KEYMAP} = '' ] || [ $1 = 'beam' ]; then
+		echo -ne '\e[5 q'
+	fi
+}
+zle -N zle-keymap-select # Set widget
+
+# Line init widget sets cursor to beam
+zle-line-init() {
+	echo -ne "\e[5 q"
+}
+zle -N zle-line-init # Set widget
+
+### Aliases & Functions
+
+# ls -> exa
+alias ls="exa -F"
+alias la="exa -aF"
+alias ll="exa -lF"
+alias  l="exa -halF"
+
+# Mkdir shortcut, rm and mv confirmation
+alias md="mkdir -p"
 alias rm="rm -i"
 alias mv="mv -i"
 
@@ -49,43 +153,51 @@ alias cs="cd /mnt/drive_e/src"
 alias cg="cd /mnt/drive_e/Games"
 alias csc="cd /mnt/drive_e/_school"
 
+# Git aliases
+alias  g="git"
+alias gs="git status"
+alias gc="git commit"
+alias ga="git add"
+alias gl="git log"
+alias gp="git push"
+
+# Aliases
+alias clo="curl -L -O"
+alias ytd="youtube-dl --embed-thumbnail"
+alias ytdx="youtube-dl -x"
+alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
+alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
-
-# ls -> exa
-alias ls="exa -F"
-alias ll="exa -lF"
-alias l="exa -halF"
-alias la="exa -aF"
-
-# Music tools
-otr() {
-	for o in *.opus; do taffy --rename-fs "%N. %R - %T" "$o"; done
-}
-
-cto() {
-	for f in $@; do ffmpeg -i "$f" -c:a libopus -b:a 128k "$(echo "$f" | rev | cut -d'.' -f2- | rev).opus"; done
-}
-
-alias trfs="taffy --rename-fs \"%R - %T\""
-
-# Xournal++ theme
-xournalpp() {
-	XDG_CONFIG_HOME=/home/$USER/.xournalpp/theme /usr/bin/xournalpp $@
-}
-
-# Colored man
-man() {
-	LESS_TERMCAP_md=$'\e[34m' \
-	LESS_TERMCAP_me=$'\e[0m' \
-	LESS_TERMCAP_se=$'\e[0m' \
-	LESS_TERMCAP_so=$'\e[0;41m' \
-	LESS_TERMCAP_ue=$'\e[0m' \
-	LESS_TERMCAP_us=$'\e[0;36m' \
-	command man "$@"
-}
-
+# Quick vim and ranger shortcuts
 alias v="nvim"
 alias r="ranger"
-
+# Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
+
+# Rename all opus files in directory according to their metadata
+otr() {
+	for o in *.opus; do
+		taffy --rename-fs "%N. %R - %T" "$o"
+	done
+}
+
+# Convert all files passed as arguments to opus
+cto() {
+	for f in "$@"; do
+		ffmpeg -i "$f" -c:a libopus -b:a 128k \
+			"$(echo "$f" | rev | cut -d'.' -f2- | rev).opus"
+	done
+}
+
+# Rename file with taffy according to metadata
+alias trfs="taffy --rename-fs \"%R - %T\""
+
+# Xournal++ different system theme
+alias xournalpp="XDG_CONFIG_HOME=/home/$USER/.xournalpp/theme /usr/bin/xournalpp"
+
+# Time program
+_gnu_time() {
+	/usr/bin/time -f"%e real\t%U user\t%S sys" "$@"
+}
+alias time="_gnu_time" # Override time keyword
 
