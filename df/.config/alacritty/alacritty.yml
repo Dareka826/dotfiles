@@ -83,9 +83,9 @@ window:
   # Window class (Linux/BSD only):
   class:
     # Application instance name
-    instance: Alacritty
+    #instance: Alacritty
     # General application class
-    #general: Alacritty
+    general: Alacritty
 
   # GTK theme variant (Linux/BSD only)
   #
