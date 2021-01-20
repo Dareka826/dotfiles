@@ -1,2 +1,4 @@
-#! /bin/sh
+#!/bin/sh
+
 chromium --app='https://mahjongsoul.game.yo-star.com/' --new-window &
+

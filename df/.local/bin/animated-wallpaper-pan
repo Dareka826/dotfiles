@@ -1,4 +1,5 @@
-#! /bin/sh
+#!/bin/sh
 
 xwinwrap -ov -ni -fs -- mpv -wid WID -keepaspect=yes --loop --quiet --no-audio --panscan 1 $1 &
 echo $! > ~/Wallpapers/.anipid
+

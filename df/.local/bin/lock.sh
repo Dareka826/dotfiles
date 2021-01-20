@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 i3lock \
 	-i ~/Wallpapers/lockscreen2.png \

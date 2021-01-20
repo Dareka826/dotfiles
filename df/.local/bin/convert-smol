@@ -1,2 +1,4 @@
 #!/bin/sh
+
 ffmpeg -i "$1" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$(echo "$1" | rev | cut -d. -f2- | rev)_smol.mkv"
+
