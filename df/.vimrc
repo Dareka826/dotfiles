@@ -9,9 +9,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'gyim/vim-boxdraw'
 Plugin 'baskerville/vim-sxhkdrc'
-"Plugin 'mzlogin/vim-smali'
-"Plugin 'rubixninja314/vim-mcfunction'
 Plugin 'ap/vim-css-color'
 
 call vundle#end()
