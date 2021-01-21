@@ -99,9 +99,9 @@ bindkey -M vicmd '^v' edit-command-line
 function zle-keymap-select {
 	{ [[ ${KEYMAP} = vicmd ]] || [[ $1 = 'block' ]] } && \
 		echo -ne '\e[1 q' || \
-	{ [[ ${KEYMAP} = main ]] || [[ ${KEYMAP} = viins ]] || \
+	{ { [[ ${KEYMAP} = main ]] || [[ ${KEYMAP} = viins ]] || \
 		[[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]] } && \
-		echo -ne '\e[5 q' || :
+		echo -ne '\e[5 q' || : }
 }
 zle -N zle-keymap-select # Set widget
 
