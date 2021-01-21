@@ -91,21 +91,6 @@ bindkey '^[[6~' end-of-buffer-or-history					# PageDown
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^v' edit-command-line
 
-# ==============
-# = Completion =
-# ==============
-
-autoload -U compinit
-zmodload zsh/complist
-zstyle ':completion:*' menu select			# Use menu select unconditionally
-#zstyle ':completion:*' rehash true			# Update hash every call
-zstyle ':completion:*' matcher-list \
-	'm:{a-zA-Z}={A-Za-z}' \
-	'r:|=*' 'l:|=* r:|=*'					# Match specification
-zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
-setopt COMPLETE_ALIASES
-compinit									# Initialize completion
-
 # ================
 # = Cursor shape =
 # ================
@@ -245,6 +230,21 @@ zinit light zsh-users/zsh-history-substring-search
 
 zinit ice lucid wait'0a'
 zinit light MichaelAquilina/zsh-you-should-use
+
+# ==============
+# = Completion =
+# ==============
+
+autoload -U compinit
+zmodload zsh/complist
+zstyle ':completion:*' menu select			# Use menu select unconditionally
+#zstyle ':completion:*' rehash true			# Update hash every call
+zstyle ':completion:*' matcher-list \
+	'm:{a-zA-Z}={A-Za-z}' \
+	'r:|=*' 'l:|=* r:|=*'					# Match specification
+zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
+setopt COMPLETE_ALIASES
+compinit									# Initialize completion
 
 # ===========
 # = Compile =
