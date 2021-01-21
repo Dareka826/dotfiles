@@ -135,6 +135,8 @@ alias  ca="cd /mnt/drive_e/a"
 alias  cs="cd /mnt/drive_e/src"
 alias  cg="cd /mnt/drive_e/Games"
 alias csc="cd /mnt/drive_e/_school"
+alias  cv="cd /mnt/drive_e/_v"
+alias cvt="cd /mnt/drive_e/_v/vt"
 
 # Git aliases
 alias   g="git"
