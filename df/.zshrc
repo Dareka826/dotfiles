@@ -233,6 +233,21 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice lucid wait'0a'
 zinit light MichaelAquilina/zsh-you-should-use
 
+# ========================
+# = Dynamic window title =
+# ========================
+
+_change_title_to_pwd() {
+	printf "\033]0;%s\a" "zsh: ${PWD/#$HOME/~}"
+}
+
+_change_title_to_program() {
+	printf "\033]0;%s\a" "$1"
+}
+
+precmd_functions+=(_change_title_to_pwd)
+preexec_functions+=(_change_title_to_program)
+
 # ==============
 # = Completion =
 # ==============
