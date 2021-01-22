@@ -213,6 +213,22 @@ nstime() {
 	echo "$0 $TIME_AVG ns ~= $((TIME_AVG / 1000000)) ms"
 }
 
+# Compile and run (g++)
+function g+r() {
+	tmpdir=$(mktemp -d)
+	g++ "$@" -o $tmpdir/a.out && \
+	$tmpdir/a.out
+	rm -rf $tmpdir
+}
+
+# Compile and run (gc)
+function gcr() {
+	tmpdir=$(mktemp -d)
+	gcc "$@" -o $tmpdir/a.out && \
+	$tmpdir/a.out
+	rm -rf $tmpdir
+}
+
 # ===========
 # = Plugins =
 # ===========
