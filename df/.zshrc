@@ -55,13 +55,13 @@ _prompt_git() {
 
 	# Print + if modified/added, print - if deleted
 	local git_status="$(git --no-optional-locks status --porcelain)"
-	echo "$git_status" | grep -E "^\ *\?" >/dev/null && echo -n "%F{15}?"
+	echo "$git_status" | grep -E "^\ *\?" >/dev/null && echo -n "%F{cyan}?"
 	echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
 	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
 	echo "$git_status" | grep -E "^\ *A" >/dev/null && echo -n "%F{yellow}+"
 
-	# Print s if stash used
-	[[ -n "$(git stash list)" ]] && echo -n "%F{yellow}s" || :
+	# Print * if stash in use
+	[[ -n "$(git stash list)" ]] && echo -n "%F{yellow}*" || :
 }
 
 # Set prompt
