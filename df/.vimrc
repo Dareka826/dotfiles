@@ -47,6 +47,11 @@ set cc=80
 set ignorecase
 set splitbelow splitright
 
+" Cursor shape
+let &t_EI = "\<Esc>[2 q" " Non-blinking block
+let &t_SI = "\<Esc>[6 q" " Non-blinking beam
+let &t_SR = "\<Esc>[4 q" " Non-blinking underscore
+
 " Disable arrow keys
 inoremap <Up> <Nop>
 vnoremap <Up> <Nop>
