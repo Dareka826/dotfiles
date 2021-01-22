@@ -235,7 +235,7 @@ function gcr() {
 
 source ~/.zinit/bin/zinit.zsh
 
-zinit ice lucid wait'0c' atload'_zsh_autosuggest_start'
+zinit ice lucid wait'!0c' atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 zinit ice lucid wait'!0b'
