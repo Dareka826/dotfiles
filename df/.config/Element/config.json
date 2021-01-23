@@ -1,0 +1,27 @@
+{
+	"settingDefaults": {
+		"custom_themes": [
+			{
+				"name": "Rin",
+				"is_dark": true,
+				"colors": {
+					"accent-color": "#6600FF",
+					"primary-color": "#FF6633",
+					"warning-color": "#EE4444",
+
+					"sidebar-color": "#111111",
+					"roomlist-background-color": "#222222",
+					"roomlist-text-color": "#FFFFFF",
+					"roomlist-text-secondary-color": "#BBBBBB",
+					"roomlist-highlights-color": "#333333",
+					"roomlist-separator-color": "#111111",
+
+					"timeline-background-color": "#111111",
+					"timeline-text-color": "#FFFFFF",
+					"timeline-text-secondary-color": "#BBBBBB",
+					"timeline-highlights-color": "#333333"
+				}
+			}
+		]
+	}
+}
