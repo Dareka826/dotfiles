@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 [ "$TERM" = "linux" ] && \
 	printf '%b' '\e]P0201610

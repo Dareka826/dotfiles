@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Randomly execute a file with .theme.sh extension
 
 cd ~/themes

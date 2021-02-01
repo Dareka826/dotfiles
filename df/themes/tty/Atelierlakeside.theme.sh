@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 printf '%b' '\e]P0161B1D
 			 \e]P85A7B8C
