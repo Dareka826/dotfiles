@@ -14,3 +14,18 @@ EE99BB [sakura]
 DD5588 [deep pink]
 22EE88 [turqoise]
 FF22AA [cold pink]
+
+# Randomized colors from Agave
+
+{
+976FED [Soft purple]
+ED976F [Soft orange]
+6FED97 [Soft green]
+}
+
+{
+9142EA [Soft purple]
+EB9142 [Soft orange]
+42EB91 [Soft mint]
+}
+
