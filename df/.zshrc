@@ -162,7 +162,7 @@ alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
 
 # Quick vim and ranger shortcuts
-alias v="nvim"
+alias -g v="nvim"
 alias r="ranger"
 
 # Dvtm change default modifier to ctrl+a
