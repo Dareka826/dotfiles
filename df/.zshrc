@@ -175,6 +175,12 @@ alias r="ranger"
 # Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
 
+# Download vods
+dvod() {
+	[ $# = "0" ] && echo "dvod link out_filename" || \
+	streamlink "$1" "best" -o "$2"
+}
+
 # Rename all opus files in directory according to their metadata
 otr() {
 	for o in *.opus; do
