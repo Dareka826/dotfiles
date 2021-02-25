@@ -250,18 +250,18 @@ function gcr() {
 
 source ~/.zinit/bin/zinit.zsh
 
-zinit ice lucid wait'!0d' atload'_zsh_autosuggest_start'
+zinit ice lucid wait'!0c' atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-zinit ice lucid wait'!0b'
+zinit ice lucid wait'!0a'
 zinit light zsh-users/zsh-syntax-highlighting
 
-zinit ice lucid wait'0c' \
+zinit ice lucid wait'0b' \
 	atload"bindkey '^[[A' history-substring-search-up" \
 	atload"bindkey '^[[B' history-substring-search-down"
 zinit light zsh-users/zsh-history-substring-search
 
-zinit ice lucid wait'0a'
+zinit ice lucid wait'1'
 zinit light MichaelAquilina/zsh-you-should-use
 
 # ========================
