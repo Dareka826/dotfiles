@@ -33,10 +33,11 @@ floating_modifier Mod1
 
 # Terminal
 bindsym Mod1+Return exec alacritty
+bindsym Mod1+Shift+Return exec tabbed -c alacritty --embed
 
 # Run dialog
 bindsym Mod1+d exec dmenu_run -i
-bindsym Mod1+m exec ~/.local/bin/select-window
+bindsym Mod1+m exec /mnt/drive_e/repos/_testting_window_switching/dswitcher/dswitcher
 bindsym Mod1+g exec gmrun
 
 # Screenshot
@@ -64,7 +65,7 @@ bindsym XF86AudioPrev exec cmus-remote -r
 # Volume control
 bindsym Ctrl+Up exec --no-startup-id pamixer -i 5 --allow-boost
 bindsym Ctrl+Down exec --no-startup-id pamixer -d 5 --allow-boost
-bindsym Ctrl+Shift+Return exec --no-startup-id pamixer -t --allow-boost
+bindsym Ctrl+Shift+M exec --no-startup-id pamixer -t --allow-boost
 
 # Change focus
 bindsym Mod1+Left focus left
