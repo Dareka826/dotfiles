@@ -10,7 +10,7 @@ for i in $(seq 1 1 30); do
 done
 
 # Restore custom workspaces
-for i in アニメ D; do
+for i in アニメ D MC tmp CTV; do
 	i3-resurrect restore -w $i --layout-only \
 		&& sleep $DELAY # Delay only if workspace was found
 done

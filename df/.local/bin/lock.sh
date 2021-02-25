@@ -48,5 +48,6 @@ i3lock \
 	--wrongtext="" \
 	--noinputtext="" \
 	--locktext="" \
-	--lockfailedtext=""
+	--lockfailedtext="" || \
+	i3lock
 

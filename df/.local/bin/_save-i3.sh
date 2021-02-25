@@ -3,7 +3,7 @@
 # Clean & backup previous state
 pushd
 cd ~/.i3/i3-resurrect
-tar cf "../bkp_$(date "+%y-%d-%mT%H:%M:%S").tar" *
+tar cf "../bkp_$(date "+%Y-%m-%d_%H:%M:%S").tar" *
 
 rm ~/.i3/i3-resurrect/*
 popd
@@ -14,7 +14,7 @@ for i in $(seq 1 1 30); do
 done
 
 # Save named workspaces
-for i in アニメ D; do
+for i in アニメ D MC tmp CTV; do
 	i3-resurrect save -w $i --swallow=class,title --layout-only
 done
 
