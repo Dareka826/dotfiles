@@ -48,20 +48,20 @@ _prompt_git() {
 	! git rev-parse --is-inside-work-tree >/dev/null 2>&1 && return
 
 	# Print branch (shorten if over 14 chars long)
-	local git_branch="$(git branch --show-current)"
+	local git_branch="$(git branch --show-current 2>/dev/null)"
 	[[ "${#git_branch}" -gt 24 ]] && \
 		git_branch="${git_branch:0:21}..."
 	echo -n " ${git_branch:-no branch}"
 
 	# Print + if modified/added, print - if deleted
-	local git_status="$(git --no-optional-locks status --porcelain)"
+	local git_status="$(git --no-optional-locks status --porcelain 2>/dev/null)"
 	echo "$git_status" | grep -E "^\ *\?" >/dev/null && echo -n "%F{cyan}?"
 	echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
 	echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
 	echo "$git_status" | grep -E "^\ *A" >/dev/null && echo -n "%F{yellow}+"
 
 	# Print * if stash in use
-	[[ -n "$(git stash list)" ]] && echo -n "%F{yellow}*" || :
+	[[ -n "$(git stash list 2>/dev/null)" ]] && echo -n "%F{yellow}*" || :
 }
 
 # Set prompt
