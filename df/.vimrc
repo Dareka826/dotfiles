@@ -9,9 +9,11 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'mattn/emmet-vim'
 Plugin 'gyim/vim-boxdraw'
 Plugin 'baskerville/vim-sxhkdrc'
 Plugin 'ap/vim-css-color'
+Plugin 'ekalinin/Dockerfile.vim'
 
 call vundle#end()
 filetype plugin on
@@ -22,7 +24,10 @@ let g:ycm_confirm_extra_conf='false'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 
-let mapleader=" "
+let g:user_emmet_mode='n'
+let g:user_emmet_leader_key=','
+
+"let mapleader=" "
 
 " colorscheme inkpot
 colorscheme molokai
