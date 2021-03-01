@@ -63,9 +63,9 @@ bindsym XF86AudioNext exec cmus-remote -n
 bindsym XF86AudioPrev exec cmus-remote -r
 
 # Volume control
-bindsym Ctrl+Up exec --no-startup-id pamixer -i 5 --allow-boost
-bindsym Ctrl+Down exec --no-startup-id pamixer -d 5 --allow-boost
-bindsym Ctrl+Shift+M exec --no-startup-id pamixer -t --allow-boost
+bindsym Mod1+Ctrl+Up exec --no-startup-id pamixer -i 5 --allow-boost
+bindsym Mod1+Ctrl+Down exec --no-startup-id pamixer -d 5 --allow-boost
+bindsym Mod1+Shift+M exec --no-startup-id pamixer -t --allow-boost
 
 # Change focus
 bindsym Mod1+Left focus left
