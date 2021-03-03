@@ -121,10 +121,12 @@ zle -N zle-line-init # Set widget
 # =======================
 
 # ls -> exa
-alias ls="exa -F"
-alias la="exa -aF"
-alias ll="exa -lgF"
-alias  l="exa -halgF"
+alias  ls="exa -F"
+alias  la="exa -aF"
+alias  ll="exa -lgF"
+alias  lt="exa -s modified -F"
+alias llt="exa -halF -s modified"
+alias   l="exa -halgF"
 
 # Mkdir shortcut, rm and mv confirmation
 alias md="mkdir -p"
