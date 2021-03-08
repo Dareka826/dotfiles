@@ -9,6 +9,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'gyim/vim-boxdraw'
 Plugin 'baskerville/vim-sxhkdrc'
@@ -20,28 +22,31 @@ filetype plugin on
 
 syntax on
 
+" YCM configuration
 let g:ycm_confirm_extra_conf='false'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_completion=1
 
-let g:user_emmet_mode='n'
-let g:user_emmet_leader_key=','
+" Make emmet's ctrl-y only work in insert mode
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key='<C-y>'
 
-"let mapleader=" "
-
-" colorscheme inkpot
-colorscheme molokai
-"highlight Normal ctermbg=NONE
-"highlight LineNr ctermbg=NONE
-
-"set t_Co=256
+" Airline settings
 let g:airline_theme='violet'
 let g:airline_powerline_fonts = 0
+
+let g:fzf_layout={'down': '30%'}
+
+let mapleader=" "
+
+colorscheme molokai
 
 set encoding=utf-8
 set fileencodings=utf-8,sjis,euc-jp,default
 set number rnu
 set autoindent
+set incsearch
 set noerrorbells
 set tabstop=4
 set softtabstop=0 noexpandtab
@@ -66,4 +71,10 @@ inoremap <Left> <Nop>
 vnoremap <Right> <Nop>
 vnoremap <Left> <Nop>
 inoremap <Right> <Nop>
+
+" Clear highlighting after search
+nnoremap <leader><space> :noh<CR>
+
+" Ctrl-P for fzf
+nnoremap <C-p> :Files<CR>
 
