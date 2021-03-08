@@ -19,6 +19,12 @@ export IMAGE="sxiv"
 export PAGER="less"
 export WM="i3"
 
+# FZF
+export FZF_DEFAULT_OPTS="--preview-window=right:50%:sharp"
+
+# KVM
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+
 # Disable less history
 export LESSHISTFILE=-
 
