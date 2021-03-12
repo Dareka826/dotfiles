@@ -6,7 +6,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'neoclide/coc.nvim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'junegunn/fzf'
@@ -22,40 +22,38 @@ filetype plugin on
 
 syntax on
 
-" YCM configuration
-let g:ycm_confirm_extra_conf='false'
-let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
-let g:ycm_autoclose_preview_window_after_completion=1
-
 " Make emmet's ctrl-y only work in insert mode
 let g:user_emmet_mode='i'
 let g:user_emmet_leader_key='<C-y>'
 
 " Airline settings
 let g:airline_theme='violet'
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts=0
 
+" fzf settings
 let g:fzf_layout={'down': '30%'}
 
+" Set the leader to a space
 let mapleader=" "
 
+" Molokai colorscheme
 colorscheme molokai
 
-set encoding=utf-8
-set fileencodings=utf-8,sjis,euc-jp,default
-set number rnu
-set autoindent
-set incsearch
-set noerrorbells
-set tabstop=4
+set fileencodings=utf-8,sjis,euc-jp,default " Encodings EN,JP,default
+set number rnu " Show number lines and set them to relative
+set noerrorbells " Disable annoying error bells
+
+" Tabs and spaces
+set tabstop=4 shiftwidth=4
 set softtabstop=0 noexpandtab
-set shiftwidth=4
-set showcmd
-set cursorline
-set cc=80
-set ignorecase
-set splitbelow splitright
+set autoindent
+set list listchars=tab:>·,trail:-,nbsp:+
+
+set showcmd " Show incomplete commands
+set cursorline cc=80 " Cursor show line and color column 80
+set incsearch ignorecase " Search settings
+set splitbelow splitright " Split settings
+set hidden " Do not abandon unloaded buffers
 
 " Cursor shape
 let &t_EI = "\<Esc>[2 q" " Non-blinking block
@@ -77,4 +75,30 @@ nnoremap <leader><space> :noh<CR>
 
 " Ctrl-P for fzf
 nnoremap <C-p> :Files<CR>
+
+" Coc use TAB to move in the popup menu
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Coc bindings
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+"command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" Enable gdb integration
+packadd termdebug
+let g:termdebug_wide=1
 
