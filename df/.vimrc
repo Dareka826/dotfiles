@@ -1,24 +1,22 @@
 set nocompatible
-filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'neoclide/coc.nvim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'gyim/vim-boxdraw'
-Plugin 'baskerville/vim-sxhkdrc'
-Plugin 'ap/vim-css-color'
-Plugin 'ekalinin/Dockerfile.vim'
-
-call vundle#end()
-filetype plugin on
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-plug'
+"let g:polyglot_disabled = ['autoindent']
+"Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'mattn/emmet-vim'
+Plug 'gyim/vim-boxdraw'
+Plug 'baskerville/vim-sxhkdrc'
+Plug 'rubixninja314/vim-mcfunction'
+Plug 'ap/vim-css-color'
+Plug 'ekalinin/Dockerfile.vim'
+call plug#end()
+command! PU PlugUpdate | PlugUpgrade
 
 syntax on
 
