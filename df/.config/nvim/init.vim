@@ -1,6 +1,6 @@
 set nocompatible
 
-call plug#begin('~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 "let g:polyglot_disabled = ['autoindent']
 "Plug 'sheerun/vim-polyglot'

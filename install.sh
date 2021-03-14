@@ -5,24 +5,15 @@ cp -i df/.zshrc ~/
 mkdir ~/.zinit
 git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
 
-# Vim
-cp -i df/.vimrc ~/
-mkdir -p ~/.vim/colors
-curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -o ~/.vim/colors/molokai.vim
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-cp -i df/.vim/.ycm_extra_conf.py ~/.vim/
-
 # Neovim
-mkdir -p ~/.config/nvim
-ln -s ~/.vimrc ~/.config/nvim/init.vim
-ln -s ~/.vim/colors ~/.config/nvim/colors
+mkdir -p ~/.config/nvim/colors
+cp -i df/.config/nvim/init.vim ~/.config/nvim/init.vim
+curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim > ~/.config/nvim/colors/molokai.vim
+curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # X files
 cp -i df/.xinitrc ~/
 cp -i df/.Xresources ~/
-
-# Config
-cp -ri df/.config ~/
 
 # Wallpapers
 mkdir ~/Wallpapers
