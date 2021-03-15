@@ -94,7 +94,8 @@ nmap <silent> <leader>gd <Plug>(coc-definition)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
 
-"command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" Formatter in visual mode
+vnoremap <C-f> :Neoformat<CR>
 
 " Enable gdb integration
 packadd termdebug
