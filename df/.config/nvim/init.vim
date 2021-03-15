@@ -3,7 +3,7 @@ set nocompatible
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 "let g:polyglot_disabled = ['autoindent']
-"Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -15,10 +15,13 @@ Plug 'baskerville/vim-sxhkdrc'
 Plug 'rubixninja314/vim-mcfunction'
 Plug 'ap/vim-css-color'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'sbdchd/neoformat'
+Plug 'tomasr/molokai'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
-syntax on
+" Molokai colorscheme
+colorscheme molokai
 
 " Make emmet's ctrl-y only work in insert mode
 let g:user_emmet_mode='i'
@@ -33,9 +36,6 @@ let g:fzf_layout={'down': '30%'}
 
 " Set the leader to a space
 let mapleader=" "
-
-" Molokai colorscheme
-colorscheme molokai
 
 set fileencodings=utf-8,sjis,euc-jp,default " Encodings EN,JP,default
 set number rnu " Show number lines and set them to relative
