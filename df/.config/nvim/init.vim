@@ -2,7 +2,6 @@ set nocompatible
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
-"let g:polyglot_disabled = ['autoindent']
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim'
 Plug 'vim-airline/vim-airline'
@@ -16,6 +15,9 @@ Plug 'rubixninja314/vim-mcfunction'
 Plug 'ap/vim-css-color'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'sbdchd/neoformat'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'preservim/nerdtree'
 Plug 'tomasr/molokai'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
@@ -34,8 +36,24 @@ let g:airline_powerline_fonts=0
 " fzf settings
 let g:fzf_layout={'down': '30%'}
 
+" Gitgutter
+highlight GitGutterAdd    guifg=#22AA66 ctermfg=41
+highlight GitGutterChange guifg=#FF6600 ctermfg=202
+highlight GitGutterDelete guifg=#FF2255 ctermfg=197
+
 " Set the leader to a space
 let mapleader=" "
+
+" Quicker quit
+nnoremap <leader>q :q<CR>
+
+" Git Fugitive
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gf :diffget //2<CR>
+nnoremap <leader>gj :diffget //3<CR>
+
+" Nerdtree
+nnoremap <leader>gt :NERDTreeToggle<CR>
 
 set fileencodings=utf-8,sjis,euc-jp,default " Encodings EN,JP,default
 set number rnu " Show number lines and set them to relative
@@ -94,8 +112,16 @@ nmap <silent> <leader>gd <Plug>(coc-definition)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
 
-" Formatter in visual mode
+" Neoformat
 vnoremap <C-f> :Neoformat<CR>
+nnoremap <leader>gf :%Neoformat<CR>
+
+let g:neoformat_cpp_clangformat = {
+    \ 'exe': 'clang-format',
+    \ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
+\}
+let g:neoformat_enabled_cpp = ['clangformat']
+let g:neoformat_enabled_c = ['clangformat']
 
 " Enable gdb integration
 packadd termdebug
