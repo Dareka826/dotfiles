@@ -7,7 +7,7 @@ export SDL_IM_MODULE="fcitx"
 export XMODIFIERS="@im=fcitx"
 
 # Path
-export PATH=$PATH:~/.local/bin:~/go/bin
+export PATH=$PATH:~/.local/bin:~/go/bin:$(yarn global bin)
 
 # Default applications
 export EDITOR="nvim"
