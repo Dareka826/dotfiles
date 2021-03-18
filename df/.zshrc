@@ -174,16 +174,33 @@ alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
 alias info="info --vi-keys"
 
-# Quick vim and ranger shortcuts
+# Vim shortcuts
 alias -g v="nvim"
 alias vim="nvim"
+
+# Ranger use w3m when in yaft
+ranger_detect() {
+	if [[ "$TERM" = "yaft-256color" ]]; then
+		local TMPDIR=$(mktemp -d)
+
+		cp ~/.config/ranger/* $TMPDIR/
+		sed -i 's/ ueberzug$/ w3m/' $TMPDIR/rc.conf
+
+		ranger -r $TMPDIR
+
+		rm -rf $TMPDIR
+	else
+		ranger
+	fi
+}
+# Ranger shortcut
 alias r="ranger"
 
 # Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
 
 # Tmux yaft 256 colors
-[ "$TERM" = "yaft-256color" ] && \
+[[ "$TERM" = "yaft-256color" ]] && \
 	alias tmux="tmux -2"
 
 # Download vods
