@@ -32,6 +32,9 @@ let g:user_emmet_leader_key='<C-y>'
 " Airline settings
 let g:airline_theme='violet'
 let g:airline_powerline_fonts=0
+let g:airline#extensions#whitespace#skip_indent_check_ft = {
+	\ 'sh': ['mixed-indent-file']
+	\}
 
 " fzf settings
 let g:fzf_layout={'down': '30%'}
@@ -96,14 +99,14 @@ nnoremap <C-p> :Files<CR>
 
 " Coc use TAB to move in the popup menu
 inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<TAB>" :
+	\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
@@ -123,8 +126,8 @@ vnoremap <C-f> :Neoformat<CR>
 nnoremap <leader>gf :%Neoformat<CR>
 
 let g:neoformat_cpp_clangformat = {
-    \ 'exe': 'clang-format',
-    \ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
+	\ 'exe': 'clang-format',
+	\ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
 \}
 let g:neoformat_enabled_cpp = ['clangformat']
 let g:neoformat_enabled_c = ['clangformat']
