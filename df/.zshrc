@@ -133,6 +133,9 @@ alias md="mkdir -p"
 alias rm="rm -i"
 alias mv="mv -i"
 
+# Force remove
+alias rmforce="/usr/bin/rm -rf"
+
 # Directory aliases
 alias  ce="cd /mnt/drive_e"
 alias  cm="cd /mnt/drive_e/Music"
@@ -158,6 +161,7 @@ alias  gd="git diff"
 alias gds="git diff --staged"
 alias  gl="git log"
 alias gco="git checkout"
+alias  gb="git branch"
 alias  gp="git pull"
 alias gpu="git push"
 
@@ -168,13 +172,19 @@ alias ytdx="youtube-dl -x"
 alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
 alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
+alias info="info --vi-keys"
 
 # Quick vim and ranger shortcuts
 alias -g v="nvim"
+alias vim="nvim"
 alias r="ranger"
 
 # Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
+
+# Tmux yaft 256 colors
+[ "$TERM" = "yaft-256color" ] && \
+	alias tmux="tmux -2"
 
 # Download vods
 dvod() {
