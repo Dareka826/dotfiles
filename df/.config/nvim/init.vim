@@ -15,8 +15,9 @@ Plug 'rubixninja314/vim-mcfunction'
 Plug 'ap/vim-css-color'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'sbdchd/neoformat'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'preservim/nerdtree'
 Plug 'tomasr/molokai'
 call plug#end()
@@ -38,14 +39,22 @@ let g:airline#extensions#whitespace#skip_indent_check_ft = {
 
 " fzf settings
 let g:fzf_layout={'down': '30%'}
-
-" Gitgutter
-highlight GitGutterAdd    guifg=#22AA66 ctermfg=41
-highlight GitGutterChange guifg=#FF6600 ctermfg=202
-highlight GitGutterDelete guifg=#FF2255 ctermfg=197
+nnoremap <C-p> :Files<CR>
 
 " Set the leader to a space
 let mapleader=" "
+
+" Signify
+let g:signify_sign_change='~'
+let g:signify_sign_show_count=0
+
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
+nmap <leader>gy :SignifyToggleHighlight<CR>
+
+highlight SignifySignAdd    guifg=#22AA66 ctermfg=41
+highlight SignifySignChange guifg=#FF6600 ctermfg=202
+highlight SignifySignDelete guifg=#FF2255 ctermfg=197
 
 " Quicker quit
 nnoremap <leader>q :q!<CR>
@@ -93,9 +102,6 @@ inoremap <Right> <Nop>
 
 " Clear highlighting after search
 nnoremap <leader><space> :noh<CR>
-
-" Ctrl-P for fzf
-nnoremap <C-p> :Files<CR>
 
 " Coc use TAB to move in the popup menu
 inoremap <silent><expr> <TAB>
