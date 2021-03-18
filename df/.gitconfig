@@ -1,0 +1,8 @@
+[init]
+	defaultBranch = master
+[merge]
+	tool = vimdiff
+[mergetool "vimdiff"]
+	path = nvim
+[mergetool]
+	prompt = false
