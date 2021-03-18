@@ -176,7 +176,7 @@ alias info="info --vi-keys"
 
 # Vim shortcuts
 alias -g v="nvim"
-alias vim="nvim"
+alias  vim="nvim"
 
 # Ranger use w3m when in yaft
 ranger_detect() {
@@ -194,7 +194,7 @@ ranger_detect() {
 	fi
 }
 # Ranger shortcut
-alias r="ranger"
+alias r="ranger_detect"
 
 # Dvtm change default modifier to ctrl+a
 alias dvtm="dvtm -m ^a"
