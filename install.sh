@@ -15,17 +15,13 @@ curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --c
 cp -i df/.xinitrc ~/
 cp -i df/.Xresources ~/
 
-# Wallpapers
-mkdir ~/Wallpapers
-cp df/Wallpapers/* ~/Wallpapers
-
-# ARTIST: Mauve on pixiv, @MauveSR on twitter
-#  IMAGE: https://pixiv.net/artworks/71123408
-curl -L https://i.imgur.com/z4ffOWb.png -o ~/Wallpapers/71123408_p0.png
-
-# ARTIST: もぐもん on pixiv, @knkm_mgmn on twitter
-#  IMAGE: https://www.pixiv.net/artworks/83517721
-curl -L https://i.imgur.com/vGx6mrE.png -o ~/Wallpapers/83517721_p0.png
+# Nice Wallpapers:
+#   https://www.pixiv.net/en/artworks/71123408
+#   https://www.pixiv.net/en/artworks/83517721
+#   https://www.pixiv.net/en/artworks/67492833
+#   https://www.pixiv.net/en/artworks/62335563
+#   https://www.pixiv.net/en/artworks/62524130
+#   https://www.pixiv.net/en/artworks/69580898
 
 # Console themes
 mkdir ~/themes
