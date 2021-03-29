@@ -169,8 +169,8 @@ alias gpu="git push"
 
 # Aliases
 alias clo="curl -LO"
-alias ytd="youtube-dl --embed-thumbnail"
-alias ytdx="youtube-dl -x"
+alias ytd="youtube-dl --no-mtime --embed-thumbnail"
+alias ytdx="youtube-dl --no-mtime -x"
 alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
 alias mpva="mpv --video=no"
 alias mgg="mega-get --ignore-quota-warn"
