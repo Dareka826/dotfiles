@@ -73,7 +73,7 @@ PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?..
 # =======
 
 # Use nvim as the pager for man
-export MANPAGER="nvim -R -c 'set ft=man' -"
+export MANPAGER='nvim +Man!'
 
 # ===============
 # = Keybindings =
