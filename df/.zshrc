@@ -83,14 +83,16 @@ export MANPAGER='nvim +Man!'
 bindkey -v
 export KEYTIMEOUT=1
 
-bindkey '^R' history-incremental-pattern-search-backward	# History search
-bindkey '^[[D' backward-char								# Left
-bindkey '^[[C' forward-char									# Right
-bindkey "^?" backward-delete-char							# Backspace
+bindkey '^R'    history-incremental-pattern-search-backward	# History search
+bindkey '^[[D'  backward-char								# Left
+bindkey '^[[C'  forward-char								# Right
+bindkey '^?'    backward-delete-char						# Backspace
 bindkey '^[[3~' delete-char									# Delete
-bindkey '^[[H' beginning-of-line							# Home
-bindkey '^[[F' end-of-line									# End
-bindkey '^[[Z' reverse-menu-complete						# Shift-Tab
+bindkey '^[[H'  beginning-of-line							# Home
+bindkey '^[[1~' beginning-of-line							# Home
+bindkey '^[[F'  end-of-line									# End
+bindkey '^[[4~' end-of-line									# End
+bindkey '^[[Z'  reverse-menu-complete						# Shift-Tab
 bindkey '^[[5~' beginning-of-buffer-or-history				# PageUp
 bindkey '^[[6~' end-of-buffer-or-history					# PageDown
 
