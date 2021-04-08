@@ -147,3 +147,6 @@ let g:neoformat_enabled_c = ['clangformat']
 packadd termdebug
 let g:termdebug_wide=1
 
+" Redo syntax
+autocmd BufRead,BufNewFile *.do set ft=sh
+
