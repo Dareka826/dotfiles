@@ -57,10 +57,11 @@ highlight SignifySignAdd    guifg=#22AA66 ctermfg=41
 highlight SignifySignChange guifg=#FF6600 ctermfg=202
 highlight SignifySignDelete guifg=#FF2255 ctermfg=197
 
-" Quicker quit
+" Shortcuts
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :x<CR>
-nnoremap <leader>gq :qall!<CR>
+nnoremap <leader>Q :qall!<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>W :wqall!<CR>
 
 " Git Fugitive
 nnoremap <leader>gs :Git<CR>
