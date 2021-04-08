@@ -150,3 +150,6 @@ let g:termdebug_wide=1
 " Redo syntax
 autocmd BufRead,BufNewFile *.do set ft=sh
 
+" H headers are for C
+autocmd BufRead,BufNewFile *.h set ft=c
+
