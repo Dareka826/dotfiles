@@ -57,6 +57,9 @@ highlight SignifySignAdd    guifg=#22AA66 ctermfg=41
 highlight SignifySignChange guifg=#FF6600 ctermfg=202
 highlight SignifySignDelete guifg=#FF2255 ctermfg=197
 
+" Make bg transparent
+nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
+
 " Shortcuts
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>Q :qall!<CR>
