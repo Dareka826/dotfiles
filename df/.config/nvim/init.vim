@@ -43,6 +43,7 @@ nnoremap <C-p> :Files<CR>
 
 " Set the leader to a space
 let mapleader=" "
+set notimeout
 
 " Signify
 let g:signify_sign_change='~'
