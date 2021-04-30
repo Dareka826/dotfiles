@@ -23,9 +23,9 @@ i3lock \
 	--verifcolor=00000000 \
 	--wrongcolor=00000000 \
 \
-	 --indpos="x+20+r:y+h-r-20" \
-	 --timepos="x+w-25:y+h-55" \
-	 --datepos="tx:ty+30" \
+	--indpos="x+20+r:y+h-r-20" \
+	--timepos="x+w-25:y+h-55" \
+	--datepos="tx:ty+30" \
 \
 	--timecolor=DD5588FF \
 	--datecolor=FF22AAFF \
@@ -35,8 +35,8 @@ i3lock \
 	--time-align 2 \
 	--date-align 2 \
 \
-	--time-font=source-code-pro \
-	--date-font=source-code-pro \
+	--time-font="Source Code Pro"\
+	--date-font="Source Code Pro" \
 \
 	--timesize=80 \
 	--datesize=15 \
