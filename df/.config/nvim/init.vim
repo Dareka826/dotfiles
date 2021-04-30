@@ -8,13 +8,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mattn/emmet-vim'
+"Plug 'mattn/emmet-vim'
 Plug 'gyim/vim-boxdraw'
-Plug 'baskerville/vim-sxhkdrc'
-Plug 'rubixninja314/vim-mcfunction'
+"Plug 'baskerville/vim-sxhkdrc'
+"Plug 'rubixninja314/vim-mcfunction'
 Plug 'ap/vim-css-color'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'sbdchd/neoformat'
+"Plug 'ekalinin/Dockerfile.vim'
+"Plug 'sbdchd/neoformat'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
@@ -27,8 +27,8 @@ command! PU PlugUpdate | PlugUpgrade
 colorscheme molokai
 
 " Make emmet's ctrl-y only work in insert mode
-let g:user_emmet_mode='i'
-let g:user_emmet_leader_key='<C-y>'
+"let g:user_emmet_mode='i'
+"let g:user_emmet_leader_key='<C-y>'
 
 " Airline settings
 let g:airline_theme='violet'
@@ -133,19 +133,19 @@ nmap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 
 " Neoformat
-vnoremap <C-f> :Neoformat<CR>
-nnoremap <leader>gf :%Neoformat<CR>
-
-let g:neoformat_cpp_clangformat = {
-	\ 'exe': 'clang-format',
-	\ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
-\}
-let g:neoformat_enabled_cpp = ['clangformat']
-let g:neoformat_enabled_c = ['clangformat']
+"vnoremap <C-f> :Neoformat<CR>
+"nnoremap <leader>gf :%Neoformat<CR>
+"
+"let g:neoformat_cpp_clangformat = {
+"	\ 'exe': 'clang-format',
+"	\ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
+"\}
+"let g:neoformat_enabled_cpp = ['clangformat']
+"let g:neoformat_enabled_c = ['clangformat']
 
 " Enable gdb integration
-packadd termdebug
-let g:termdebug_wide=1
+"packadd termdebug
+"let g:termdebug_wide=1
 
 " Redo syntax
 autocmd BufRead,BufNewFile *.do set ft=sh
