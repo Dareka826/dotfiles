@@ -17,6 +17,10 @@ mkdir -p ~/.config/nvim
 cp -i df/.config/nvim/init.vim ~/.config/nvim/
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+# Ranger
+mkdir -p ~/.config/ranger
+cp -i df/.config/ranger/rc.conf ~/.config/ranger/
+
 # X files
 cp -i df/.xinitrc ~/
 cp -i df/.Xresources ~/
