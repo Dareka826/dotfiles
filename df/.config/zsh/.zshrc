@@ -130,7 +130,8 @@ alias mv="mv -i"
 alias rmforce="/usr/bin/rm -rf"
 
 # Directory aliases
-source $ZDOTDIR/dir_aliases.zsh
+[ -f $ZDOTDIR/dir_aliases.zsh ] && \
+	source $ZDOTDIR/dir_aliases.zsh
 
 # Git aliases
 alias   g="git"
@@ -153,13 +154,15 @@ alias info="info --vi-keys"
 alias r="ranger"
 
 # Program aliases
-source $ZDOTDIR/program_aliases.zsh
+[ -f $ZDOTDIR/program_aliases.zsh ] && \
+	source $ZDOTDIR/program_aliases.zsh
 
 # Vim shortcuts
 alias -g v="nvim"
 alias  vim="nvim"
 
-source $ZDOTDIR/functions.zsh
+[ -f $ZDOTDIR/functions.zsh ] && \
+	source $ZDOTDIR/functions.zsh
 
 # Time in nanoseconds
 # $1 = Command to be run
