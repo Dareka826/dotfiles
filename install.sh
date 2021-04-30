@@ -1,14 +1,20 @@
 #!/bin/sh
 
 # Zsh
-cp -i df/.zshrc ~/
+cp -i df/.zshenv ~/
+
+mkdir -p ~/.config/zsh
+cp -i df/.config/zsh/.zshrc ~/.config/zsh/
+
 mkdir ~/.zinit
 git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
 
+# Tmux
+cp -i df/.tmux.conf ~/
+
 # Neovim
-mkdir -p ~/.config/nvim #/colors
-cp -i df/.config/nvim/init.vim ~/.config/nvim/init.vim
-#curl -L https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim > ~/.config/nvim/colors/molokai.vim
+mkdir -p ~/.config/nvim
+cp -i df/.config/nvim/init.vim ~/.config/nvim/
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # X files
