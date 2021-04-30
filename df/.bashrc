@@ -1,21 +1,37 @@
 #!/bin/sh
 
 alias md="mkdir -p"
-
-alias ls="exa --color=auto"
-alias ll="exa -l"
-alias la="exa -a"
-alias  l="exa -halF"
-
 alias mv="mv -i"
 alias rm="rm -i"
 
-alias v="nvim"
+alias ls="exa -F"
+alias ll="exa -lgF"
+alias la="exa -aF"
+alias  l="exa -halgF"
+
+# Command aliases
+alias clo="curl -LO"
+alias info="info --vi-keys"
 alias r="ranger"
 
-alias gs="git status"
-alias ga="git log"
-alias gc="git commit"
+# Nvim
+alias   v="nvim"
+alias vim="nvim"
+
+# Git aliases
+alias   g="git"
+alias  gs="git status"
+alias gss="git status -s"
+alias  gc="git commit"
+alias  ga="git add"
+alias gap="git add -p"
+alias  gd="git diff"
+alias gds="git diff --staged"
+alias  gl="git log"
+alias gco="git checkout"
+alias  gb="git branch"
+alias  gp="git pull"
+alias gpu="git push"
 
 bash_prompt_command() {
 	# Make the home display as '~'

@@ -21,6 +21,9 @@ curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --c
 mkdir -p ~/.config/ranger
 cp -i df/.config/ranger/rc.conf ~/.config/ranger/
 
+# Bash
+cp -i df/.bashrc ~/
+
 # X files
 cp -i df/.xinitrc ~/
 cp -i df/.Xresources ~/
