@@ -1,8 +1,9 @@
 # Rin's .zshrc
 
-# ===========
-# = History =
-# ===========
+# Set the umask
+umask 007
+
+########## History ##########
 
 HISTFILE=~/.zsh_history			# History file
 HISTSIZE=10000					# Max lines in history file
@@ -12,11 +13,9 @@ setopt HIST_IGNORE_ALL_DUPS		# Remove older duplicates
 setopt HIST_IGNORE_SPACE		# Remove lines that start with a space
 setopt HIST_VERIFY				# Confirm after history substitution
 
-# ==========
-# = Prompt =
-# ==========
+########## Prompt ##########
 
-setopt PROMPT_SUBST	# Enable substitution in prompt
+setopt PROMPT_SUBST # Enable substitution in prompt
 
 # Shorten current path
 _short_pwd() {
@@ -68,16 +67,12 @@ _prompt_git() {
 local path_color="green"; [[ $UID -eq 0 ]] && path_color="red" # Path color based on priviledges
 PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f)%(!.#.>) '
 
-# =======
-# = Env =
-# =======
+########## Env ##########
 
 # Use nvim as the pager for man
 export MANPAGER='nvim +Man!'
 
-# ===============
-# = Keybindings =
-# ===============
+########## Keybindings ##########
 
 # Vim keys
 bindkey -v
@@ -100,9 +95,7 @@ bindkey '^[[6~' end-of-buffer-or-history					# PageDown
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^v' edit-command-line
 
-# ================
-# = Cursor shape =
-# ================
+########## Cursor shape ##########
 
 # Change cursor shape based on insertion mode
 function zle-keymap-select {
@@ -118,16 +111,14 @@ zle -N zle-keymap-select # Set widget
 zle-line-init() { echo -ne "\e[5 q" }
 zle -N zle-line-init # Set widget
 
-# =======================
-# = Aliases & Functions =
-# =======================
+########## Aliases & Functions ##########
 
 # ls -> exa
 alias  ls="exa -F"
 alias  la="exa -aF"
 alias  ll="exa -lgF"
-alias  lt="exa -s modified -F"
-alias llt="exa -halF -s modified"
+alias  lt="exa -1 -s modified -g -F"
+alias llt="exa -halgF -s modified"
 alias   l="exa -halgF"
 
 # Mkdir shortcut, rm and mv confirmation
@@ -139,18 +130,7 @@ alias mv="mv -i"
 alias rmforce="/usr/bin/rm -rf"
 
 # Directory aliases
-alias  ce="cd /mnt/drive_e"
-alias  cm="cd /mnt/drive_e/Music"
-alias  ct="cd /mnt/drive_e/_T"
-alias  cc="cd ~/.config"
-alias  cb="cd ~/.local/bin"
-alias  cr="cd /mnt/drive_e/repos"
-alias  ca="cd /mnt/drive_e/a"
-alias  cs="cd /mnt/drive_e/src"
-alias  cg="cd /mnt/drive_e/Games"
-alias csc="cd /mnt/drive_e/_school"
-alias  cv="cd /mnt/drive_e/_v"
-alias cvt="cd /mnt/drive_e/_v/vt"
+source $ZDOTDIR/dir_aliases.zsh
 
 # Git aliases
 alias   g="git"
@@ -167,70 +147,19 @@ alias  gb="git branch"
 alias  gp="git pull"
 alias gpu="git push"
 
-# Aliases
+# Command aliases
 alias clo="curl -LO"
-alias ytd="youtube-dl --no-mtime --embed-thumbnail"
-alias ytdx="youtube-dl --no-mtime -x"
-alias aria2t="aria2c --max-upload-limit=1 --max-overall-upload-limit=1 --seed-time=0"
-alias mpva="mpv --video=no"
-alias mgg="mega-get --ignore-quota-warn"
 alias info="info --vi-keys"
+alias r="ranger"
+
+# Program aliases
+source $ZDOTDIR/program_aliases.zsh
 
 # Vim shortcuts
 alias -g v="nvim"
 alias  vim="nvim"
 
-# Ranger use w3m when in yaft
-ranger_detect() {
-	if [[ "$TERM" = "yaft-256color" ]]; then
-		local TMPDIR=$(mktemp -d)
-
-		cp ~/.config/ranger/* $TMPDIR/
-		sed -i 's/ ueberzug$/ w3m/' $TMPDIR/rc.conf
-
-		ranger -r $TMPDIR
-
-		rm -rf $TMPDIR
-	else
-		ranger
-	fi
-}
-# Ranger shortcut
-alias r="ranger_detect"
-
-# Dvtm change default modifier to ctrl+a
-alias dvtm="dvtm -m ^a"
-
-# Tmux yaft 256 colors
-[[ "$TERM" = "yaft-256color" ]] && \
-	alias tmux="tmux -2"
-
-# Download vods
-dvod() {
-	[ $# = "0" ] && echo "dvod link out_filename" || \
-	streamlink "$1" "best" -o "$2"
-}
-
-# Rename all opus files in directory according to their metadata
-otr() {
-	for o in *.opus; do
-		taffy --rename-fs "%N. %R - %T" "$o"
-	done
-}
-
-# Convert all files passed as arguments to opus
-cto() {
-	for f in "$@"; do
-		ffmpeg -i "$f" -c:a libopus -b:a 128k \
-			"$(echo "$f" | rev | cut -d'.' -f2- | rev).opus"
-	done
-}
-
-# Rename file with taffy according to metadata
-alias trfs="taffy --rename-fs \"%R - %T\""
-
-# Xournal++ different system theme
-alias xournalpp="XDG_CONFIG_HOME=/home/$USER/.xournalpp/theme /usr/bin/xournalpp"
+source $ZDOTDIR/functions.zsh
 
 # Time in nanoseconds
 # $1 = Command to be run
@@ -258,25 +187,7 @@ nstime() {
 	echo "$0 $TIME_AVG ns ~= $((TIME_AVG / 1000000)) ms"
 }
 
-# Compile and run (g++)
-function g+r() {
-	tmpdir=$(mktemp -d)
-	g++ "$@" -o $tmpdir/a.out && \
-	$tmpdir/a.out
-	rm -rf $tmpdir
-}
-
-# Compile and run (gc)
-function gcr() {
-	tmpdir=$(mktemp -d)
-	gcc "$@" -o $tmpdir/a.out && \
-	$tmpdir/a.out
-	rm -rf $tmpdir
-}
-
-# ===========
-# = Plugins =
-# ===========
+########## Plugins ##########
 
 source ~/.zinit/bin/zinit.zsh
 
@@ -284,7 +195,8 @@ zinit ice lucid wait'!0c' atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 zinit ice lucid wait'!0a'
-zinit light zsh-users/zsh-syntax-highlighting
+#zinit light zsh-users/zsh-syntax-highlighting
+zinit light zdharma/fast-syntax-highlighting
 
 zinit ice lucid wait'0b' \
 	atload"bindkey '^[[A' history-substring-search-up" \
@@ -294,9 +206,7 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice lucid wait'1'
 zinit light MichaelAquilina/zsh-you-should-use
 
-# ========================
-# = Dynamic window title =
-# ========================
+########## Dynamic window title ##########
 
 _change_title_to_pwd() {
 	printf "\033]0;%s\a" "zsh: ${PWD/#$HOME/~}"
@@ -309,9 +219,7 @@ _change_title_to_program() {
 precmd_functions+=(_change_title_to_pwd)
 preexec_functions+=(_change_title_to_program)
 
-# ==============
-# = Completion =
-# ==============
+########## Completion ##########
 
 autoload -U compinit
 zmodload zsh/complist
@@ -324,13 +232,11 @@ zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
 unsetopt COMPLETE_ALIASES					# Expand aliases before attempting completion
 compinit									# Initialize completion
 
-# ===========
-# = Compile =
-# ===========
+########## Compile ##########
 
 # Compile zshrc if newer than compiled version or if it doesn't exist
-{ [[ ! -e ~/.zshrc.zwc ]] || \
-{ [[ $(date +%y%m%d%H%M%S -r ~/.zshrc) -gt \
-	$(date +%y%m%d%H%M%S -r ~/.zshrc.zwc) ]] } } && \
-	zcompile ~/.zshrc || :
+{ [[ ! -e $ZDOTDIR/.zshrc.zwc ]] || \
+{ [[ $(date +%y%m%d%H%M%S -r $ZDOTDIR/.zshrc) -gt \
+	$(date +%y%m%d%H%M%S -r $ZDOTDIR/.zshrc.zwc) ]] } } && \
+	zcompile $ZDOTDIR/.zshrc || :
 

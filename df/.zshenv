@@ -1,13 +1,20 @@
 # Zsh Env
 
+# Change zsh config location
+export ZDOTDIR=$HOME/.config/zsh
+
 # Fcitx
 export GTK_IM_MODULE="fcitx"
 export QT_IM_MODULE="fcitx"
 export SDL_IM_MODULE="fcitx"
 export XMODIFIERS="@im=fcitx"
 
+# Qt style
+export QT_STYLE_OVERRIDE="kvantum"
+
 # Path
-export PATH=$PATH:~/.local/bin:~/go/bin:$(yarn global bin)
+export GOPATH=~/.go
+export PATH=$PATH:~/.local/bin:$GOPATH/bin:$(yarn global bin)
 
 # Default applications
 export EDITOR="nvim"
@@ -35,7 +42,4 @@ LESS_TERMCAP_se=$'\e[0m'
 LESS_TERMCAP_so=$'\e[0;41m'
 LESS_TERMCAP_ue=$'\e[0m'
 LESS_TERMCAP_us=$'\e[0;36m'
-
-# Qt style
-export QT_STYLE_OVERRIDE="kvantum"
 
