@@ -98,7 +98,7 @@ bindkey -M vicmd '^v' edit-command-line
 ########## Cursor shape ##########
 
 # Only if not running in a tty
-tty | grep pts >/dev/null || {
+tty | grep pts >/dev/null && {
 	# Change cursor shape based on insertion mode
 	function zle-keymap-select {
 		{ [[ ${KEYMAP} = vicmd ]] || [[ $1 = 'block' ]] } && \
