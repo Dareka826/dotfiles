@@ -97,19 +97,22 @@ bindkey -M vicmd '^v' edit-command-line
 
 ########## Cursor shape ##########
 
-# Change cursor shape based on insertion mode
-function zle-keymap-select {
-	{ [[ ${KEYMAP} = vicmd ]] || [[ $1 = 'block' ]] } && \
-		echo -ne '\e[1 q' || \
-	{ { [[ ${KEYMAP} = main ]] || [[ ${KEYMAP} = viins ]] || \
-		[[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]] } && \
-		echo -ne '\e[5 q' || : }
-}
-zle -N zle-keymap-select # Set widget
+# Only if not running in a tty
+tty | grep pts >/dev/null || {
+	# Change cursor shape based on insertion mode
+	function zle-keymap-select {
+		{ [[ ${KEYMAP} = vicmd ]] || [[ $1 = 'block' ]] } && \
+			echo -ne '\e[1 q' || \
+		{ { [[ ${KEYMAP} = main ]] || [[ ${KEYMAP} = viins ]] || \
+			[[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]] } && \
+			echo -ne '\e[5 q' || : }
+	}
+	zle -N zle-keymap-select # Set widget
 
-# Line init widget sets cursor to beam
-zle-line-init() { echo -ne "\e[5 q" }
-zle -N zle-line-init # Set widget
+	# Line init widget sets cursor to beam
+	zle-line-init() { echo -ne "\e[5 q" }
+	zle -N zle-line-init # Set widget
+}
 
 ########## Aliases & Functions ##########
 
