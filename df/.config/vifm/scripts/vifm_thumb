@@ -1,0 +1,15 @@
+#!/bin/sh
+
+[ "$1" = "draw" ] && {
+	mkdir -p /tmp/vifm-thumbnails
+
+	SHA256_HASH=$(sha256sum "$6" | cut -d' ' -f1)
+	THUMB_PATH="/tmp/vifm-thumbnails/$SHA256_HASH.png"
+
+	[ -e "$THUMB_PATH" ] || \
+		ffmpegthumbnailer -i "$6" -o "$THUMB_PATH" -s 0
+
+	vifm_img draw $2 $3 $4 $5 "$THUMB_PATH"
+} || {
+	vifm_img $@
+}

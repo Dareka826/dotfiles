@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cmd="vifm_ub"
+[ "$VIFM_USE_W3M" = "yes" ] && cmd="vifm_w3m"
+
+$cmd "$@"
+

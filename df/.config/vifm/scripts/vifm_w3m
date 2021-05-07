@@ -1,0 +1,43 @@
+#!/bin/bash
+
+W3MIMGDISPLAY="/usr/lib/w3m/w3mimgdisplay"
+FONTH=15
+FONTW=7
+
+X=$2
+Y=$3
+COLUMNS=$4
+LINES=$5
+
+x=$((FONTW * X))
+y=$((FONTH * Y))
+
+max_width=$((FONTW * COLUMNS))
+max_height=$((FONTH * LINES))
+
+[ "$1" = "draw" ] && {
+	FILENAME=$6
+
+	read width height <<< $(echo "5;$FILENAME" | $W3MIMGDISPLAY)
+	[ -z "$width" -o -z "$height" ] && \
+		echo "Failed to get image size" && exit 1
+
+	[ "$width" -gt "$max_width" ] && \
+		height=$((height * max_width / width)) && \
+		width=$max_width
+
+	[ "$height" -gt "$max_height" ] && \
+		width=$((width * max_height / height)) && \
+		height=$max_height
+
+	w3m_command="0;1;$x;$y;$width;$height;;;;;$FILENAME\n4;\n3;"
+
+} || {
+	# Clear
+	[ "$1" = "clear" ] && \
+		w3m_command="6;$x;$y;$max_width;$max_height\n3;"
+}
+
+[ -z "$w3m_command" ] || \
+	echo -e "$w3m_command" | $W3MIMGDISPLAY
+
