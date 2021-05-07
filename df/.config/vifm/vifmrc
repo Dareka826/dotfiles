@@ -39,8 +39,8 @@ set undolevels=100
 " Use Vim's format of help file (has highlighting and "hyperlinks")
 set vimhelp
 
-" Run an executable file when you press Enter, l or Right Arrow
-set runexec
+" Don't run an executable file when you press Enter, l or Right Arrow
+set norunexec
 
 " List of color schemes to try
 colorscheme rin
