@@ -10,13 +10,13 @@ highlight  Border cterm=none ctermbg=237
 highlight  TopLine     cterm=none     ctermfg=255  ctermbg=237
 highlight  TopLineSel  cterm=bold     ctermfg=255  ctermbg=237
 
-" Windows
-highlight   Win        cterm=none     ctermfg=255  ctermbg=233
-
 " The bottom lines
 highlight  StatusLine  cterm=none     ctermfg=255  ctermbg=99
 highlight  WildMenu    cterm=none     ctermfg=99   ctermbg=255
 highlight  CmdLine     cterm=none     ctermfg=255  ctermbg=99
+
+" Windows
+highlight   Win        cterm=none     ctermfg=255  ctermbg=233
 
 " Key suggestions box
 highlight  SuggestBox  cterm=none     ctermfg=255  ctermbg=233
@@ -31,7 +31,7 @@ highlight  Fifo        cterm=none     ctermfg=217
 highlight  Executable  cterm=none     ctermfg=41
 
 " Selection
-highlight  Selected    cterm=none     ctermfg=-1   ctermbg=105
+highlight  Selected    cterm=none     ctermfg=-1   ctermbg=99
 
 " Cursor line
 highlight  CurrLine    cterm=reverse  ctermfg=-1   ctermbg=-1
