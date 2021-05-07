@@ -1,0 +1,20 @@
+#!/bin/sh
+
+export UEBERZUG_FIFO="/tmp/vifm-ueberzug-${PPID}"
+
+cleanup() {
+	rm "$UEBERZUG_FIFO" 2>/dev/null
+	pkill -P $$ 2>/dev/null
+}
+
+rm "$UEBERZUG_FIFO" 2>/dev/null
+mkfifo "$UEBERZUG_FIFO"
+
+trap cleanup EXIT
+
+tail --follow "$UEBERZUG_FIFO" | ueberzug layer --silent --parser json &
+
+vifm
+
+cleanup
+

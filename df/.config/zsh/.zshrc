@@ -155,7 +155,7 @@ alias gpu="git push"
 alias clo="curl -LO"
 alias info="info --vi-keys"
 alias r="ranger"
-alias f="vifm"
+alias f="~/.config/vifm/scripts/vifm_ueberzug"
 
 # Program aliases
 [ -f $ZDOTDIR/program_aliases.zsh ] && \
