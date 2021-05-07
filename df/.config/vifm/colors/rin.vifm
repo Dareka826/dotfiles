@@ -1,0 +1,41 @@
+" By Rin
+
+" Clear all previous highlights
+highlight clear
+
+" Vertical border
+highlight  Border cterm=none ctermbg=237
+
+" Top lines
+highlight  TopLine     cterm=none     ctermfg=255  ctermbg=237
+highlight  TopLineSel  cterm=bold     ctermfg=255  ctermbg=237
+
+" Windows
+highlight   Win        cterm=none     ctermfg=255  ctermbg=233
+
+" The bottom lines
+highlight  StatusLine  cterm=none     ctermfg=255  ctermbg=99
+highlight  WildMenu    cterm=none     ctermfg=99   ctermbg=255
+highlight  CmdLine     cterm=none     ctermfg=255  ctermbg=99
+
+" Key suggestions box
+highlight  SuggestBox  cterm=none     ctermfg=255  ctermbg=233
+
+" File type colors
+highlight  Directory   cterm=bold     ctermfg=93
+highlight  Link        cterm=none     ctermfg=44
+highlight  BrokenLink  cterm=bold     ctermfg=198
+highlight  Socket      cterm=none     ctermfg=209
+highlight  Device      cterm=bold     ctermfg=208
+highlight  Fifo        cterm=none     ctermfg=217
+highlight  Executable  cterm=none     ctermfg=41
+
+" Selection
+highlight  Selected    cterm=none     ctermfg=-1   ctermbg=105
+
+" Cursor line
+highlight  CurrLine    cterm=reverse  ctermfg=-1   ctermbg=-1
+
+" Error
+highlight  ErrorMsg    cterm=bold     ctermfg=16   ctermbg=197
+
