@@ -156,6 +156,7 @@ alias clo="curl -LO"
 alias info="info --vi-keys"
 alias r="ranger"
 alias f="~/.config/vifm/scripts/vifm_ueberzug"
+alias f3="VIFM_USE_W3M=yes vifm"
 
 # Program aliases
 [ -f $ZDOTDIR/program_aliases.zsh ] && \
