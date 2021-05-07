@@ -16,7 +16,8 @@ max_width=$((FONTW * COLUMNS))
 max_height=$((FONTH * LINES))
 
 [ "$1" = "draw" ] && {
-	FILENAME=$6
+	FILENAME="$PWD/$6"
+	[ -e "$FILENAME" ] || FILENAME="$6"
 
 	read width height <<< $(echo "5;$FILENAME" | $W3MIMGDISPLAY)
 	[ -z "$width" -o -z "$height" ] && \
