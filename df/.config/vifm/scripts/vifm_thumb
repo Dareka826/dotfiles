@@ -3,8 +3,8 @@
 [ "$1" = "draw" ] && {
 	mkdir -p /tmp/vifm-thumbnails
 
-	SHA256_HASH=$(sha256sum "$6" | cut -d' ' -f1)
-	THUMB_PATH="/tmp/vifm-thumbnails/$SHA256_HASH.png"
+	VIDEO_HASH=$(xxhsum "$6" | cut -d' ' -f1)
+	THUMB_PATH="/tmp/vifm-thumbnails/$VIDEO_HASH.png"
 
 	[ -e "$THUMB_PATH" ] || \
 		ffmpegthumbnailer -i "$6" -o "$THUMB_PATH" -s 0
