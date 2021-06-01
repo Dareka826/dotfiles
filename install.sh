@@ -5,6 +5,7 @@ cp -i df/.zshenv ~/
 
 mkdir -p ~/.config/zsh
 cp -i df/.config/zsh/.zshrc ~/.config/zsh/
+cp -i df/.zshrc ~/
 
 mkdir ~/.zinit
 git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
