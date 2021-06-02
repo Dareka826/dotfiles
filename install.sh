@@ -19,7 +19,7 @@ cp -i df/.config/nvim/init.vim ~/.config/nvim/
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Vifm
-mkdir -p ~/.config/vifm/{colors,scripts}
+mkdir -p ~/.config/vifm/colors ~/.config/vifm/scripts
 cp -i df/.config/vifm/vifmrc ~/.config/vifm/
 cp -i df/.config/vifm/colors/rin.vifm ~/.config/vifm/colors/
 cp -i df/.config/vifm/scripts/* ~/.config/vifm/scripts/
