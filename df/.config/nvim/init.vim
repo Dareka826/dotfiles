@@ -19,6 +19,7 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'preservim/nerdtree'
+Plug 'alx741/vinfo'
 Plug 'tomasr/molokai'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
@@ -151,5 +152,5 @@ nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 autocmd BufRead,BufNewFile *.do set ft=sh
 
 " H headers are for C
-autocmd BufRead,BufNewFile *.h set ft=c
+autocmd BufRead,BufNewFile,BufWritePost *.h set ft=c
 
