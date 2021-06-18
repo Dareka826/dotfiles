@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# For every supplied file
 for f in "$@"; do
-	ffmpeg -i "$f" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$(echo "$f" | sed 's/\.[^.]*$//')_smol.mkv"
+	NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$//')_smol.mkv" # Replace extension
+	ffmpeg -i "$f" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$NEW_FNAME" # Convert
+	touch -r "$f" "$NEW_FNAME" # Copy over timestamp
 done
