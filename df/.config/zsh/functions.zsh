@@ -19,7 +19,5 @@ cto() {
 	done
 }
 
-# Vinfo wrapper
-vinfo() {
-	nvim -c "Vinfo $1" -c "silent only"
-}
+bell() { printf "\a" }
+
