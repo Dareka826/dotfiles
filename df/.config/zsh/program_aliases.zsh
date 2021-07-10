@@ -1,6 +1,6 @@
 # Youtube-dl
 alias ytd="youtube-dl --no-mtime --embed-thumbnail"
-alias ytdx="youtube-dl --no-mtime -x"
+alias ytdx="youtube-dl --no-mtime -x -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best'"
 
 # Mpv
 alias mpva="mpv --video=no"
