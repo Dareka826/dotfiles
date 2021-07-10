@@ -2,15 +2,21 @@
 alias ytd="youtube-dl --no-mtime --embed-thumbnail"
 alias ytdx="youtube-dl --no-mtime -x"
 
-# Mpv no video
+# Mpv
 alias mpva="mpv --video=no"
+alias mpvy="mpv --ytdl --script-opts=ytdl_hook-ytdl_path=yt-dlp"
 
-# Mega get
-alias mgg="mega-get --ignore-quota-warn"
+# Mega
+alias mgg="mega-get"
+alias mdl="megatools dl"
 
 # Rename file with taffy according to metadata
 alias trfs="taffy --rename-fs \"%R - %T\""
 
-# Xournal++ different system theme
-alias xournalpp="XDG_CONFIG_HOME=/home/$USER/.xournalpp/theme /usr/bin/xournalpp"
+# Audacity no network
+alias audacity="firejail --net=none audacity"
+
+# FFMpeg & FFProbe
+alias ffmpeg="ffmpeg -hide_banner"
+alias ffpp="ffprobe -hide_banner -pretty"
 
