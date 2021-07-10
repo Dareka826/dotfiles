@@ -177,7 +177,7 @@ alias f3="VIFM_USE_W3M=yes vifm"
 # Vinfo / info alias
 alias info="info --vi-keys"
 vinfo() { nvim -c "Vinfo $1" -c "silent only" }
-command -v nvim && alias info="vinfo"
+command -v nvim >/dev/null && alias info="vinfo"
 
 # Vim shortcuts
 alias -g v="nvim"
