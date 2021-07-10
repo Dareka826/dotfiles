@@ -141,7 +141,7 @@ alias md="mkdir -p"
 alias rm="rm -i"
 alias mv="mv -i"
 # rm without -i
-alias rmforce="/usr/bin/rm"
+alias rmnoi="/usr/bin/rm"
 
 # Directory aliases
 [ -f $ZDOTDIR/dir_aliases.zsh ] && \
@@ -166,8 +166,6 @@ alias  gb="git-bug"
 
 # Command aliases
 alias clo="curl -LO"
-alias info="info --vi-keys"
-command -v vinfo && alias info="vinfo"
 alias r="ranger"
 alias f="~/.config/vifm/scripts/vifm_ueberzug"
 alias f3="VIFM_USE_W3M=yes vifm"
@@ -175,6 +173,11 @@ alias f3="VIFM_USE_W3M=yes vifm"
 # Program aliases
 [ -f $ZDOTDIR/program_aliases.zsh ] && \
 	source $ZDOTDIR/program_aliases.zsh
+
+# Vinfo / info alias
+alias info="info --vi-keys"
+vinfo() { nvim -c "Vinfo $1" -c "silent only" }
+command -v nvim && alias info="vinfo"
 
 # Vim shortcuts
 alias -g v="nvim"
