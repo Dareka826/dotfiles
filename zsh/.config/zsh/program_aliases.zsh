@@ -8,7 +8,7 @@ alias mpvy="mpv --ytdl --script-opts=ytdl_hook-ytdl_path=yt-dlp"
 
 # Mega
 alias mgg="mega-get"
-alias mdl="megatools dl"
+alias mdl="megadl"
 
 # Rename file with taffy according to metadata
 alias trfs="taffy --rename-fs \"%R - %T\""
