@@ -4,8 +4,9 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'mattn/emmet-vim'
@@ -31,12 +32,27 @@ colorscheme molokai
 "let g:user_emmet_mode='i'
 "let g:user_emmet_leader_key='<C-y>'
 
-" Airline settings
-let g:airline_theme='violet'
-let g:airline_powerline_fonts=0
-let g:airline#extensions#whitespace#skip_indent_check_ft = {
-	\ 'sh': ['mixed-indent-file']
-	\}
+"" Airline settings
+"let g:airline_theme='violet'
+"let g:airline_powerline_fonts=0
+"let g:airline#extensions#whitespace#skip_indent_check_ft = {
+"	\ 'sh': ['mixed-indent-file']
+"	\}
+
+" Lightline settings
+let g:lightline = {
+	\ 'colorscheme': 'deus',
+	\ 'active': {
+		\ 'left': [ [ 'mode', 'paste' ],
+		\			[ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+	\ },
+	\ 'component_function': {
+		\ 'gitbranch': 'FugitiveHead'
+	\ },
+	\ }
+
+set laststatus=2
+set noshowmode
 
 " fzf settings
 let g:fzf_layout={'down': '30%'}
