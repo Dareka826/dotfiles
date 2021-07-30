@@ -85,8 +85,8 @@ nnoremap <leader>W :wqall!<CR>
 
 " Git Fugitive
 nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gf :diffget //2<CR>
-nnoremap <leader>gj :diffget //3<CR>
+nnoremap <leader>gh :diffget //2<CR>
+nnoremap <leader>gl :diffget //3<CR>
 
 " Nerdtree
 nnoremap <leader>gt :NERDTreeToggle<CR>
