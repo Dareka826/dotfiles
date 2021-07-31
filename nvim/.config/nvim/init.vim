@@ -183,8 +183,8 @@ nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 "let g:neoformat_enabled_c = ['clangformat']
 
 " Enable gdb integration
-"packadd termdebug
-"let g:termdebug_wide=1
+packadd termdebug
+let g:termdebug_wide=1
 
 " Redo syntax
 autocmd BufRead,BufNewFile *.do set ft=sh
