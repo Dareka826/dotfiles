@@ -83,6 +83,29 @@ nnoremap <leader>Q :qall!<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>W :wqall!<CR>
 
+" Make Y operate similar to D and C
+nnoremap Y y$
+
+" Make search centered
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Don't move cursor when joining lines
+nnoremap J mzJ`z
+nnoremap gJ mzgJ`z
+
+" Break undo sequence on these
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+" Moving text around
+nnoremap <leader>j :m .+1<CR>==
+nnoremap <leader>k :m .-2<CR>==
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '>-2<CR>gv=gv
+
 " Git Fugitive
 nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gh :diffget //2<CR>
