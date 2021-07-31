@@ -79,9 +79,9 @@ nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
 
 " Shortcuts
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>Q :qall!<CR>
+nnoremap <leader>Q :qa!<CR>
 nnoremap <leader>w :w<CR>
-nnoremap <leader>W :wqall!<CR>
+nnoremap <leader>W :wqa!<CR>
 
 " Make Y operate similar to D and C
 nnoremap Y y$
