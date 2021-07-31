@@ -2,7 +2,6 @@ set nocompatible
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
-Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
@@ -191,5 +190,5 @@ nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 autocmd BufRead,BufNewFile *.do set ft=sh
 
 " H headers are for C
-autocmd BufRead,BufNewFile,BufWritePost *.h set ft=c
+let g:c_syntax_for_h = 1
 
