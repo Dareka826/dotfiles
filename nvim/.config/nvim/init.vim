@@ -20,6 +20,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
+Plug 'puremourning/vimspector'
 Plug 'tomasr/molokai'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
@@ -188,6 +189,19 @@ nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 " Enable gdb integration
 packadd termdebug
 let g:termdebug_wide=1
+
+" Vimspector
+nnoremap <leader>dd :call vimspector#Launch()
+nnoremap <leader>dc :call vimspector#Continue()
+nnoremap <leader>dl :call vimspector#StepInto()
+nnoremap <leader>dj :call vimspector#StepOver()
+nnoremap <leader>dk :call vimspector#StepOut()
+nnoremap <leader>dr :call vimspector#Restart()
+nnoremap <leader>dt :call vimspector#RunToCursor()
+nnoremap <leader>db :call vimspector#ToggleBreakpoint()
+nnoremap <leader>do :call vimspector#ToggleConditionalBreakpoint()
+nnoremap <leader>dp :call vimspector#Pause()
+nnoremap <leader>dx :call vimspector#Stop()
 
 " Redo syntax
 autocmd BufRead,BufNewFile *.do set ft=sh
