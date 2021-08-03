@@ -44,15 +44,23 @@ let g:lightline = {
 	\ 'colorscheme': 'deus',
 	\ 'active': {
 		\ 'left': [ [ 'mode', 'paste' ],
-		\			[ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+		\			[ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
 	\ },
 	\ 'component_function': {
-		\ 'gitbranch': 'FugitiveHead'
+		\ 'gitbranch': 'FugitiveHead',
+		\ 'cocstatus': 'LightLineCoc'
 	\ },
 	\ }
 
 set laststatus=2
 set noshowmode
+
+function! LightLineCoc()
+	if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
+		return ''
+	endif
+	return trim(coc#status())
+endfunction
 
 " fzf settings
 let g:fzf_layout={'down': '30%'}
