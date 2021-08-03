@@ -91,6 +91,9 @@ nnoremap <leader>Q :qa!<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>W :wqa!<CR>
 
+" Make <c-o> center the line and unfold
+nnoremap <c-o> <c-o>zzzv
+
 " Make Y operate similar to D and C
 nnoremap Y y$
 
