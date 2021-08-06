@@ -2,7 +2,7 @@ set nocompatible
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
