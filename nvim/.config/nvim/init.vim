@@ -202,17 +202,17 @@ packadd termdebug
 let g:termdebug_wide=1
 
 " Vimspector
-nnoremap <leader>dd :call vimspector#Launch()
-nnoremap <leader>dc :call vimspector#Continue()
-nnoremap <leader>dl :call vimspector#StepInto()
-nnoremap <leader>dj :call vimspector#StepOver()
-nnoremap <leader>dk :call vimspector#StepOut()
-nnoremap <leader>dr :call vimspector#Restart()
-nnoremap <leader>dt :call vimspector#RunToCursor()
-nnoremap <leader>db :call vimspector#ToggleBreakpoint()
-nnoremap <leader>do :call vimspector#ToggleConditionalBreakpoint()
-nnoremap <leader>dp :call vimspector#Pause()
-nnoremap <leader>dx :call vimspector#Stop()
+nnoremap <leader>dd :call vimspector#Launch()<CR>
+nnoremap <leader>dc :call vimspector#Continue()<CR>
+nnoremap <leader>dl :call vimspector#StepInto()<CR>
+nnoremap <leader>dj :call vimspector#StepOver()<CR>
+nnoremap <leader>dk :call vimspector#StepOut()<CR>
+nnoremap <leader>dr :call vimspector#Restart()<CR>
+nnoremap <leader>dt :call vimspector#RunToCursor()<CR>
+nnoremap <leader>db :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <leader>do :call vimspector#ToggleConditionalBreakpoint()<CR>
+nnoremap <leader>dp :call vimspector#Pause()<CR>
+nnoremap <leader>dx :call vimspector#Stop()<CR>
 
 " Redo syntax
 autocmd BufRead,BufNewFile *.do set ft=sh
