@@ -214,6 +214,12 @@ nstime() {
 
 ########## Plugins ##########
 
+# Install zinit if not found
+[ -d ~/.zinit ] || {
+	mkdir ~/.zinit
+	git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
+}
+
 source ~/.zinit/bin/zinit.zsh
 
 zinit ice lucid wait'!0c' atload'_zsh_autosuggest_start'
