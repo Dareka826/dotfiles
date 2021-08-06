@@ -4,19 +4,23 @@ alias md="mkdir -p"
 alias mv="mv -i"
 alias rm="rm -i"
 
-alias ls="exa -F"
-alias ll="exa -lgF"
-alias la="exa -aF"
-alias  l="exa -halgF"
+# ls -> exa
+LSOPTS="-F"
+LSPROG="ls"
+command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gF"
+
+alias ls="$LSPROG $LSOPTS"
+alias la="$LSPROG $LSOPTS -a"
+alias ll="$LSPROG $LSOPTS -l"
+alias  l="$LSPROG $LSOPTS -hal"
 
 # Command aliases
 alias clo="curl -LO"
 alias info="info --vi-keys"
-alias r="ranger"
+alias f="vifm"
 
 # Nvim
-alias   v="nvim"
-alias vim="nvim"
+alias v="nvim"
 
 # Git aliases
 alias   g="git"
@@ -30,8 +34,10 @@ alias gds="git diff --staged"
 alias  gl="git log"
 alias gco="git checkout"
 alias  gb="git branch"
+alias gsw="git switch"
 alias  gp="git pull"
 alias gpu="git push"
+alias  gb="git-bug"
 
 bash_prompt_command() {
 	# Make the home display as '~'
