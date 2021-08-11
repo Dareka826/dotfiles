@@ -21,6 +21,11 @@ cto() {
 
 bell() { printf "\a" }
 
+# Cat range
+catr() {
+	tail -n "+$1" "$3" | head -n "$(( $2 - $1 + 1 ))"
+}
+
 # List all git object hashes
 goh() {
 	for object in .git/objects/??/*; do
