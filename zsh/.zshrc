@@ -173,6 +173,7 @@ alias  gbg="git-bug"
 alias clo="curl -LO"
 alias r="ranger"
 alias f="~/.config/vifm/scripts/vifm_ueberzug"
+[ "$DISPLAY" ] || alias f="vifm"
 alias f3="VIFM_USE_W3M=yes vifm"
 
 # Program aliases
