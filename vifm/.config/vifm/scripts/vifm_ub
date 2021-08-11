@@ -1,7 +1,7 @@
 #!/bin/sh
 PREVIEW_ID="vifm_preview"
 
-[ -z "$DISPLAY" ] && exit 1
+[ "$DISPLAY" ] || exit 1
 
 [ -e "$UEBERZUG_FIFO" ] && {
 	[ "$1" = "draw" ] && {

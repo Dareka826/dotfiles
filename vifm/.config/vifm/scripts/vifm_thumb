@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ "$DISPLAY" ] || exit
+
 [ "$1" = "draw" ] && {
 	mkdir -p /tmp/vifm-thumbnails
 
