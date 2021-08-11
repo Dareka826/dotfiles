@@ -1,14 +1,18 @@
 #!/bin/sh
 PREVIEW_ID="vifm_preview"
 
-[ "$DISPLAY" ] || exit 1
+PATH="$PWD/$6"
+[ -e "$PATH" ] || PATH="$6"
+
+[ "$DISPLAY" ] || {
+	/usr/bin/identify "$PATH"
+	exit
+}
 
 [ -e "$UEBERZUG_FIFO" ] && {
 	[ "$1" = "draw" ] && {
-		PATH="$PWD/$6"
-		[ -e "$PATH" ] || PATH="$6"
-
 		printf "%s\n" '{ "action": "add", "identifier": "'"$PREVIEW_ID"'", "x": "'"$2"'", "y": "'"$3"'", "width": "'"$4"'", "height": "'"$5"'", "scaler": "fit_contain", "path": "'"$PATH"'" }' > "$UEBERZUG_FIFO"
+
 	} || {
 		[ "$1" = "clear" ] && {
 			printf "%s\n" '{ "action": "remove", "identifier": "'"$PREVIEW_ID"'" }' > "$UEBERZUG_FIFO"
