@@ -29,11 +29,13 @@ Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
 Plug 'puremourning/vimspector'
 Plug 'tomasr/molokai'
+Plug 'axvr/photon.vim'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
-" Molokai colorscheme
+" Colorscheme
 colorscheme molokai
+"colorscheme photon
 
 " Make emmet's ctrl-y only work in insert mode
 "let g:user_emmet_mode='i'
