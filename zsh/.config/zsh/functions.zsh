@@ -21,3 +21,28 @@ cto() {
 
 bell() { printf "\a" }
 
+# List all git object hashes
+goh() {
+	for object in .git/objects/??/*; do
+		echo $object;
+	done | sed 's/^.*\([a-zA-Z0-9]\{2\}\)\/\([a-zA-Z0-9]\+\)$/\1\2/'
+}
+
+# Pretty print all git objects
+gop() {
+	for obj in $(goh | sort); do
+		printf "==== OBJECT: %s\n" "$obj"
+		git cat-file -p $obj
+		printf "\n"
+	done
+}
+
+# Show all git objects
+gos() {
+	for obj in $(goh | sort); do
+		printf "==== OBJECT: %s\n" "$obj"
+		git show $obj
+		printf "\n"
+	done
+}
+
