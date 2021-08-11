@@ -229,3 +229,5 @@ autocmd BufRead,BufNewFile *.do set ft=sh
 " H headers are for C
 let g:c_syntax_for_h = 1
 
+" Do not use spaces for python
+autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
