@@ -34,8 +34,11 @@ call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
 " Colorscheme
-colorscheme molokai
-"colorscheme photon
+if $NVIM_THEME == "photon"
+	colorscheme photon
+else
+	colorscheme molokai
+endif
 
 " Make emmet's ctrl-y only work in insert mode
 "let g:user_emmet_mode='i'
