@@ -51,3 +51,12 @@ gos() {
 	done
 }
 
+# Check which program is used by xdg-open on a file
+xdg-which() {
+	TYPE="$(xdg-mime query filetype "$1")"
+	APP="$(xdg-mime query default "$TYPE")"
+
+	printf "File: %s\n" "$1"
+	printf "Type: %s\n" "$TYPE"
+	printf "App:  %s\n" "$APP"
+}
