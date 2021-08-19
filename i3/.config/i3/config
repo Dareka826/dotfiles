@@ -1,7 +1,10 @@
 # i3 config file
 
+# Newsboat on 11
+for_window [instance="Newsboat"] move to workspace 11
+
 # Gaps
-gaps inner 0 # 10 25 50
+gaps inner 10 # 0 25 50
 
 # Border
 default_border pixel 2
@@ -12,7 +15,7 @@ default_floating_border normal 2
 client.focused          #6600FF #6600FF #FFFFFF #33EECC   #6600FF
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
 client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
-client.urgent           #BB0000 #BB0000 #FFFFFF #BB0000   #BB0000
+client.urgent           #FF6600 #FF6600 #FFFFFF #FF6600   #FF6600
 client.placeholder      #000000 #000000 #FFFFFF #222222   #222222
 client.background       #222222
 
@@ -33,15 +36,15 @@ floating_modifier Mod1
 
 # Terminal
 bindsym Mod1+Return exec alacritty
-bindsym Mod1+Shift+Return exec tabbed -c alacritty --embed
+bindsym Mod1+Shift+Return exec alacritty -e tmux
 
 # Run dialog
 bindsym Mod1+d exec dmenu_run -i
-bindsym Mod1+m exec /mnt/drive_e/repos/_testting_window_switching/dswitcher/dswitcher
+bindsym Mod1+m exec dswitcher
 bindsym Mod1+g exec gmrun
 
 # Screenshot
-bindsym ctrl+F12 exec ~/.local/bin/screenshot
+bindsym Mod1+s exec ~/.local/bin/screenshot
 
 # Kill focused window
 bindsym Mod1+Shift+q kill
@@ -112,8 +115,9 @@ bindsym Mod1+shift+minus move workspace to output left
 bindsym Mod1+shift+equal move workspace to output right
 
 # Switch to workspace
-bindsym Mod1+1 workspace 1
+# 2 is first as I want 2 on my primary on startup
 bindsym Mod1+2 workspace 2
+bindsym Mod1+1 workspace 1
 bindsym Mod1+3 workspace 3
 bindsym Mod1+4 workspace 4
 bindsym Mod1+5 workspace 5
