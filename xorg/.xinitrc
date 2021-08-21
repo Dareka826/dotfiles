@@ -39,5 +39,8 @@ keynav &
 # Start the input method
 fcitx &
 
+# Make capslock act like backspace
+setxkbmap -option caps:backspace
+
 # Start the wm
 exec i3
