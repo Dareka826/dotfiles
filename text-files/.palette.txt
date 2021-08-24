@@ -18,6 +18,7 @@ FF22AA [cold pink]
 7E97FC [frosty purple]
 7EFCE3 [frosty turqoise]
 F0F0FF [snow]
+965AFF [pastel purple]
 
 # Randomized colors from Agave
 
@@ -33,3 +34,5 @@ EB9142 [Soft orange]
 42EB91 [Soft mint]
 }
 
+#FFC0CB [Sakura pink]
+#FFC0C0 [Peach]
