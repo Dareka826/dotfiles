@@ -26,6 +26,7 @@ Plug 'junegunn/gv.vim'
 Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
 Plug 'puremourning/vimspector'
+Plug 'tpope/vim-unimpaired'
 Plug 'tomasr/molokai'
 Plug 'axvr/photon.vim'
 call plug#end()
