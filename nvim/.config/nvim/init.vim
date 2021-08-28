@@ -218,11 +218,16 @@ nnoremap <leader>do :call vimspector#ToggleConditionalBreakpoint()<CR>
 nnoremap <leader>dp :call vimspector#Pause()<CR>
 nnoremap <leader>dx :call vimspector#Stop()<CR>
 
-" Redo syntax
-autocmd BufRead,BufNewFile *.do set ft=sh
-
 " H headers are for C
 let g:c_syntax_for_h = 1
 
-" Do not use spaces for python
-autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
+augroup vimrc_au
+	" Clear the group
+	autocmd!
+
+	" Redo syntax
+	autocmd BufRead,BufNewFile *.do set ft=sh
+
+	" Do not use spaces for python
+	autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
+augroup END
