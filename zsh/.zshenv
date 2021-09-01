@@ -20,6 +20,9 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$(yarn global bin)
 export PATH=$PATH:/mnt/DATA/android/apktool
 
+# Rust
+. "$HOME/.cargo/env"
+
 # Default applications
 export EDITOR="nvim"
 export VISUAL="nvim"
