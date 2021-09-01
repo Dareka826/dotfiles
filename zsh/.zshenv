@@ -13,8 +13,12 @@ export XMODIFIERS="@im=fcitx"
 export QT_STYLE_OVERRIDE="kvantum"
 
 # Path
+export PATH=$PATH:~/.local/bin
+
 export GOPATH=~/.go
-export PATH=$PATH:~/.local/bin:$GOPATH/bin:$(yarn global bin)
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$(yarn global bin)
+export PATH=$PATH:/mnt/DATA/android/apktool
 
 # Default applications
 export EDITOR="nvim"
