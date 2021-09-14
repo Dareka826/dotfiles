@@ -1,0 +1,14 @@
+#!/bin/sh
+
+alias ffmpeg="ffmpeg -hide_banner"
+
+# For every supplied file
+for f in "$@"; do
+	NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$//')_smol.webm" # Replace extension
+
+	# Two-pass constant quality
+	ffmpeg -i "$f" -c:v libvpx-vp9 -b:v 0 -crf 30 -pass 1 -an -f null /dev/null && \
+	ffmpeg -i "$f" -c:v libvpx-vp9 -b:v 0 -crf 30 -pass 2 -c:a libopus -b:a 128k "$NEW_FNAME"
+
+	touch -r "$f" "$NEW_FNAME" # Copy over timestamp
+done

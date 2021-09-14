@@ -1,5 +1,7 @@
 #!/bin/sh
 
+alias ffmpeg="ffmpeg -hide_banner"
+
 # For every supplied file
 for f in "$@"; do
 	NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$//')_smol.mkv" # Replace extension
