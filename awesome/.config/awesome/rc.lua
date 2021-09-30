@@ -12,7 +12,6 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
 -- {{{ Error handling
@@ -46,15 +45,15 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = terminal .. " -e " .. editor
+-- editor = os.getenv("EDITOR") or "nvim"
+-- editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -77,18 +76,15 @@ awful.layout.layouts = {
 }
 -- }}}
 
--- {{{ Menu
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%Y-%m-%d %H:%M ")
+
+-- Status
+mystatus = awful.widget.watch({ os.getenv(HOME) .. "/.local/bin/status.sh", 1 })
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -148,17 +144,17 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 24 })
 
     -- Create title of focused window
-	s.myfocusedtitle = awful.widget.tasklist({
-		screen = s,
-		filter = awful.widget.tasklist.filter.focused,
-		style = {
+    s.myfocusedtitle = awful.widget.tasklist({
+        screen = s,
+        filter = awful.widget.tasklist.filter.focused,
+        style = {
             align = "center",
             tasklist_disable_icon = true
         }
-	})
+    })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -171,6 +167,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.myfocusedtitle, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            mystatus,
             mykeyboardlayout,
             mytextclock,
             s.mylayoutbox,
@@ -364,12 +361,12 @@ awful.rules.rules = {
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
+                     focus = awful.client.focus.filter, -- Excludes dock, desktop, etc. windows
                      raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                     screen = awful.screen.preferred, -- focused screen, but the same when awesome is restarted
+                     placement = awful.placement.no_overlap + awful.placement.no_offscreen
      }
     },
 
@@ -402,14 +399,14 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+    -- Add titlebars to dialogs
+    { rule_any = { type = { "dialog" }
+      }, properties = { titlebars_enabled = true }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
+    -- Set Discord to always map on the tag named "1" on screen 1.
+    { rule = { class = "Discord" },
+      properties = { screen = 1, tag = "1" } },
 }
 -- }}}
 
@@ -432,12 +429,12 @@ end)
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
     local buttons = gears.table.join(
-        awful.button({ }, 1, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
+        awful.button({ }, 1, function() -- Move with LMB
+            c:emit_signal("request::activate", "titlebar", { raise = true })
             awful.mouse.client.move(c)
         end),
-        awful.button({ }, 3, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
+        awful.button({ }, 3, function() -- Resize with RMB
+            c:emit_signal("request::activate", "titlebar", { raise = true })
             awful.mouse.client.resize(c)
         end)
     )
@@ -457,7 +454,7 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.closebutton    (c),
+            awful.titlebar.widget.closebutton(c),
             layout = wibox.layout.fixed.horizontal()
         },
         layout = wibox.layout.align.horizontal
@@ -466,9 +463,10 @@ end)
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
+    c:emit_signal("request::activate", "mouse_enter", { raise = false })
 end)
 
+-- Change border color when window is in focus
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
