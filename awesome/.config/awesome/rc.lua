@@ -86,6 +86,33 @@ mytextclock = wibox.widget.textclock("%Y-%m-%d %H:%M ")
 -- Status
 mystatus = awful.widget.watch({ os.getenv(HOME) .. "/.local/bin/status.sh", 1 })
 
+-- Custom clock
+local myclock = wibox.widget({
+    {
+        id     = "mytext",
+        text   = "----",
+        widget = wibox.widget.textbox,
+    },
+    layout   = wibox.layout.stack,
+    set_text = function(self, text)
+        self.mytext.text = text
+    end,
+})
+
+gears.timer({
+    timeout   = 1,
+    call_now  = true,
+    autostart = true,
+    callback  = function()
+        awful.spawn.easy_async(
+            { "date", "+%H:%M:%S" },
+            function(out)
+                myclock.text = out
+            end
+        )
+    end
+})
+
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -171,6 +198,7 @@ awful.screen.connect_for_each_screen(function(s)
             mykeyboardlayout,
             mytextclock,
             s.mylayoutbox,
+			myclock,
         },
     }
 end)
