@@ -13,7 +13,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-"Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 Plug 'gyim/vim-boxdraw'
 "Plug 'baskerville/vim-sxhkdrc'
 "Plug 'rubixninja314/vim-mcfunction'
@@ -29,19 +29,21 @@ Plug 'puremourning/vimspector'
 Plug 'tpope/vim-unimpaired'
 Plug 'tomasr/molokai'
 Plug 'axvr/photon.vim'
+Plug 'Luxed/ayu-vim'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
 " Colorscheme
-if $NVIM_THEME == "photon"
-	colorscheme photon
-else
-	colorscheme molokai
-endif
+"colorscheme photon
+"colorscheme molokai
+set termguicolors
+set background=dark
+let g:ayucolor = "mirage"
+colorscheme ayu
 
 " Make emmet's ctrl-y only work in insert mode
-"let g:user_emmet_mode='i'
-"let g:user_emmet_leader_key='<C-y>'
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key='<C-y>'
 
 " Lightline settings
 let g:lightline = {
