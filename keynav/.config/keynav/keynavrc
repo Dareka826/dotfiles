@@ -1,0 +1,41 @@
+clear
+ctrl+semicolon start
+Escape end
+ctrl+bracketleft end
+
+q record ~/.config/keynav/macros
+shift+at playback
+
+a history-back
+
+h cut-left
+j cut-down
+k cut-up
+l cut-right
+
+shift+h move-left
+shift+j move-down
+shift+k move-up
+shift+l move-right
+
+space warp,click 1,end
+Return warp,click 1,end
+semicolon warp,end
+
+w warp
+t windowzoom
+c cursorzoom 300 300
+
+# click
+1 click 1
+2 click 2
+3 click 3
+4 click 4
+5 click 5
+
+# drag
+shift+1 drag 1
+shift+2 drag 2
+shift+3 drag 3
+shift+4 drag 4
+shift+5 drag 5
