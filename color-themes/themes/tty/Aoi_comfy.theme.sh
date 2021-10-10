@@ -1,20 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 
-[ "$TERM" = "linux" ] && \
-	printf '%b' '\e]P0201610
-				 \e]P8A89381
-				 \e]P1A17152
-				 \e]P9A17152
-				 \e]P2927965
-				 \e]PA927965
-				 \e]P3AC8767
-				 \e]PBAC8767
-				 \e]P4CE976D
-				 \e]PCCE976D
-				 \e]P5DD9E67
-				 \e]PDDD9E67
-				 \e]P6FBD177
-				 \e]PEFBD177
-				 \e]P7F1D2B9
-				 \e]PFF1D2B9
-				 \ec'
+[ $TERM = "linux" ] || exit 0
+
+printf '\033]P0201610
+        \033]P8a89381
+        \033]P1a17152
+        \033]P9a17152
+        \033]P2927965
+        \033]PA927965
+        \033]P3ac8767
+        \033]PBac8767
+        \033]P4ce976d
+        \033]PCce976d
+        \033]P5dd9e67
+        \033]PDdd9e67
+        \033]P6fbd177
+        \033]PEfbd177
+        \033]P7f1d2b9
+        \033]PFf1d2b9
+        \033c'

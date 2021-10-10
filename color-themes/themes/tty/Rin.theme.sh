@@ -1,19 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 
-printf '%b' '\e]P0111111
-			 \e]P8444444
-			 \e]P1FF0066
-			 \e]P9FF0066
-			 \e]P200FF66
-			 \e]PA00FF66
-			 \e]P3FF6600
-			 \e]PBFF6600
-			 \e]P40066FF
-			 \e]PC0066FF
-			 \e]P56600FF
-			 \e]PD6600FF
-			 \e]P633EECC
-			 \e]PE33EECC
-			 \e]P7888888
-			 \e]PFFFFFFF
-			 \ec'
+[ $TERM = "linux" ] || exit 0
+
+printf '\033]P0111111
+        \033]P8444444
+        \033]P1ff0066
+        \033]P9ff0066
+        \033]P200ff66
+        \033]PA00ff66
+        \033]P3ff6600
+        \033]PBff6600
+        \033]P40066ff
+        \033]PC0066ff
+        \033]P56600ff
+        \033]PD6600ff
+        \033]P633eecc
+        \033]PE33eecc
+        \033]P7888888
+        \033]PFffffff
+        \033c'

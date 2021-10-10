@@ -1,20 +1,20 @@
-#!/bin/bash
+#!/bin/sh
 
-echo -ne   '\e]11;#161B1D\e\\' #BG
-echo -ne   '\e]10;#7EA2B4\e\\' #FG
-echo -ne  '\e]4;0;#161B1D\e\\' #C0
-echo -ne  '\e]4;8;#5A7B8C\e\\' #C8
-echo -ne  '\e]4;1;#D22D72\e\\' #C1
-echo -ne  '\e]4;9;#D22D72\e\\' #C9
-echo -ne  '\e]4;2;#568C3B\e\\' #C2
-echo -ne '\e]4;10;#568C3B\e\\' #C10
-echo -ne  '\e]4;3;#8A8A0F\e\\' #C3
-echo -ne '\e]4;11;#8A8A0F\e\\' #C11
-echo -ne  '\e]4;4;#257FAD\e\\' #C4
-echo -ne '\e]4;12;#257FAD\e\\' #C12
-echo -ne  '\e]4;5;#5D5DB1\e\\' #C5
-echo -ne '\e]4;13;#5D5DB1\e\\' #C13
-echo -ne  '\e]4;6;#2D8F6F\e\\' #C6
-echo -ne '\e]4;14;#2D8F6F\e\\' #C14
-echo -ne  '\e]4;7;#7EA2B4\e\\' #C7
-echo -ne '\e]4;15;#EBF8FF\e\\' #C15
+printf   '\033]11;#161b1d\033\\' #BG
+printf   '\033]10;#7ea2b4\033\\' #FG
+printf  '\033]4;0;#161b1d\033\\' #C0
+printf  '\033]4;8;#5a7b8c\033\\' #C8
+printf  '\033]4;1;#d22d72\033\\' #C1
+printf  '\033]4;9;#d22d72\033\\' #C9
+printf  '\033]4;2;#568c3b\033\\' #C2
+printf '\033]4;10;#568c3b\033\\' #C10
+printf  '\033]4;3;#8a8a0f\033\\' #C3
+printf '\033]4;11;#8a8a0f\033\\' #C11
+printf  '\033]4;4;#257fad\033\\' #C4
+printf '\033]4;12;#257fad\033\\' #C12
+printf  '\033]4;5;#5d5db1\033\\' #C5
+printf '\033]4;13;#5d5db1\033\\' #C13
+printf  '\033]4;6;#2d8f6f\033\\' #C6
+printf '\033]4;14;#2d8f6f\033\\' #C14
+printf  '\033]4;7;#7ea2b4\033\\' #C7
+printf '\033]4;15;#ebf8ff\033\\' #C15
