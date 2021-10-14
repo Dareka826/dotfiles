@@ -60,3 +60,10 @@ xdg-which() {
 	printf "Type: %s\n" "$TYPE"
 	printf "App:  %s\n" "$APP"
 }
+
+# Play last replay buffer
+lrb() {
+	cd /mnt/IDATA/OBS_Videos
+	ls Replay_* | sort -r | head -1 | xargs mpv
+}
+
