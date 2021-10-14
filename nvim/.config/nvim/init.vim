@@ -30,6 +30,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tomasr/molokai'
 Plug 'axvr/photon.vim'
 Plug 'Luxed/ayu-vim'
+Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
@@ -40,6 +41,11 @@ set termguicolors
 set background=dark
 let g:ayucolor = "mirage"
 colorscheme ayu
+
+" Firenvim
+if exists('g:started_by_firenvim')
+	set guifont=monospace:h11
+endif
 
 " Make emmet's ctrl-y only work in insert mode
 let g:user_emmet_mode='i'
