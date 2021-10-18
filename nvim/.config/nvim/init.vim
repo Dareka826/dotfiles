@@ -3,8 +3,8 @@ set nocompatible
 " Install vim-plug if not found
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin(stdpath('data') . '/plugged')
@@ -44,7 +44,7 @@ colorscheme ayu
 
 " Firenvim
 if exists('g:started_by_firenvim')
-	set guifont=monospace:h11
+    set guifont=monospace:h11
 endif
 
 " Make emmet's ctrl-y only work in insert mode
@@ -53,25 +53,25 @@ let g:user_emmet_leader_key='<C-y>'
 
 " Lightline settings
 let g:lightline = {
-	\ 'colorscheme': 'deus',
-	\ 'active': {
-		\ 'left': [ [ 'mode', 'paste' ],
-		\			[ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-	\ },
-	\ 'component_function': {
-		\ 'gitbranch': 'FugitiveHead',
-		\ 'cocstatus': 'LightLineCoc'
-	\ },
-	\ }
+    \ 'colorscheme': 'deus',
+    \ 'active': {
+        \ 'left': [ [ 'mode', 'paste' ],
+        \           [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component_function': {
+        \ 'gitbranch': 'FugitiveHead',
+        \ 'cocstatus': 'LightLineCoc'
+    \ },
+    \ }
 
 set laststatus=2
 set noshowmode
 
 function! LightLineCoc()
-	if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
-		return ''
-	endif
-	return trim(coc#status())
+    if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
+        return ''
+    endif
+    return trim(coc#status())
 endfunction
 
 " fzf settings
@@ -146,7 +146,7 @@ set noerrorbells " Disable annoying error bells
 
 " Tabs and spaces
 set tabstop=4 shiftwidth=4
-set softtabstop=0 noexpandtab
+set softtabstop=-1 expandtab
 set autoindent
 set list listchars=tab:>·,trail:-,nbsp:+
 
@@ -176,14 +176,14 @@ nnoremap <leader><space> :noh<CR>
 
 " Coc use TAB to move in the popup menu
 inoremap <silent><expr> <TAB>
-	\ pumvisible() ? "\<C-n>" :
-	\ <SID>check_back_space() ? "\<TAB>" :
-	\ coc#refresh()
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
@@ -203,8 +203,8 @@ nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 "nnoremap <leader>gf :%Neoformat<CR>
 "
 "let g:neoformat_cpp_clangformat = {
-"	\ 'exe': 'clang-format',
-"	\ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
+"    \ 'exe': 'clang-format',
+"    \ 'args': ['--style="{IndentWidth: 4, TabWidth: 4, UseTab: Always, IndentAccessModifiers: true}"']
 "\}
 "let g:neoformat_enabled_cpp = ['clangformat']
 "let g:neoformat_enabled_c = ['clangformat']
@@ -230,12 +230,12 @@ nnoremap <leader>dx :call vimspector#Stop()<CR>
 let g:c_syntax_for_h = 1
 
 augroup vimrc_au
-	" Clear the group
-	autocmd!
+    " Clear the group
+    autocmd!
 
-	" Redo syntax
-	autocmd BufRead,BufNewFile *.do set ft=sh
+    " Redo syntax
+    autocmd BufRead,BufNewFile *.do set ft=sh
 
-	" Do not use spaces for python
-	autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
+    " Do not use spaces for python
+    autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
 augroup END
