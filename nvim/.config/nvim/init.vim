@@ -52,7 +52,7 @@ endif
 let g:user_emmet_mode='i'
 let g:user_emmet_leader_key='<C-y>'
 
-" Lightline settings
+" Lightline
 let g:lightline = {
     \ 'colorscheme': 'deus',
     \ 'active': {
@@ -75,11 +75,11 @@ function! LightLineCoc()
     return trim(coc#status())
 endfunction
 
-" fzf settings
+" fzf
 let g:fzf_layout={'down': '30%'}
 nnoremap <C-p> :Files<CR>
 
-" Set the leader to a space
+" leader
 let mapleader=" "
 set notimeout
 
@@ -98,7 +98,7 @@ highlight SignifySignDelete guifg=#FF2255 ctermfg=197
 " Make bg transparent
 nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
 
-" Shortcuts
+" Save & quit shortcuts
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>Q :qa!<CR>
 nnoremap <leader>w :w<CR>
