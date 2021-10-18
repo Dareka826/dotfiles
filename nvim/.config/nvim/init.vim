@@ -31,6 +31,7 @@ Plug 'tomasr/molokai'
 Plug 'axvr/photon.vim'
 Plug 'Luxed/ayu-vim'
 Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
@@ -239,6 +240,18 @@ augroup vimrc_au
     " Do not use spaces for python
     autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
 augroup END
+
+" Treesitter
+lua <<EOF
+require('nvim-treesitter.configs').setup({
+    ensure_installed = { "c" },
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false
+    },
+    indent = { enable = true }
+})
+EOF
 
 " Folds
 set foldmethod=marker
