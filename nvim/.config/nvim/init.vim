@@ -239,3 +239,6 @@ augroup vimrc_au
     " Do not use spaces for python
     autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
 augroup END
+
+" Folds
+set foldmethod=marker
