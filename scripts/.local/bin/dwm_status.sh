@@ -28,7 +28,7 @@ while true; do
             printf("%s. %s | -%s/%s", tracknum, title, stohms(lef), stohms(dur))
         }
         else
-            printf("cmus off ")
+            printf("cmus off")
     }')"
 
     ##### CPU Usage
