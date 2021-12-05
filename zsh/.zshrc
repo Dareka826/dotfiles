@@ -126,7 +126,7 @@ tty | grep pts >/dev/null && {
 ########## Aliases & Functions ##########
 
 # ls -> exa
-LSOPTS="-F"
+LSOPTS="-F --color=auto"
 LSPROG="ls"
 command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gF"
 
@@ -229,7 +229,7 @@ nstime() {
 # Install zinit if not found
 [ -d ~/.zinit ] || {
 	mkdir ~/.zinit
-	git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
+	git clone https://github.com/zdharma-continuum/zinit.git ~/.zinit/bin
 }
 
 source ~/.zinit/bin/zinit.zsh
@@ -239,7 +239,7 @@ zinit light zsh-users/zsh-autosuggestions
 
 zinit ice lucid wait'!0a'
 #zinit light zsh-users/zsh-syntax-highlighting
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 zinit ice lucid wait'0b' \
 	atload"bindkey '^[[A' history-substring-search-up" \
