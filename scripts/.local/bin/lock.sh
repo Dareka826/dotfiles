@@ -6,31 +6,27 @@ i3lock \
 	--force-clock \
 	-S 0 \
 \
-	--ringvercolor=222222ff \
-	--ringwrongcolor=EE99BB \
-	--ringcolor=DD5588FF \
+	--ringver-color=222222ff \
+	--ringwrong-color=EE99BB \
+	--ring-color=DD5588FF \
 \
-	--keyhlcolor=FFFFFFFF \
-	--bshlcolor=111111ff \
+	--keyhl-color=FFFFFFFF \
+	--bshl-color=111111ff \
 \
-	--insidevercolor=00000000 \
-	--insidewrongcolor=00000000 \
-	--insidecolor=00000000 \
+	--insidever-color=00000000 \
+	--insidewrong-color=00000000 \
+	--inside-color=00000000 \
 \
-	--linecolor=00000000 \
-	--separatorcolor=00000000 \
+	--line-color=00000000 \
+	--separator-color=00000000 \
 \
-	--verifcolor=00000000 \
-	--wrongcolor=00000000 \
+	--verif-color=00000000 \
+	--wrong-color=00000000 \
 \
-	--indpos="x+20+r:y+h-r-20" \
-	--timepos="x+w-25:y+h-55" \
-	--datepos="tx:ty+30" \
+	--time-color=DD5588FF \
+	--date-color=FF22AAFF \
 \
-	--timecolor=DD5588FF \
-	--datecolor=FF22AAFF \
-\
-	--datestr="%A %d/%m/%Y" \
+	--date-str="%A %d/%m/%Y" \
 \
 	--time-align 2 \
 	--date-align 2 \
@@ -38,16 +34,18 @@ i3lock \
 	--time-font="Source Code Pro"\
 	--date-font="Source Code Pro" \
 \
-	--timesize=80 \
-	--datesize=15 \
+	--time-size=80 \
+	--date-size=15 \
 \
 	--radius 50 \
 	--ring-width 15 \
 \
-	--veriftext="" \
-	--wrongtext="" \
-	--noinputtext="" \
-	--locktext="" \
-	--lockfailedtext="" || \
-	i3lock
-
+	--ind-pos="x+r+20:y+h-r-20" \
+	--time-pos="x+w-25:y+h-55" \
+	--date-pos="tx:ty+30" \
+\
+	--verif-text="" \
+	--wrong-text="" \
+	--noinput-text="" \
+	--lock-text="" \
+	--lockfailed-text="" || i3lock || pkill -KILL Xorg
