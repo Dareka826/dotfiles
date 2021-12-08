@@ -255,3 +255,10 @@ EOF
 
 " Folds
 set foldmethod=marker
+
+" Neovide
+set guifont=Source\ Code\ Pro
+let g:neovide_cursor_vfx_mode = "pixiedust"
+"let g:neovide_cursor_vfx_particle_density=25.0
+let g:neovide_cursor_vfx_particle_density=50.0
+let g:neovide_cursor_vfx_particle_lifetime=1
