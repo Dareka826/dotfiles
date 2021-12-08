@@ -67,3 +67,18 @@ lrb() {
 	ls Replay_* | sort -r | head -1 | xargs mpv
 }
 
+# fd/find + vim/nvim
+fv() {
+    FV_VIM="vim"
+    command -v nvim && FV_VIM="nvim"
+
+    # If fd exists
+    command -v fd && {
+        fd "$@" -X $FV_VIM \;
+        true # Prevent trigerring the find block
+
+    } || { # else
+        find "$@" -exec $FV_VIM \{\} +
+    }
+}
+
