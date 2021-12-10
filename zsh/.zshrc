@@ -283,3 +283,33 @@ compinit									# Initialize completion
 #	$(date +%y%m%d%H%M%S -r ~/.zshrc.zwc) ]] } } && \
 #	zcompile ~/.zshrc || :
 
+# Prevent using yay for full system upgrades (no useful pacman logs in /var/log)
+yay() {
+    local IS_SYNC="n"
+    local IS_SYSUPGRADE="n"
+    local IS_AUR_LIMITED="n"
+
+    # Parse options
+    for word in "$@"; do
+        if [ "${word:0:1}" = "-" ]; then
+            if [ "${word:1:1}" != "-" ]; then
+                # Single dash option(s)
+                printf "%s" "$word" | grep 'S' >/dev/null && IS_SYNC="y"
+                printf "%s" "$word" | grep 'u' >/dev/null && IS_SYSUPGRADE="y"
+                printf "%s" "$word" | grep 'a' >/dev/null && IS_AUR_LIMITED="y"
+            else
+                # Double dash option
+                [ "$word" = "--sync" ] && IS_SYNC="y"
+                [ "$word" = "--sysupgrade" ] && IS_SYSUPGRADE="y"
+                [ "$word" = "--aur" ] && IS_AUR_LIMITED="y"
+            fi
+        fi
+    done
+
+    # Decide whether to allow
+    if [ "$IS_SYNC" = "y" ] && [ "$IS_SYSUPGRADE" = "y" ] && [ "$IS_AUR_LIMITED" = "n" ]; then
+        printf " \033[31;1m*\033[0;1m DO NOT USE \`yay\` FOR SYSTEM UPGRADES\033[0m\n"
+    else
+        command yay "$@"
+    fi
+}
