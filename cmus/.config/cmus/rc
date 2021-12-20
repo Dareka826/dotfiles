@@ -1,0 +1,3 @@
+set lib_sort=albumartist date album discnumber tracknumber title filename
+#set format_current= [%A] %l / %n. %a - %t
+set format_current= %l / %n. %a - %t
