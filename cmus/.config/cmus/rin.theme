@@ -1,67 +1,153 @@
-# Colors: -1,0-255
+# Colors: -1,0..255
 # Attributes (join with |): default,standout,bold,reverse,underline,blink
 
-# Command line
-set color_cmdline_bg=-1
-set color_cmdline_fg=255
-set color_cmdline_attr=default
-set color_error=196
-set color_info=208
 
-# Separator
+# color_cmdline_bg (default) [Color]
+#        Command line background color.
+set color_cmdline_bg=-1
+
+# color_cmdline_fg (default) [Color]
+#        Command line foreground color.
+set color_cmdline_fg=255
+
+# color_cmdline_attr (default) [Attributes]
+#        Command line attributes.
+set color_cmdline_attr=default
+
+# color_error (lightred) [Color]
+#        Color of error messages displayed on the command line.
+set color_error=160
+
+# color_info (lightyellow) [Color]
+#        Color of informational messages displayed on the command line.
+set color_info=220
+
+# color_separator (blue) [Color]
+#        Color of the separator line between windows in view (1).
 set color_separator=255
 
-# Status line
-set color_statusline_bg=236
+# color_statusline_bg (gray) [Color]
+#        Status line background color.
+set color_statusline_bg=237
+
+# color_statusline_fg (black) [Color]
+#        Status line foreground color.
 set color_statusline_fg=255
+
+# color_statusline_attr (default) [Attributes]
+#        Status line attributes.
 set color_statusline_attr=default
 
-# Title line (bottom)
+# color_titleline_bg (blue) [Color]
+#        Background color of the line displaying currently playing track.
 set color_titleline_bg=57
+
+# color_titleline_fg (white) [Color]
+#        Foreground color of the line displaying currently playing track.
 set color_titleline_fg=255
+
+# color_titleline_attr (default) [Attributes]
+#        Attributes of the line displaying currently playing track.
 set color_titleline_attr=default
 
-# Window Background
+# color_win_bg (default) [Color]
+#        Window background color.
 set color_win_bg=-1
-set color_win_fg=255
 
-# Currently playing, unselected
-set color_win_cur=207
+# color_win_cur (lightyellow) [Color]
+#        Color of currently playing track.
+set color_win_cur=44
+
+# color_win_cur_attr (default) [Attributes]
+#        Currently playing track attributes.
 set color_win_cur_attr=bold
 
-# Inactive pane selection
-set color_win_cur_sel_bg=99
-set color_win_cur_sel_fg=255
-set color_win_cur_sel_attr=default
+# color_win_cur_sel_bg (blue) [Color]
+#        Background color of the selected row which is also the currently
+#        playing track in active window.
+set color_win_cur_sel_bg=44
 
-# Directory
-set color_win_dir=27
+# color_win_cur_sel_fg (lightyellow) [Color]
+#        Foreground color of the selected row which is also the currently
+#        playing track in active window.
+set color_win_cur_sel_fg=233
 
-# Window attributes
+# color_win_cur_sel_attr (default) [Attributes]
+#        Attributes of the selected row which is also the currently
+#        playing track in active window.
+set color_win_cur_sel_attr=bold
+
+# color_win_dir (lightblue) [Color]
+#        Color of directories in browser.
+set color_win_dir=208
+
+# color_win_fg (default) [Color]
+#        Window foreground color.
+set color_win_fg=255
+
+# color_win_attr (default) [Attributes]
+#        Window attributes.
 set color_win_attr=default
 
-# Selection (current) on playing track
-set color_win_inactive_cur_sel_bg=57
-set color_win_inactive_cur_sel_fg=255
-set color_win_inactive_cur_sel_attr=bold|underline
+# color_win_inactive_cur_sel_bg (gray) [Color]
+#        Background color of the selected row which is also the currently
+#        playing track in inactive window.
+set color_win_inactive_cur_sel_bg=241
 
-# Selected items
-set color_win_inactive_sel_bg=99
+# color_win_inactive_cur_sel_fg (lightyellow) [Color]
+#        Foreground color of the selected row which is also the currently
+#        playing track in inactive window.
+set color_win_inactive_cur_sel_fg=255
+
+# color_win_inactive_cur_sel_attr (default) [Attributes]
+#        Attributes of the selected row which is also the currently
+#        playing track in inactive window.
+set color_win_inactive_cur_sel_attr=bold
+
+# color_win_inactive_sel_bg (gray) [Color]
+#        Background color of selected row in inactive window.
+set color_win_inactive_sel_bg=239
+
+# color_win_inactive_sel_fg (black) [Color]
+#        Foreground color of selected row in inactive window.
 set color_win_inactive_sel_fg=255
+
+# color_win_inactive_sel_attr (default) [Attributes]
+#        Attributes of selected row in inactive window.
 set color_win_inactive_sel_attr=default
 
-# Selection (current)
-set color_win_sel_bg=171
-set color_win_sel_fg=white
+# color_win_sel_bg (blue) [Color]
+#        Background color of selected row in active window.
+set color_win_sel_bg=45
+
+# color_win_sel_fg (white) [Color]
+#        Foreground color of selected row in active window.
+set color_win_sel_fg=233
+
+# color_win_sel_attr (default) [Attributes]
+#        Attributes of selected row in active window.
 set color_win_sel_attr=default
 
-# Title (top)
+# color_win_title_bg (blue) [Color]
+#        Background color of window titles (topmost line of the screen).
 set color_win_title_bg=57
+
+# color_win_title_fg (white) [Color]
+#        Foreground color of window titles (topmost line of the screen).
 set color_win_title_fg=255
+
+# color_win_title_attr (default) [Attributes]
+#        Attributes of window titles (topmost line of the screen).
 set color_win_title_attr=default
 
-# Album name in track window (1)
-set color_trackwin_album_bg=255
-set color_trackwin_album_fg=16
-set color_trackwin_album_attr=bold
+# color_trackwin_album_bg (default) [Color]
+#        Background color of the album row shown in the track window.
+set color_trackwin_album_bg=-1
 
+# color_trackwin_album_fg (default) [Color]
+#        Foreground color of the album row shown in the track window.
+set color_trackwin_album_fg=255
+
+# color_trackwin_album_attr (bold) [Attributes]
+#        Attributes of the album row shown in the track window.
+set color_trackwin_album_attr=default
