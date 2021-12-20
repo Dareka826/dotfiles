@@ -84,7 +84,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock("%Y-%m-%d %H:%M ")
 
 -- Status
-mystatus = awful.widget.watch({ os.getenv(HOME) .. "/.local/bin/status.sh", 1 })
+mystatus = awful.widget.watch({ os.getenv("HOME") .. "/.local/bin/status.sh", 1 })
 
 -- Custom clock
 local myclock = wibox.widget({
