@@ -20,3 +20,5 @@ alias audacity="firejail --net=none audacity"
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffpp="ffprobe -hide_banner -pretty"
 
+# Pacman
+alias -g pac="pacman"
