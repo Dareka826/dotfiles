@@ -45,19 +45,30 @@ while true; do
     LAST_CPU_BUSY=$CURR_CPU_BUSY
 
     ##### Memory/Swap Usage
-    MEMINFO="$(cat /proc/meminfo | grep -E "(Mem|Swap)")"
+    # /proc/meminfo relevant information in MiB
+    MEMINFO="$(cat /proc/meminfo | grep -E "(Mem|Swap)" | tr -s ' :' ' ' | awk '
+    /MemTotal/     { mem_total  = $2 }
+    /MemAvailable/ { mem_free   = $2 }
+    /SwapTotal/    { swap_total = $2 }
+    /SwapFree/     { swap_free  = $2 }
 
-    MEM_TOTAL=$(echo "${MEMINFO}" | grep "MemTotal" | grep -Eo "[0-9]+")
-    MEM_FREE=$( echo "${MEMINFO}" | grep "MemAvailable"  | grep -Eo "[0-9]+")
+    END {
+        if(swap_total == 0) {
+            swap_total = 1;
+            swap_used  = 1;
+        }
 
-    SWAP_TOTAL=$(echo "${MEMINFO}" | grep "SwapTotal" | grep -Eo "[0-9]+")
-    SWAP_FREE=$( echo "${MEMINFO}" | grep "SwapFree"  | grep -Eo "[0-9]+")
+        mem_usage  = (mem_total  - mem_free ) / mem_total;
+        swap_usage = (swap_total - swap_free) / swap_total;
+        # mem_used  = mem_total  - mem_free;
+        # swap_used = swap_total - swap_free;
 
-    # If no swap is detected, just make it 100% used
-    [ $SWAP_TOTAL = 0 ] && { SWAP_TOTAL=1; SWAP_FREE=0; }
+        printf("%d%% %d%%\n", mem_usage * 100 + 0.5, swap_usage * 100 + 0.5);
+        # printf("%d/%d GiB %d/%d GiB", mem_used / 1048576 + 0.5, mem_total / 1048576 + 0.5, swap_used / 1048576 + 0.5, swap_total / 1048576 + 0.5);
+    }')"
 
-    MEM_USAGE=$((  100 * (MEM_TOTAL  - MEM_FREE)  / MEM_TOTAL ))
-    SWAP_USAGE=$(( 100 * (SWAP_TOTAL - SWAP_FREE) / SWAP_TOTAL ))
+    MEM_USAGE="${MEMINFO% *}"
+    SWAP_USAGE="${MEMINFO#* }"
 
     ##### Volume
     VOL_PERCENT=$(pamixer --get-volume)
@@ -66,7 +77,7 @@ while true; do
     [ $VOL_MUTED = "true" ] && VOL="M${VOL}M"
 
     ##### Display
-    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}%+${SWAP_USAGE}% | V:${VOL} | $(date "+%Y-%m-%d %H:%M:%S ")"
+    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}+${SWAP_USAGE} | V:${VOL} | $(date "+%Y-%m-%d %H:%M:%S ")"
 
     sleep 1
 done
