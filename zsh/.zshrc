@@ -281,14 +281,6 @@ zstyle ':completion:*' special-dirs true	# Allow completion for special dirs
 unsetopt COMPLETE_ALIASES					# Expand aliases before attempting completion
 compinit									# Initialize completion
 
-########## Compile ##########
-
-# Compile zshrc if newer than compiled version or if it doesn't exist
-#{ [[ ! -e ~/.zshrc.zwc ]] || \
-#{ [[ $(date +%y%m%d%H%M%S -r ~/.zshrc) -gt \
-#	$(date +%y%m%d%H%M%S -r ~/.zshrc.zwc) ]] } } && \
-#	zcompile ~/.zshrc || :
-
 # Prevent using yay for full system upgrades (no useful pacman logs in /var/log)
 yay() {
     local IS_SYNC="n"
