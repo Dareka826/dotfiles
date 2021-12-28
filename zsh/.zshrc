@@ -197,6 +197,10 @@ command -v nvim >/dev/null && alias info="vinfo"
 alias -g v="nvim"
 alias  vim="nvim"
 
+# GPG entry
+GPG_TTY=$(tty)
+export GPG_TTY
+
 [ -f $ZDOTDIR/functions.zsh ] && \
 	source $ZDOTDIR/functions.zsh
 
