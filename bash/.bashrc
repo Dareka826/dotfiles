@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# History stuff
+export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=100000
+export HISTILESIZE=100000
+shopt -s histappend
+
 alias md="mkdir -p"
 alias mv="mv -i"
 alias rm="rm -i"
@@ -64,5 +70,5 @@ bash_prompt_command() {
 	PS1="\[\033[${PATH_COLOR}\]${CUSTOM_PWD}\[\033[0m\]$PS_SYMBOL "
 }
 
-PROMPT_COMMAND="bash_prompt_command"
+PROMPT_COMMAND="history -a; history -c; history -r; bash_prompt_command"
 
