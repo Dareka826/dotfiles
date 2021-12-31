@@ -35,3 +35,4 @@
 *.color7:       #888888
 *.color15:      #FFFFFF
 
+Xft.dpi: 96
