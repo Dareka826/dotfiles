@@ -22,3 +22,7 @@ alias ffpp="ffprobe -hide_banner -pretty"
 
 # Pacman
 alias -g pac="pacman"
+
+alias sue="sudoedit"
+
+alias hyperfine="hyperfine --shell /bin/dash"
