@@ -1,0 +1,34 @@
+{
+  "extractor": {
+    "base-directory": ".",
+    "directory": [],
+    "pixiv": {
+      "refresh-token": "####",
+      "ugoira": true
+    },
+    "fanbox": {
+      "cookies": {
+        "FANBOXSESSID": "####"
+      },
+      "filename": "fanbox_{id}_{num}.{extension}"
+    },
+    "gelbooru": {
+      "cookies": {
+        "fringeBenefits": "yup"
+      }
+    },
+    "e621": {
+      "username": "####",
+      "password": "####"
+    },
+    "paheal": {
+      "filename": "r34p_{id}.{extension}"
+    },
+    "twitter": {
+      "filename": "twitter_{author[name]}_{tweet_id}_{num}.{extension}"
+    }
+  },
+  "downloader": {
+    "mtime": false
+  }
+}
