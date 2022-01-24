@@ -77,7 +77,7 @@ while true; do
     [ $VOL_MUTED = "true" ] && VOL="M${VOL}M"
 
     ##### Display
-    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}+${SWAP_USAGE} | V:${VOL} | $(date "+%Y-%m-%d %H:%M:%S ")"
+    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}+${SWAP_USAGE} | V:${VOL} | $(date "+%Y-%m-%d %H:%M:%S ")" || exit 0
 
     sleep 1
 done
