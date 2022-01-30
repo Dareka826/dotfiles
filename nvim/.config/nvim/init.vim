@@ -108,10 +108,9 @@ highlight SignifySignDelete guifg=#FF2255 ctermfg=197
 nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
 
 " Save & quit shortcuts
-nnoremap <leader>q :q!<CR>
-nnoremap <leader>Q :qa!<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :q!<CR>
 nnoremap <leader>w :w<CR>
-nnoremap <leader>W :wqa!<CR>
 
 " Make <c-o> center the line and unfold
 nnoremap <c-o> <c-o>zzzv
