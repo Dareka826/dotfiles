@@ -32,6 +32,7 @@ Plug 'axvr/photon.vim'
 Plug 'Luxed/ayu-vim'
 Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'jamessan/vim-gnupg'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
