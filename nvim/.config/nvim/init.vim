@@ -27,7 +27,8 @@ Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
 Plug 'puremourning/vimspector'
 Plug 'tpope/vim-unimpaired'
-Plug 'tomasr/molokai'
+"Plug 'tomasr/molokai'
+Plug 'sainnhe/sonokai'
 Plug 'axvr/photon.vim'
 Plug 'Luxed/ayu-vim'
 Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
@@ -37,12 +38,19 @@ call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
 " Colorscheme
-"colorscheme photon
-"colorscheme molokai
-set termguicolors
-set background=dark
-let g:ayucolor = "mirage"
-colorscheme ayu
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+endif
+
+"set background=dark
+"let g:sonokai_style = 'default'
+let g:sonokai_style = 'andromeda'
+let g:sonokai_diagnostic_text_highlight = 1
+let g:sonokai_better_performance = 1
+
+colorscheme sonokai
 
 " Firenvim
 if exists('g:started_by_firenvim')
@@ -55,7 +63,7 @@ let g:user_emmet_leader_key='<C-y>'
 
 " Lightline
 let g:lightline = {
-    \ 'colorscheme': 'deus',
+    \ 'colorscheme': 'sonokai',
     \ 'active': {
         \ 'left': [ [ 'mode', 'paste' ],
         \           [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
