@@ -203,7 +203,7 @@ nmap <silent> <leader>gd <Plug>(coc-definition)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> <leader>gr <Plug>(coc-references)
 
-nmap <silent> <leader>gd :CocList diagnostics<CR>
+nmap <silent> <leader>gs :CocList diagnostics<CR>
 nmap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
 
