@@ -37,6 +37,10 @@ Plug 'jamessan/vim-gnupg'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
+" leader
+let mapleader=" "
+set notimeout
+
 " Colorscheme
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -51,6 +55,10 @@ let g:sonokai_diagnostic_text_highlight = 1
 let g:sonokai_better_performance = 1
 
 colorscheme sonokai
+
+" Make bg transparent
+"nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
+nnoremap <leader>h :let g:sonokai_transparent_background = 1<CR>:colorscheme sonokai<CR>
 
 " Firenvim
 if exists('g:started_by_firenvim')
@@ -88,10 +96,6 @@ endfunction
 let g:fzf_layout={'down': '30%'}
 nnoremap <C-p> :Files<CR>
 
-" leader
-let mapleader=" "
-set notimeout
-
 " Signify
 let g:signify_sign_change='~'
 let g:signify_sign_show_count=0
@@ -103,9 +107,6 @@ nmap <leader>gy :SignifyToggleHighlight<CR>
 highlight SignifySignAdd    guifg=#22AA66 ctermfg=41
 highlight SignifySignChange guifg=#FF6600 ctermfg=202
 highlight SignifySignDelete guifg=#FF2255 ctermfg=197
-
-" Make bg transparent
-nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
 
 " Save & quit shortcuts
 nnoremap <leader>q :q<CR>
