@@ -49,8 +49,8 @@ if exists('+termguicolors')
 endif
 
 "set background=dark
-"let g:sonokai_style = 'default'
-let g:sonokai_style = 'andromeda'
+let g:sonokai_style = 'default'
+"let g:sonokai_style = 'andromeda'
 let g:sonokai_diagnostic_text_highlight = 1
 let g:sonokai_better_performance = 1
 
