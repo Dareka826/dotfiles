@@ -34,3 +34,6 @@ alias hyperfine="hyperfine --shell /bin/dash"
 # URI decode/encode
 alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))"'
+
+# gallery-dl
+alias gdl="gallery-dl --sleep 1 --ugoira-conv"
