@@ -2,6 +2,5 @@
 
 # Choose a praent and which one of it's children to take away and reparent it to root window
 xdotool windowreparent \
-	$(xwininfo -children | grep -Po "^\s+0x[0-9]+.*\(" | grep -Po "0x[0-9]+.*\"" | dmenu | cut -d' ' -f1) \
-	$(xdotool search --maxdepth 0 \.\* 2>/dev/null)
-
+    "$(xwininfo -children | grep -Po "^\s+0x[0-9]+.*\(" | grep -Po "0x[0-9]+.*\"" | dmenu | cut -d' ' -f1)" \
+    "$(xdotool search --maxdepth 0 \.\* 2>/dev/null)"

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Reparent current window into the selected one
-xdotool getactivewindow windowreparent $(xdotool selectwindow)
+xdotool getactivewindow windowreparent "$(xdotool selectwindow)"
