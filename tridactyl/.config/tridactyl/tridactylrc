@@ -1,0 +1,116 @@
+" Unbind <F1> for TST
+unbind <F1>
+
+" Interferes with tabmove
+set completions.Tab.autoselect "false"
+
+" Don't accidentally close the browser
+unbind ZZ
+
+" Detach tab into a new window
+bind gd tabdetach
+bind gD composite tabduplicate; tabdetach
+
+" Search {{{
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+" Clear search highlighting
+bind ,<Space> nohlsearch
+" }}}
+
+" Comment toggle
+bind ;c hint -Jc [class*="expand"],[class*="togg"],[class="comment_folder"]
+
+" Pixiv hint all bookmark/like buttons
+bindurl pixiv.net ;l hint -Jc [class*="gtm-main-bookmark"],[class*="sc-kgq5hw-0 fgVkZi"]
+bindurl pixiv.net ;L hint -Jqc [class*="gtm-main-bookmark"],[class*="sc-kgq5hw-0 fgVkZi"]
+
+" Hint all "interactable" buttons (like, dislike, etc.)
+bindurl youtube.com ;l hint -Jc yt-interaction[class*="yt-icon-button"]
+bindurl youtube.com ;L hint -Jqc yt-interaction[class*="yt-icon-button"]
+
+" Discard all tabs
+command discardall jsb browser.tabs.query({}).then(ts => browser.tabs.discard(ts.map(t=>t.id)))
+
+" Isolate Facebook
+set auconcreatecontainer true
+autocontain facebook\.com facebook
+" Set relaxed because of problems with tabopen -c
+set autocontainmode relaxed
+
+" Move tabs
+bind <C-k> tabmove -1
+bind <C-j> tabmove +1
+
+" Swap J and K because of TST
+unbind J
+unbind K
+bind K tabprev
+bind J tabnext
+
+" Tree Style Tab integration {{{
+
+" TST Commands {{{
+command ttcollapse js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: JS_ARGS[1]})€
+command ttcollapse_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: JS_ARGS[1], recursively: true})€
+command ttc ttcollapse
+command ttcr ttcollapse
+
+command ttexpand js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'expand-tree', tab: JS_ARGS[1]})€
+command ttexpand_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'expand-tree', tab: JS_ARGS[1], recursively: true})€
+command tte ttexpand
+command tter ttexpand_recursively
+
+command ttcollapse_current_or_parent js browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'get-tree-structure', tab: 'current'}).then(struct => browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: struct[0].collapsed ? 'parent' : 'current'}))
+
+command ttfocus js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'focus', tab: JS_ARGS[1]})€
+command ttf ttfocus
+
+command ttindent js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'indent', tab: JS_ARGS[1]})€
+command ttindent_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'indent', tab: JS_ARGS[1], followChildren: true})€
+command tti ttindent
+command ttir ttindent_recursively
+
+command ttoutdent js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'outdent', tab: JS_ARGS[1]})€
+command ttoutdent_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'outdent', tab: JS_ARGS[1], followChildren: true})€
+command tto ttoutdent
+command ttor ttoutdent_recursively
+
+command ttoutdent_children js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'get-tree', tab: JS_ARGS[1]}).then(cur => console.log(cur.children.forEach(child => browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'outdent', tab: child.id}))))€
+command ttoc ttoutdent_children
+" }}}
+
+" TST Bindings {{{
+" Collapse recursively
+bind zc ttcollapse_current_or_parent
+bind zC ttcollapse_recursively root
+
+" Collapse root
+bind zx ttcollapse root
+
+" Expand recursively
+bind ze ttexpand current
+bind zE ttexpand_recursively current
+
+" Collapse and expand all
+bind zM ttcollapse *
+bind zR ttexpand *
+
+" Focus parent and root
+bind zp ttfocus parent
+bind zP ttfocus root
+
+" Focusing siblings
+bind zj ttfocus nextSibling
+bind zk ttfocus prevSibling
+
+" Recursive indent change
+bind z< ttoutdent_recursively current
+bind z> ttindent_recursively current
+
+" Promote children to siblings
+bind zS ttoutdent_children
+" }}}
+" }}}
