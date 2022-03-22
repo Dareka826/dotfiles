@@ -28,8 +28,8 @@ bindurl pixiv.net ;l hint -Jc [class*="gtm-main-bookmark"],[class*="sc-kgq5hw-0 
 bindurl pixiv.net ;L hint -Jqc [class*="gtm-main-bookmark"],[class*="sc-kgq5hw-0 fgVkZi"]
 
 " Hint all "interactable" buttons (like, dislike, etc.)
-bindurl youtube.com ;l hint -Jc yt-interaction[class*="yt-icon-button"]
-bindurl youtube.com ;L hint -Jqc yt-interaction[class*="yt-icon-button"]
+bindurl youtube.com ;l hint -Jc yt-interaction[class*="yt-icon-button"],#checkboxContainer
+bindurl youtube.com ;L hint -Jqc yt-interaction[class*="yt-icon-button"],#checkboxContainer
 
 " Discard all tabs
 command discardall jsb browser.tabs.query({}).then(ts => browser.tabs.discard(ts.map(t=>t.id)))
