@@ -4,7 +4,15 @@ alias ffmpeg="ffmpeg -hide_banner"
 
 # For every supplied file
 for f in "$@"; do
-	NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$//')_smol.mkv" # Replace extension
-	ffmpeg -i "$f" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$NEW_FNAME" # Convert
-	touch -r "$f" "$NEW_FNAME" # Copy over timestamp
+    NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$/._smol.mkv/')" # Replace extension
+
+    ffmpeg -i "$f" \
+        -c:v libx264 -crf 23 \
+        -c:a libopus -b:a 128k \
+        -preset faster \
+            "$NEW_FNAME" || exit 3 # Convert
+    #ffmpeg -i "$f" -c:v libx264 -crf 23 -c:a libopus -b:a 128k -preset veryfast "$NEW_FNAME" || exit 3
+    #ffmpeg -i "$f" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$NEW_FNAME" || exit 3
+
+    touch -r "$f" "$NEW_FNAME" # Copy over timestamp
 done
