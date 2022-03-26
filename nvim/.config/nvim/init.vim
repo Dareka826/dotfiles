@@ -17,8 +17,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
-Plug 'gyim/vim-boxdraw'
-"Plug 'baskerville/vim-sxhkdrc'
+"Plug 'gyim/vim-boxdraw'
+Plug 'baskerville/vim-sxhkdrc'
 "Plug 'rubixninja314/vim-mcfunction'
 Plug 'ap/vim-css-color'
 "Plug 'ekalinin/Dockerfile.vim'
@@ -32,11 +32,13 @@ Plug 'puremourning/vimspector'
 Plug 'tpope/vim-unimpaired'
 "Plug 'tomasr/molokai'
 Plug 'sainnhe/sonokai'
-Plug 'axvr/photon.vim'
-Plug 'Luxed/ayu-vim'
-Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
+"Plug 'axvr/photon.vim'
+"Plug 'Luxed/ayu-vim'
+"Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'jamessan/vim-gnupg'
+Plug 'djpohly/vim-execline'
+"Plug 'tridactyl/vim-tridactyl'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
