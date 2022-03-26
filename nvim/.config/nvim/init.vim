@@ -10,6 +10,9 @@ endif
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = ['coc-marketplace', 'coc-clangd', 'coc-sh',
+            \ 'coc-json', 'coc-html', 'coc-css', 'coc-html-css-support',
+            \ 'coc-tsserver', 'coc-tslint-plugin']
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
