@@ -46,7 +46,7 @@ while true; do
 
     ##### Memory/Swap Usage
     # /proc/meminfo relevant information in MiB
-    MEMINFO="$(cat /proc/meminfo | grep -E "(Mem|Swap)" | tr -s ' :' ' ' | awk '
+    MEMINFO="$(grep -E "(Mem|Swap)" /proc/meminfo | tr -s ' :' ' ' | awk '
     /MemTotal/     { mem_total  = $2 }
     /MemAvailable/ { mem_free   = $2 }
     /SwapTotal/    { swap_total = $2 }
@@ -74,10 +74,16 @@ while true; do
     VOL_PERCENT=$(pamixer --get-volume)
     VOL_MUTED=$(pamixer --get-mute)
     VOL="${VOL_PERCENT}%"
-    [ $VOL_MUTED = "true" ] && VOL="M${VOL}M"
+    [ "$VOL_MUTED" = "true" ] && VOL="M${VOL}M"
+
+    ##### Battery
+    BATTERY="$(cat /sys/class/power_supply/BAT0/capacity)%"
+    BATTERY_STAT="$(cat /sys/class/power_supply/BAT0/status)"
+    printf "%s" "$BATTERY_STAT" | grep -Ei "^charging$"    >/dev/null 2>&1 && BATTERY="${BATTERY}^"
+    printf "%s" "$BATTERY_STAT" | grep -Ei "^discharging$" >/dev/null 2>&1 && BATTERY="${BATTERY}v"
 
     ##### Display
-    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}+${SWAP_USAGE} | V:${VOL} | $(date "+%Y-%m-%d %H:%M:%S ")" || exit 0
+    xsetroot -name " [ ${CMUS} ] | C:${CPU_USAGE}% R:${MEM_USAGE}+${SWAP_USAGE} | V:${VOL} | B:${BATTERY} | $(date "+%Y-%m-%d %H:%M:%S ")" >/dev/null 2>&1 || exit 1
 
     sleep 1
 done
