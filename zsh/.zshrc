@@ -130,11 +130,12 @@ LSOPTS="-F --color=auto"
 LSPROG="ls"
 command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gF"
 
-alias ls="$LSPROG $LSOPTS"
-alias la="$LSPROG $LSOPTS -a"
-alias ll="$LSPROG $LSOPTS -l"
-alias lt="$LSPROG $LSOPTS -hal -s modified"
-alias  l="$LSPROG $LSOPTS -hal"
+alias  ls="$LSPROG $LSOPTS"
+alias   l="$LSPROG $LSOPTS -hal"
+alias  ll="$LSPROG $LSOPTS -hl"
+alias  la="$LSPROG $LSOPTS -a"
+alias  li="$LSPROG $LSOPTS -hali"
+alias lli="$LSPROG $LSOPTS -hli"
 
 # Mkdir shortcut, rm and mv confirmation
 alias md="mkdir -p"
