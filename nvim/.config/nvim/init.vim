@@ -264,6 +264,9 @@ EOF
 " Folds
 set foldmethod=marker
 
+" For macros
+set lazyredraw
+
 " Neovide
 set guifont=Source\ Code\ Pro
 let g:neovide_cursor_vfx_mode = "pixiedust"
