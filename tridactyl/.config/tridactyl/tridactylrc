@@ -11,6 +11,9 @@ unbind ZZ
 bind gd tabdetach
 bind gD composite tabduplicate; tabdetach
 
+" Remove undo as it behaves unpredictably
+unbind u
+
 " Search {{{
 bind / fillcmdline find
 bind ? fillcmdline find -?
