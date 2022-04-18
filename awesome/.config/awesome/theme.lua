@@ -32,6 +32,8 @@ theme.border_normal = "#444444"
 theme.border_focus  = "#6600ff"
 theme.border_marked = "#ff6600"
 
+theme.master_width_factor = 0.6
+
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
