@@ -373,6 +373,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Update layout text
     awful.tag.attached_connect_signal(s, "property::selected", function() update_layout_text(s) end)
     awful.tag.attached_connect_signal(s, "property::layout",   function() update_layout_text(s) end)
+    awful.tag.attached_connect_signal(s, "untagged",           function() update_layout_text(s) end)
     s.mylayouttext:buttons(gears.table.join(
                            awful.button({}, 1, function() awful.layout.inc( 1) end),
                            awful.button({}, 3, function() awful.layout.inc(-1) end)))
