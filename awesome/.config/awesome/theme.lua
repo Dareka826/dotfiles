@@ -9,29 +9,26 @@ local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
+local cairo = require("lgi").cairo
+
 local theme = {}
 
-theme.font          = "Source Code Pro Regular 8"
+theme.font          = "Source Code Pro Regular 10"
 
-theme.bg_bar        = "#111111"
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#6600ff"
 theme.bg_urgent     = "#ff6600"
+theme.bg_minimize   = "#444444"
+theme.bg_systray    = theme.bg_normal
 
-theme.taglist_bg_empty    = "#222222"
-theme.taglist_bg_occupied = "#444444"
+theme.fg_normal     = "#ffffff"
+theme.fg_focus      = "#ffffff"
+theme.fg_urgent     = "#ffbbbb"
+theme.fg_minimize   = "#bbbbbb"
 
-theme.tasklist_bg        = theme.bg_bar
-theme.tasklist_bg_focus  = theme.bg_bar
-theme.tasklist_bg_urgent = theme.bg_bar
-
-theme.fg_normal     = "#eeeeee"
-theme.fg_focus      = "#eeeeee"
-theme.fg_urgent     = "#ffffff"
-
-theme.useless_gap   = dpi(0)
+theme.useless_gap   = 0
 theme.border_width  = 2
-theme.border_normal = "#333333"
+theme.border_normal = "#444444"
 theme.border_focus  = "#6600ff"
 theme.border_marked = "#ff6600"
 
@@ -48,14 +45,42 @@ theme.border_marked = "#ff6600"
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
+theme.prompt_bg = "#ee6600"
+
 -- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
-)
+local taglist_square_size   = 5 -- Square size
+local taglist_square_margin = 2 -- Square offset from top-left
+
+-- Selected tag square img
+do
+    theme.taglist_squares_sel = cairo.ImageSurface.create(
+        cairo.Format.ARGB32,
+        taglist_square_size + taglist_square_margin,
+        taglist_square_size + taglist_square_margin
+    )
+    local cr = cairo.Context(theme.taglist_squares_sel)
+
+    cr:set_source_rgb(1, 1, 1)
+    cr:set_antialias(cairo.Antialias.NONE)
+    cr:rectangle(taglist_square_margin, taglist_square_margin, taglist_square_size, taglist_square_size)
+    cr:fill()
+end
+
+-- Unselected tag square img
+do
+    theme.taglist_squares_unsel = cairo.ImageSurface.create(
+        cairo.Format.ARGB32,
+        taglist_square_size + taglist_square_margin,
+        taglist_square_size + taglist_square_margin
+    )
+    local cr = cairo.Context(theme.taglist_squares_unsel)
+
+    cr:set_source_rgb(1, 1, 1)
+    cr:set_antialias(cairo.Antialias.NONE)
+    cr:rectangle(taglist_square_margin+1, taglist_square_margin+1, taglist_square_size-1, taglist_square_size-1)
+    cr:set_line_width(1)
+    cr:stroke()
+end
 
 -- Variables set for theming notifications:
 -- notification_font
@@ -75,53 +100,11 @@ theme.menu_width  = dpi(100)
 -- beautiful.variable in your rc.lua
 --theme.bg_widget = "#cc0000"
 
--- Define the image to load
-theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
-theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
-
-theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"
-theme.titlebar_minimize_button_focus  = themes_path.."default/titlebar/minimize_focus.png"
-
-theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
-theme.titlebar_ontop_button_focus_inactive  = themes_path.."default/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_active = themes_path.."default/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_active  = themes_path.."default/titlebar/ontop_focus_active.png"
-
-theme.titlebar_sticky_button_normal_inactive = themes_path.."default/titlebar/sticky_normal_inactive.png"
-theme.titlebar_sticky_button_focus_inactive  = themes_path.."default/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_active = themes_path.."default/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_active  = themes_path.."default/titlebar/sticky_focus_active.png"
-
-theme.titlebar_floating_button_normal_inactive = themes_path.."default/titlebar/floating_normal_inactive.png"
-theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/floating_focus_inactive.png"
-theme.titlebar_floating_button_normal_active = themes_path.."default/titlebar/floating_normal_active.png"
-theme.titlebar_floating_button_focus_active  = themes_path.."default/titlebar/floating_focus_active.png"
-
-theme.titlebar_maximized_button_normal_inactive = themes_path.."default/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
-
--- theme.wallpaper = "~/Wallpapers/IMG_20210329_105919.jpg"
-theme.wallpaper = "~/Wallpapers/xubuntu/xubuntu-wallpapers_21.04.1/usr/share/xfce4/backdrops/xubuntu-zesty.png"
-
--- You can use your own layout icons like this:
-theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
-theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
-theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
-theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
-theme.layout_max = themes_path.."default/layouts/maxw.png"
-theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
-theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
-theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
-theme.layout_tile = themes_path.."default/layouts/tilew.png"
-theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
-theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
-theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
-theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
-theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
-theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
-theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+-- Layout text
+theme.layout_text_floating = "><>"
+theme.layout_text_max      = "[M]"
+theme.layout_text_tileleft = "=[]"
+theme.layout_text_tile     = "[]="
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
@@ -131,6 +114,10 @@ theme.awesome_icon = theme_assets.awesome_icon(
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
+
+theme.tasklist_disable_icon = true
+
+theme.wibar_height = 20
 
 return theme
 
