@@ -510,7 +510,19 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control", "Shift" }, "Return", function() awful.spawn(terminal .. " -e tmux") end,
         {description="spawn a terminal with tmux",          group="launcher"}),
     awful.key({ modkey, "Control", "Shift" }, "a",      function() awful.spawn(terminal .. " -e tmux attach") end,
-        {description="spawn a terminal and attach to tmux", group="launcher"})
+        {description="spawn a terminal and attach to tmux", group="launcher"}),
+
+    -- XF86
+    awful.key({ }, "XF86AudioMute",        function() awful.spawn("pamixer --toggle-mute") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function() awful.spawn("pamixer --allow-boost --increase 5") end),
+    awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn("pamixer --allow-boost --decrease 5") end),
+
+    awful.key({ }, "XF86AudioPlay",  function() awful.spawn("cmus-remote --pause") end),
+    awful.key({ }, "XF86AudioStop",  function() awful.spawn("cmus-remote --stop" ) end),
+    awful.key({ }, "XF86AudioPrev",  function() awful.spawn("cmus-remote --prev" ) end),
+    awful.key({ }, "XF86AudioNext",  function() awful.spawn("cmus-remote --next" ) end),
+
+    awful.key({ }, "XF86Calculator", function() awful.spawn(terminal .. " -e calc") end)
 )
 
 clientkeys = gears.table.join(
