@@ -29,7 +29,7 @@ end
 -- Handle runtime errors after startup
 do
     local in_error = false
-    awesome.connect_signal("debug::error", function (err)
+    awesome.connect_signal("debug::error", function(err)
         -- Make sure we don't go into an endless error loop
         if in_error then return end
         in_error = true
@@ -539,7 +539,7 @@ for i = 1, 9 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
-                  function ()
+                  function()
                         local screen = awful.screen.focused()
                         local tag = screen.tags[i]
                         if tag then
@@ -549,7 +549,7 @@ for i = 1, 9 do
                   {description = "view tag #"..i, group = "tag"}),
         -- Toggle tag display.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
-                  function ()
+                  function()
                       local screen = awful.screen.focused()
                       local tag = screen.tags[i]
                       if tag then
@@ -559,7 +559,7 @@ for i = 1, 9 do
                   {description = "toggle tag #" .. i, group = "tag"}),
         -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
-                  function ()
+                  function()
                       if client.focus then
                           local tag = client.focus.screen.tags[i]
                           if tag then
@@ -570,7 +570,7 @@ for i = 1, 9 do
                   {description = "move focused client to tag #"..i, group = "tag"}),
         -- Toggle tag on focused client.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-                  function ()
+                  function()
                       if client.focus then
                           local tag = client.focus.screen.tags[i]
                           if tag then
@@ -583,14 +583,14 @@ for i = 1, 9 do
 end
 
 clientbuttons = gears.table.join(
-    awful.button({ }, 1, function (c)
+    awful.button({ }, 1, function(c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
     end),
-    awful.button({ modkey }, 1, function (c)
+    awful.button({ modkey }, 1, function(c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
         awful.mouse.client.move(c)
     end),
-    awful.button({ modkey }, 3, function (c)
+    awful.button({ modkey }, 3, function(c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
         awful.mouse.client.resize(c)
     end)
