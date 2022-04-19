@@ -237,13 +237,21 @@ gears.timer {
                     {"cat", "/sys/class/power_supply/BAT0/status"},
                     function(status)
                         status = status:sub(1,-2)
-                        if status == "charging" then
-                            mybattery.text = " B:" .. cap:sub(1,-2) .. "%^ "
-                        else if status == "discharging" then
-                            mybattery.text = " B:" .. cap:sub(1,-2) .. "%v "
-                        else
-                            mybattery.text = " B:" .. cap:sub(1,-2) .. "% "
-                        end end
+                        cap = cap:sub(1,-2)
+
+                        local color = "<span>"
+                        if tonumber(cap) < 20 then
+                            color = "<span foreground='#ee0000'>"
+                        end
+
+                        local indicator = ""
+                        if status == "Charging" then
+                            indicator = "^"
+                        elseif status == "Discharging" then
+                            indicator = "v"
+                        end
+
+                        mybattery.markup = " B:" .. color .. cap .. "%</span>" .. indicator .. " "
                     end
                 )
             end
