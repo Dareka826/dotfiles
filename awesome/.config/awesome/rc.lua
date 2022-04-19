@@ -478,11 +478,10 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "d", function() awful.tag.incnmaster(-1, nil, true) end, {description="decrease the number of master clients", group="layout"}),
 
     awful.key({ modkey,           }, "space", function() awful.layout.inc( 1) end, {description="select next",     group="layout"}),
-    --awful.key({ modkey, "Control" }, "space", function() awful.layout.inc(-1) end, {description="select previous", group="layout"}),
+    awful.key({ modkey, "Control" }, "space", function() awful.layout.inc(-1) end, {description="select previous", group="layout"}),
 
     awful.key({ modkey,           }, "t", function() awful.layout.set(awful.layout.suit.tile)           end, {description="set to tile layout",        group="layout"}),
     awful.key({ modkey,           }, "m", function() awful.layout.set(awful.layout.suit.max)            end, {description="set to monocle layout",     group="layout"}),
-    --awful.key({ modkey, "Shift"   }, "m", function() awful.layout.set(awful.layout.suit.max.fullscreen) end, {description="set to monocle max layout", group="layout"}),
     awful.key({ modkey,           }, "f", function() awful.layout.set(awful.layout.suit.floating)       end, {description="set to floating layout",    group="layout"}),
 
     -- Prompt
