@@ -489,7 +489,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "x",
               function()
                   awful.prompt.run {
-                    prompt       = "Run Lua code: ",
+                    prompt       = " Run Lua code: ",
                     textbox      = awful.screen.focused().mypromptbox.widget,
                     exe_callback = awful.util.eval,
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
@@ -668,6 +668,7 @@ client.connect_signal("manage", function(c)
         awful.placement.no_offscreen(c)
     end
 
+    -- Make all floating windows also above
     if c.floating then
         c.above = true
         c:raise()
