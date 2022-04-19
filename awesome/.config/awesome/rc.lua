@@ -331,7 +331,7 @@ local function update_layout_text(scr)
         clients_count = clients_count + #clients
     end
 
-    local txt = (beautiful["layout_text_" .. layout_name] or ("[" .. layout_name .. "]")) .. ":" .. clients_count
+    local txt = (beautiful["layout_text_" .. layout_name] or ("[" .. layout_name .. "]")) .. " :" .. clients_count
     scr.mylayouttext:get_children_by_id("layout_text")[1]:set_text(txt)
 end
 
