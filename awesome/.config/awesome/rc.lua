@@ -481,8 +481,14 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "space", function() awful.layout.inc(-1) end, {description="select previous", group="layout"}),
 
     awful.key({ modkey,           }, "t", function() awful.layout.set(awful.layout.suit.tile)           end, {description="set to tile layout",        group="layout"}),
-    awful.key({ modkey,           }, "m", function() awful.layout.set(awful.layout.suit.max)            end, {description="set to monocle layout",     group="layout"}),
     awful.key({ modkey,           }, "f", function() awful.layout.set(awful.layout.suit.floating)       end, {description="set to floating layout",    group="layout"}),
+    awful.key({ modkey,           }, "m", function()
+        awful.layout.set(awful.layout.suit.max)
+        -- Raise the focused window when switching
+        if client.focus then
+            client.focus:raise()
+        end
+    end, {description="set to monocle layout",     group="layout"}),
 
     -- Prompt
     awful.key({ modkey }, "x",
