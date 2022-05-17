@@ -225,39 +225,41 @@ gears.timer {
 
 -- Battery {{{
 mybattery = wibox.widget.textbox(" B:??% ")
-gears.timer {
-    timeout   = 5,
-    call_now  = true,
-    autostart = true,
-    callback  = function()
-        awful.spawn.easy_async(
-            {"cat", "/sys/class/power_supply/BAT0/capacity"},
-            function(cap)
-                awful.spawn.easy_async(
-                    {"cat", "/sys/class/power_supply/BAT0/status"},
-                    function(status)
-                        status = status:sub(1,-2)
-                        cap = cap:sub(1,-2)
+if gears.filesystem.is_dir("/sys/class/power_supply/BAT0") then
+    gears.timer {
+        timeout   = 5,
+        call_now  = true,
+        autostart = true,
+        callback  = function()
+            awful.spawn.easy_async(
+                {"cat", "/sys/class/power_supply/BAT0/capacity"},
+                function(cap)
+                    awful.spawn.easy_async(
+                        {"cat", "/sys/class/power_supply/BAT0/status"},
+                        function(status)
+                            status = status:sub(1,-2)
+                            cap = cap:sub(1,-2)
 
-                        local color = "<span>"
-                        if tonumber(cap) < 20 then
-                            color = "<span foreground='#ee0000'>"
+                            local color = "<span>"
+                            if tonumber(cap) < 20 then
+                                color = "<span foreground='#ee0000'>"
+                            end
+
+                            local indicator = ""
+                            if status == "Charging" then
+                                indicator = "^"
+                            elseif status == "Discharging" then
+                                indicator = "v"
+                            end
+
+                            mybattery.markup = " B:" .. color .. cap .. "%</span>" .. indicator .. " "
                         end
-
-                        local indicator = ""
-                        if status == "Charging" then
-                            indicator = "^"
-                        elseif status == "Discharging" then
-                            indicator = "v"
-                        end
-
-                        mybattery.markup = " B:" .. color .. cap .. "%</span>" .. indicator .. " "
-                    end
-                )
-            end
-        )
-    end
-} -- }}}
+                    )
+                end
+            )
+        end
+    }
+end -- }}}
 
 -- Clock
 mytextclock = wibox.widget.textclock(" %Y-%m-%d %H:%M:%S ", 1)
