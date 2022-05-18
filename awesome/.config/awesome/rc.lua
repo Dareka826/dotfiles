@@ -122,6 +122,9 @@ END {
         )
     end
 } -- }}}
+mycmus:buttons(
+    awful.button({}, 1, function() awful.spawn("cmus-remote -u") end)
+)
 
 -- Cpu and ram {{{
 mycpuram = {
