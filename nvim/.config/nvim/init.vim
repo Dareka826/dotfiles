@@ -244,6 +244,8 @@ augroup vimrc_au
 
     " Redo syntax
     autocmd BufRead,BufNewFile *.do set ft=sh
+    " Execline syntax
+    autocmd BufRead,BufNewFile *.xl set ft=execline
 
     " Do not use spaces for python
     autocmd BufRead,BufNewFile *.py,*.pyw set noexpandtab
