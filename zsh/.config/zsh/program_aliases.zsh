@@ -37,3 +37,10 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; print(ul.quote_plus
 
 # gallery-dl
 alias gdl="gallery-dl --sleep 1 --ugoira-conv"
+
+alias cal="cal -3 -m"
+alias c="cal"
+
+alias w="when c m"
+alias ww="when c w"
+alias we="when e"
