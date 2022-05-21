@@ -82,3 +82,23 @@ fv() {
     }
 }
 
+# Display random nvim help page
+v_randhelp() {
+    HELP_NUM="$(cat /usr/share/nvim/runtime/doc/usr_toc.txt | tr '\t' ' ' | grep -E '^  \|[0-9]+\.[0-9]+\|' | grep -Eo '[0-9]+\.[0-9]+' | sort -R | head -1)"
+    nvim --cmd "help ${HELP_NUM}" --cmd "only"
+}
+
+reset_mt7921e() {
+    # Reload driver for wifi chip
+    doas rmmod mt7921e
+    doas modprobe mt7921e
+
+    # Restart connman
+    doas s6-svc -r /run/service/connmand-srv
+}
+
+find_gainless() {
+    fd --print0 -t f '\.(opus|flac|wav|mp3)$' \
+        | xargs -0 -n 1 \
+            dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' ''
+}
