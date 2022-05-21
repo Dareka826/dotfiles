@@ -128,7 +128,7 @@ tty | grep pts >/dev/null && {
 # ls -> exa
 LSOPTS="-F --color=auto"
 LSPROG="ls"
-command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gF"
+command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gbF"
 
 alias  ls="$LSPROG $LSOPTS"
 alias   l="$LSPROG $LSOPTS -hal"
