@@ -35,3 +35,6 @@ set format_treewin_artist=%{artist}
 
 # Prefer to use per-track replaygain, fall back on per-album
 set replaygain=track-preferred
+
+# Reset option
+set stop_after_queue=false
