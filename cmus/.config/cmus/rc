@@ -5,7 +5,6 @@ set lib_sort=albumartist date album discnumber tracknumber title filename
 # if no title, display the filename
 set format_current= %{?album!=""?%{?albumartist!=""?[%{albumartist}] %!}%{album} / }%{?tracknumber>=0?%02{tracknumber}. }%{?artist!=""?%{artist} - }%{?title!=""?%{title}?%{filename}}
 
-# TODO
 # Format string for status line
 set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total} %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle}  
 
@@ -16,7 +15,8 @@ set format_title=%{album} / %{artist} - %{title}
 # Format string for the list views (2-4)
 set format_playlist= %-21%{artist} %3{tracknumber}. %{title}%= %{date} %{duration} %{?play_count!=0?%3{play_count} ?    }
 # Format string for the list views (2-4) if artist differs from albumartist
-set format_playlist_va= %-21%{artist} %3{tracknumber}. %{title} (%{artist})%= %{date} %{duration} %{?play_count!=0?%3{play_count} ?    }
+#set format_playlist_va= %-21%{artist} %3{tracknumber}. %{title} (%{artist})%= %{date} %{duration} %{?play_count!=0?%3{play_count} ?    }
+set format_playlist_va=
 # }}}
 
 # Tree view (1) format {{{
