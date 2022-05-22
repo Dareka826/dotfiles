@@ -1,3 +1,39 @@
 set lib_sort=albumartist date album discnumber tracknumber title filename
-#set format_current= [%A] %l / %n. %a - %t
-set format_current= %l / %n. %a - %t
+
+# display "[albumartist] album /" if track has an album
+# display "artist - " if track has an artist
+# if no title, display the filename
+set format_current= %{?album!=""?%{?albumartist!=""?[%{albumartist}] %!}%{album} / }%{?tracknumber>=0?%02{tracknumber}. }%{?artist!=""?%{artist} - }%{?title!=""?%{title}?%{filename}}
+
+
+# Format string for the list views (2-4).
+set format_playlist= %-21%a %3n. %t%= %y %d %{?X!=0?%3X ?    }
+
+# Format string for the list views (2-4), if a track is assumed to be a part of compilation (see LIBRARY VIEW SORTING for details).
+# Note: If empty, format_playlist is used instead.
+set format_playlist_va= %-21%A %3n. %t (%a)%= %y %d %{?X!=0?%3X ?    }
+
+# Format string for status line.
+set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total} %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle}  
+
+# Format string for terminal title.
+# Note: Not all terminals support changing window title.
+set format_title=%a - %l - %t (%y)
+
+# Format string for the tree view's (1) track window.
+set format_trackwin=%3n. %t%= %y %d 
+
+# Format string for albums in tree view's (1) track window.
+set format_trackwin_album= %l %= %{albumduration} 
+
+# Format string for the tree view's (1) track window, if a track is assumed to be a part of compilation (see LIBRARY VIEW SORTING for details).
+# Note: If empty, format_trackwin is used instead.
+set format_trackwin_va=%3n. %t (%a)%= %y %d 
+
+# Format string for the tree view's (1) tree window.
+set format_treewin=  %{album}
+# Format string for artists in tree view's (1) tree window.
+set format_treewin_artist=%{artist}
+
+
+set replaygain=track-preferred
