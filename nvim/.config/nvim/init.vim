@@ -39,6 +39,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'jamessan/vim-gnupg'
 Plug 'djpohly/vim-execline'
 "Plug 'tridactyl/vim-tridactyl'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'ThePrimeagen/harpoon'
 call plug#end()
 command! PU PlugUpdate | PlugUpgrade
 
@@ -281,3 +283,16 @@ nnoremap <leader>c :<BS>
 
 " Open netrw
 nnoremap <leader>v :Vex <bar> :vertical resize 40<CR>
+
+" Harpoon
+lua <<EOF
+require("harpoon").setup({
+    menu = {
+        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }
+    }
+})
+EOF
+
+nnoremap <leader>a :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader>h :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>n :lua require("harpoon.ui").nav_file(
