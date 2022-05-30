@@ -62,8 +62,8 @@ let g:sonokai_better_performance = 1
 colorscheme sonokai
 
 " Make bg transparent
-"nnoremap <leader>h :hi Normal guibg=NONE ctermbg=NONE<CR>
-nnoremap <leader>h :let g:sonokai_transparent_background = 1<CR>:colorscheme sonokai<CR>
+"nnoremap <leader>t :hi Normal guibg=NONE ctermbg=NONE<CR>
+nnoremap <leader>t :let g:sonokai_transparent_background = 1<CR>:colorscheme sonokai<CR>
 
 " Firenvim
 if exists('g:started_by_firenvim')
