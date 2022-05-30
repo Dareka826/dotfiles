@@ -101,7 +101,8 @@ endfunction
 
 " fzf
 let g:fzf_layout={'down': '30%'}
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :GFiles<CR>
+nnoremap <C-f> :Files<CR>
 
 " Signify
 let g:signify_sign_change='~'
