@@ -26,7 +26,7 @@ Plug 'sbdchd/neoformat'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-Plug 'preservim/nerdtree'
+"Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
 Plug 'puremourning/vimspector'
 Plug 'tpope/vim-unimpaired'
@@ -278,3 +278,6 @@ let g:neovide_cursor_vfx_particle_lifetime=1
 
 " Clear cmdline
 nnoremap <leader>c :<BS>
+
+" Open netrw
+nnoremap <leader>v :Vex <bar> :vertical resize 40<CR>
