@@ -111,7 +111,7 @@ END {
     {
         if(tracknum == 0) tracknum = "?"
         lef = dur-pos
-        printf("%s. %s | -%s/%s", tracknum, title, stohms(lef), stohms(dur))
+        printf("%s. %s\342\200\255 | -%s/%s", tracknum, title, stohms(lef), stohms(dur))
     }
     else
         printf("cmus off")
