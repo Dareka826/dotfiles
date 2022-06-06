@@ -196,7 +196,7 @@ vnoremap <Left> <Nop>
 inoremap <Right> <Nop>
 
 " Clear highlighting after search
-nnoremap <leader><space> :noh<CR>
+nnoremap <silent> <leader><space> :noh<CR>
 
 "" Coc use TAB to move in the popup menu
 "inoremap <silent><expr> <TAB>
