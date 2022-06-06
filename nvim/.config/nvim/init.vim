@@ -9,10 +9,21 @@ endif
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-marketplace', 'coc-clangd', 'coc-sh',
-            \ 'coc-json', 'coc-html', 'coc-css', 'coc-html-css-support',
-            \ 'coc-tsserver', 'coc-tslint-plugin']
+
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"let g:coc_global_extensions = ['coc-marketplace', 'coc-clangd',
+"            \ 'coc-json', 'coc-html', 'coc-css', 'coc-html-css-support',
+"            \ 'coc-tsserver', 'coc-tslint-plugin']
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -77,27 +88,28 @@ let g:user_emmet_mode='i'
 let g:user_emmet_leader_key='<C-y>'
 
 " Lightline
-let g:lightline = {
-    \ 'colorscheme': 'sonokai',
-    \ 'active': {
-        \ 'left': [ [ 'mode', 'paste' ],
-        \           [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-    \ },
-    \ 'component_function': {
-        \ 'gitbranch': 'FugitiveHead',
-        \ 'cocstatus': 'LightLineCoc'
-    \ },
-    \ }
+let g:lightline = { 'colorscheme': 'sonokai' }
+"let g:lightline = {
+"    \ 'colorscheme': 'sonokai',
+"    \ 'active': {
+"        \ 'left': [ [ 'mode', 'paste' ],
+"        \           [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+"    \ },
+"    \ 'component_function': {
+"        \ 'gitbranch': 'FugitiveHead',
+"        \ 'cocstatus': 'LightLineCoc'
+"    \ },
+"    \ }
 
 set laststatus=2
 set noshowmode
 
-function! LightLineCoc()
-    if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
-        return ''
-    endif
-    return trim(coc#status())
-endfunction
+"function! LightLineCoc()
+"    if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
+"        return ''
+"    endif
+"    return trim(coc#status())
+"endfunction
 
 " fzf
 let g:fzf_layout={'down': '30%'}
@@ -186,29 +198,68 @@ inoremap <Right> <Nop>
 " Clear highlighting after search
 nnoremap <leader><space> :noh<CR>
 
-" Coc use TAB to move in the popup menu
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"" Coc use TAB to move in the popup menu
+"inoremap <silent><expr> <TAB>
+"    \ pumvisible() ? "\<C-n>" :
+"    \ <SID>check_back_space() ? "\<TAB>" :
+"    \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"
+"function! s:check_back_space() abort
+"    let col = col('.') - 1
+"    return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+"
+"" Use <c-space> to trigger completion.
+"inoremap <silent><expr> <c-space> coc#refresh()
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" LSP & Autocomplete
+set completeopt=menu,menuone,noselect
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+lua <<EOF
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-" Coc bindings
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
+local lsp_config = {
+    capabilities = capabilities,
+    on_attach = function()
+        -- Run inside every buffer after lsp attached
+        vim.keymap.set("n", "K",          vim.lsp.buf.hover,           { buffer = 0 })
 
-nmap <silent> <leader>gs :CocList diagnostics<CR>
-nmap <silent> <leader>g[ <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>g] <Plug>(coc-diagnostic-next)
+        vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition,      { buffer = 0 })
+        vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation,  { buffer = 0 })
+        vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references,      { buffer = 0 })
+        vim.keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition, { buffer = 0 })
+
+        vim.keymap.set("n", "<leader>gs", vim.diagnostic.setqflist,    { buffer = 0 })
+        vim.keymap.set("n", "<leader>gj", vim.diagnostic.goto_next,    { buffer = 0 })
+        vim.keymap.set("n", "<leader>gk", vim.diagnostic.goto_prev,    { buffer = 0 })
+    end,
+}
+
+require("lspconfig").clangd.setup(lsp_config)
+require("lspconfig").sumneko_lua.setup(lsp_config)
+-- require("lspconfig").tsserver.setup(lsp_config)
+
+local cmp = require("cmp")
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+        end
+    },
+    mapping = {
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ["<CR>"]      = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+    }, {
+        { name = "buffer" },
+    })
+})
+EOF
 
 " Neoformat
 "vnoremap <C-f> :Neoformat<CR>
