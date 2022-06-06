@@ -345,6 +345,10 @@ require("harpoon").setup({
 })
 EOF
 
-nnoremap <leader>a :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>h :lua require("harpoon.ui").toggle_quick_menu()<CR>
-nnoremap <leader>n :lua require("harpoon.ui").nav_file(
+nnoremap <silent> <leader>a :lua require("harpoon.mark").add_file()<CR>
+nnoremap <silent> <leader>h :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <silent> <leader>H :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <silent> <leader>J :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <silent> <leader>K :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <silent> <leader>L :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <silent> <leader>n :lua require("harpoon.ui").nav_file(
