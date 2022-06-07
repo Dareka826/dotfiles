@@ -45,7 +45,11 @@ Plug 'sainnhe/sonokai'
 "Plug 'axvr/photon.vim'
 "Plug 'Luxed/ayu-vim'
 "Plug 'Dareka826/firenvim', { 'branch': 'librewolf-support', 'do': { _ -> firenvim#install(0) } }
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
 Plug 'jamessan/vim-gnupg'
 Plug 'djpohly/vim-execline'
 "Plug 'tridactyl/vim-tridactyl'
@@ -304,12 +308,28 @@ augroup END
 " Treesitter
 lua <<EOF
 require('nvim-treesitter.configs').setup({
-    ensure_installed = { "c" },
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false
+    ensure_installed = { "c", "lua" },
+    sync_install = false,
+    highlight = { enable = true },
+    indent    = { enable = true },
+    textobjects = {
+        select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+            },
+        },
+        move = {
+            enable = true,
+            set_jumps = true,
+            goto_next_start     = { ["]m"] = "@function.outer" },
+            goto_next_end       = { ["]M"] = "@function.outer" },
+            goto_previous_start = { ["]m"] = "@function.outer" },
+            goto_previous_end   = { ["]M"] = "@function.outer" },
+        },
     },
-    indent = { enable = true }
 })
 EOF
 
