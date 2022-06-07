@@ -146,10 +146,6 @@ nnoremap Y y$
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-" Don't move cursor when joining lines
-nnoremap J mzJ`z
-nnoremap gJ mzgJ`z
-
 " Break undo sequence on these
 inoremap , ,<c-g>u
 inoremap . .<c-g>u
