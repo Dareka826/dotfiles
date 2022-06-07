@@ -265,6 +265,19 @@ cmp.setup({
         { name = "luasnip"  },
         { name = "buffer", keyword_length = 3 },
     },
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.menu = ({
+                buffer = "[buf]",
+                nvim_lsp = "[LSP]",
+                nvim_lua = "[api]",
+                path = "[path]",
+                luasnip = "[snip]",
+            })[entry.source.name]
+
+            return vim_item
+        end
+    },
     experimental = {
         ghost_text = true,
     },
