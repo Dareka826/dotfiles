@@ -10,10 +10,6 @@ endif
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'junegunn/vim-plug'
 
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"let g:coc_global_extensions = ['coc-marketplace', 'coc-clangd',
-"            \ 'coc-json', 'coc-html', 'coc-css', 'coc-html-css-support',
-"            \ 'coc-tsserver', 'coc-tslint-plugin']
 Plug 'neovim/nvim-lspconfig'
 
 Plug 'L3MON4D3/LuaSnip'
@@ -93,27 +89,9 @@ let g:user_emmet_leader_key='<C-y>'
 
 " Lightline
 let g:lightline = { 'colorscheme': 'sonokai' }
-"let g:lightline = {
-"    \ 'colorscheme': 'sonokai',
-"    \ 'active': {
-"        \ 'left': [ [ 'mode', 'paste' ],
-"        \           [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-"    \ },
-"    \ 'component_function': {
-"        \ 'gitbranch': 'FugitiveHead',
-"        \ 'cocstatus': 'LightLineCoc'
-"    \ },
-"    \ }
 
 set laststatus=2
 set noshowmode
-
-"function! LightLineCoc()
-"    if empty(get(g:, 'coc_status', '')) && empty(get(b:, 'coc_diagnostic_info', {}))
-"        return ''
-"    endif
-"    return trim(coc#status())
-"endfunction
 
 " fzf
 let g:fzf_layout={'down': '30%'}
@@ -194,21 +172,6 @@ inoremap <Right> <Nop>
 
 " Clear highlighting after search
 nnoremap <silent> <leader><space> :noh<CR>
-
-"" Coc use TAB to move in the popup menu
-"inoremap <silent><expr> <TAB>
-"    \ pumvisible() ? "\<C-n>" :
-"    \ <SID>check_back_space() ? "\<TAB>" :
-"    \ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"
-"function! s:check_back_space() abort
-"    let col = col('.') - 1
-"    return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
-"
-"" Use <c-space> to trigger completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
 
 " LSP & Autocomplete
 set completeopt=menu,menuone,noselect
