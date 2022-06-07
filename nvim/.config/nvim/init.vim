@@ -21,9 +21,12 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
 Plug 'itchyny/lightline.vim'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf'
+"Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 "Plug 'gyim/vim-boxdraw'
 Plug 'baskerville/vim-sxhkdrc'
@@ -93,10 +96,40 @@ let g:lightline = { 'colorscheme': 'sonokai' }
 set laststatus=2
 set noshowmode
 
+" Telescope
+lua <<EOF
+require("telescope").setup({
+    defaults = {
+        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+    },
+})
+
+require('telescope').load_extension('fzf')
+EOF
+
+nnoremap <leader>T :Telescope<space>
+
+nnoremap <leader>fb  :Telescope buffers<CR>
+nnoremap <leader>fg  :Telescope git_files<CR>
+nnoremap <leader>ff  :Telescope find_files<CR>
+nnoremap <leader>fd  :Telescope diagnostics<CR>
+nnoremap <leader>ft  :Telescope treesitter<CR>
+nnoremap <leader>fk  :Telescope keymaps<CR>
+nnoremap <leader>fq  :Telescope quickfix<CR>
+nnoremap <leader>fll :Telescope loclist<CR>
+nnoremap <leader>fh  :Telescope help_tags<CR>
+nnoremap <leader>fm  :Telescope man_pages<CR>
+nnoremap <leader>flr :Telescope lsp_references<CR>
+nnoremap <leader>fld :Telescope lsp_definitions<CR>
+nnoremap <leader>fli :Telescope lsp_implementations<CR>
+
+nnoremap <C-p> :Telescope git_files<CR>
+nnoremap <C-f> :Telescope find_files<CR>
+
 " fzf
 let g:fzf_layout={'down': '30%'}
-nnoremap <C-p> :GFiles<CR>
-nnoremap <C-f> :Files<CR>
+"nnoremap <C-p> :GFiles<CR>
+"nnoremap <C-f> :Files<CR>
 
 " Signify
 let g:signify_sign_change='~'
