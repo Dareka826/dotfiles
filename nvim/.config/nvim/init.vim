@@ -247,6 +247,12 @@ cmp.setup({
 })
 EOF
 
+hi! link CmpItemAbbr           Fg     " Completion suggestions
+hi! link CmpItemAbbrDeprecated Red    " Deprecated cmp suggestions
+hi! link CmpItemAbbrMatch      Purple " Matched chars in cmp suggestions
+hi! link CmpItemAbbrMatchFuzzy Purple " Matched chars in cmp suggestions
+hi! link CmpItemMenu           Grey   " Source of suggestion
+
 " Neoformat
 "vnoremap <C-f> :Neoformat<CR>
 "nnoremap <leader>gf :%Neoformat<CR>
