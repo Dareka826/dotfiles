@@ -37,7 +37,6 @@ Plug 'sbdchd/neoformat'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-"Plug 'preservim/nerdtree'
 Plug 'alx741/vinfo'
 Plug 'puremourning/vimspector'
 Plug 'tpope/vim-unimpaired'
@@ -160,9 +159,6 @@ nnoremap <C-s> !!sh<CR>
 nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gh :diffget //2<CR>
 nnoremap <leader>gl :diffget //3<CR>
-
-" Nerdtree
-nnoremap <leader>gt :NERDTreeToggle<CR>
 
 set fileencodings=utf-8,sjis,euc-jp,default " Encodings EN,JP,default
 set number rnu " Show number lines and set them to relative
