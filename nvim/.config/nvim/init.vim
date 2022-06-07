@@ -16,12 +16,13 @@ Plug 'junegunn/vim-plug'
 "            \ 'coc-tsserver', 'coc-tslint-plugin']
 Plug 'neovim/nvim-lspconfig'
 
+Plug 'L3MON4D3/LuaSnip'
+
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-
-Plug 'L3MON4D3/LuaSnip'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 
 Plug 'itchyny/lightline.vim'
@@ -245,15 +246,27 @@ cmp.setup({
         end
     },
     mapping = {
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ["<CR>"]      = cmp.mapping.confirm({ select = true }),
+        ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {'i'}),
+        ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), {'i'}),
+
+        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i'}),
+        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs( 4), {'i'}),
+
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), {'i'}),
+
+        ["<C-e>"] = cmp.mapping(cmp.mapping.close(), {'i'}),
+        ["<CR>"]  = cmp.mapping(cmp.mapping.confirm({ select = true }), {'i'}),
     },
-    sources = cmp.config.sources({
+    sources = {
+        { name = "nvim_lua" },
         { name = "nvim_lsp" },
-        { name = "luasnip" },
-    }, {
-        { name = "buffer" },
-    })
+        { name = "path"     },
+        { name = "luasnip"  },
+        { name = "buffer", keyword_length = 3 },
+    },
+    experimental = {
+        ghost_text = true,
+    },
 })
 EOF
 
