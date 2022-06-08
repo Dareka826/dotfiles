@@ -256,6 +256,18 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice lucid wait'1'
 zinit light MichaelAquilina/zsh-you-should-use
 
+########## FZF ##########
+
+[ -f "/usr/share/fzf/completion.zsh" ] && \
+    . "/usr/share/fzf/completion.zsh"
+
+[ -f "/usr/share/fzf/key-bindings.zsh" ] && \
+    . "/usr/share/fzf/key-bindings.zsh"
+
+# cd without alt CTRL-N for navigate
+bindkey -M vicmd '^N' fzf-cd-widget
+bindkey -M viins '^N' fzf-cd-widget
+
 ########## Dynamic window title ##########
 
 _change_title_to_pwd() {
