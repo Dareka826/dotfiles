@@ -86,9 +86,9 @@ if exists('g:started_by_firenvim')
     set guifont=monospace:h11
 endif
 
-" Make emmet's ctrl-y only work in insert mode
+" Make emmet only work in insert mode
 let g:user_emmet_mode='i'
-let g:user_emmet_leader_key='<C-y>'
+let g:user_emmet_leader_key='<c-h>'
 
 " Lightline
 let g:lightline = { 'colorscheme': 'sonokai' }
@@ -243,16 +243,16 @@ cmp.setup({
         end
     },
     mapping = {
-        ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {'i'}),
-        ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), {'i'}),
+        ["<c-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {'i'}),
+        ["<c-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), {'i'}),
 
-        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i'}),
-        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs( 4), {'i'}),
+        ["<c-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i'}),
+        ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs( 4), {'i'}),
 
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), {'i'}),
+        ["<c-space>"] = cmp.mapping(cmp.mapping.complete(), {'i'}),
 
-        ["<C-e>"] = cmp.mapping(cmp.mapping.close(), {'i'}),
-        ["<CR>"]  = cmp.mapping(cmp.mapping.confirm({ select = true }), {'i'}),
+        ["<c-e>"] = cmp.mapping(cmp.mapping.close(), {'i'}),
+        ["<c-y>"] = cmp.mapping(cmp.mapping.confirm({ select = true }), {'i'}),
     },
     sources = {
         { name = "nvim_lua" },
