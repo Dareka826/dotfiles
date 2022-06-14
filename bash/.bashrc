@@ -6,6 +6,11 @@ export HISTSIZE=100000
 export HISTILESIZE=100000
 shopt -s histappend
 
+# Vi mode
+set -o vi
+bind -m vi-command '"\C-l": clear-screen'
+bind -m vi-insert  '"\C-l": clear-screen'
+
 alias md="mkdir -p"
 alias mv="mv -i"
 alias rm="rm -i"
