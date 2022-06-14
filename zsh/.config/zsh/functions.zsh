@@ -102,3 +102,8 @@ find_gainless() {
         | xargs -0 -n 1 \
             dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' ''
 }
+
+# vim ls time
+vlt() {
+    ls --sort=time -r | nvim
+}
