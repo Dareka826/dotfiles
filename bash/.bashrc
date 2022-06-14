@@ -11,6 +11,13 @@ set -o vi
 bind -m vi-command '"\C-l": clear-screen'
 bind -m vi-insert  '"\C-l": clear-screen'
 
+# FZF
+[ -f /usr/share/fzf/key-bindings.bash ] && {
+    . /usr/share/fzf/key-bindings.bash
+    bind -m vi-command '"\C-n": "\C-z\ec\C-z"'
+    bind -m vi-insert  '"\C-n": "\C-z\ec\C-z"'
+}
+
 alias md="mkdir -p"
 alias mv="mv -i"
 alias rm="rm -i"
