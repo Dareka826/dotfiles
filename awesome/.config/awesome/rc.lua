@@ -508,6 +508,25 @@ globalkeys = gears.table.join(
                   }
               end, {description="lua execute prompt", group="awesome"}),
 
+    -- Mouse
+    awful.key({ "Mod1", "Mod4" }, "h", function() awful.spawn("xdotool mousemove_relative -- -20   0") end, {description="move mouse left by 20px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "j", function() awful.spawn("xdotool mousemove_relative --   0  20") end, {description="move mouse down by 20px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "k", function() awful.spawn("xdotool mousemove_relative --   0 -20") end, {description="move mouse up by 20px",    group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "l", function() awful.spawn("xdotool mousemove_relative --  20   0") end, {description="move mouse right by 20px", group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Control" }, "h", function() awful.spawn("xdotool mousemove_relative -- -1  0") end, {description="move mouse left by 1px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Control" }, "j", function() awful.spawn("xdotool mousemove_relative --  0  1") end, {description="move mouse down by 1px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Control" }, "k", function() awful.spawn("xdotool mousemove_relative --  0 -1") end, {description="move mouse up by 1px",    group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Control" }, "l", function() awful.spawn("xdotool mousemove_relative --  1  0") end, {description="move mouse right by 1px", group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "h", function() awful.spawn("xdotool mousemove_relative -- -100    0") end, {description="move mouse left by 100px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "j", function() awful.spawn("xdotool mousemove_relative --    0  100") end, {description="move mouse down by 100px",  group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "k", function() awful.spawn("xdotool mousemove_relative --    0 -100") end, {description="move mouse up by 100px",    group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "l", function() awful.spawn("xdotool mousemove_relative --  100    0") end, {description="move mouse right by 100px", group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "u", function() awful.spawn("xdotool click --clearmodifiers 1") end, {description="click mouse button 1", group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "i", function() awful.spawn("xdotool click --clearmodifiers 2") end, {description="click mouse button 2", group="mouse"}),
+    awful.key({ "Mod1", "Mod4" }, "o", function() awful.spawn("xdotool click --clearmodifiers 3") end, {description="click mouse button 3", group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "u", function() awful.spawn("xdotool click --clearmodifiers 4") end, {description="click mouse button 4", group="mouse"}),
+    awful.key({ "Mod1", "Mod4", "Shift" }, "o", function() awful.spawn("xdotool click --clearmodifiers 5") end, {description="click mouse button 5", group="mouse"}),
+
     -- Volume
     awful.key({ modkey, "Control" }, "Up",   function() awful.spawn("pamixer --allow-boost --increase 5") end, {description="increase volume", group="volume"}),
     awful.key({ modkey, "Control" }, "Down", function() awful.spawn("pamixer --allow-boost --decrease 5") end, {description="decrease volume", group="volume"}),
