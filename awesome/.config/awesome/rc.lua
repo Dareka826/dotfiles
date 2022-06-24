@@ -536,7 +536,6 @@ globalkeys = gears.table.join(
 
     -- Lockscreen
     awful.key({ modkey,           }, "l", function() awful.spawn("dash " .. os.getenv("HOME") .. "/.local/bin/lock.sh") end, {description="lock screen", group="lock"}),
-    awful.key({ modkey, "Control", "Shift" }, "l", function() awful.spawn("slock") end, {description="lock screen (slock)", group="lock"}),
 
     -- Tmux
     awful.key({ modkey, "Control", "Shift" }, "Return", function() awful.spawn(terminal .. " -e tmux") end,
@@ -573,6 +572,24 @@ clientkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, ",",      function(c) c:move_to_screen(c.screen.index-1) end, {description="move to prev screen", group="client"}),
     awful.key({ modkey, "Shift"   }, ".",      function(c) c:move_to_screen(c.screen.index+1) end, {description="move to next screen", group="client"}),
     awful.key({ modkey, "Shift"   }, "t",      function(c) c.ontop = not c.ontop              end, {description="toggle keep on top",  group="client"}),
+
+    -- Resize & move window
+    awful.key({ modkey, "Control" }, "h", function(c) c:relative_move(-20,   0, 0, 0) end, {description="move client left by 20px",  group="client"}),
+    awful.key({ modkey, "Control" }, "j", function(c) c:relative_move(  0,  20, 0, 0) end, {description="move client down by 20px",  group="client"}),
+    awful.key({ modkey, "Control" }, "k", function(c) c:relative_move(  0, -20, 0, 0) end, {description="move client up by 20px",    group="client"}),
+    awful.key({ modkey, "Control" }, "l", function(c) c:relative_move( 20,   0, 0, 0) end, {description="move client right by 20px", group="client"}),
+    awful.key({ "Mod4", "Control" }, "Left",  function(c) c:relative_move(-1,  0, 0, 0) end, {description="move client left by 1px",  group="client"}),
+    awful.key({ "Mod4", "Control" }, "Down",  function(c) c:relative_move( 0,  1, 0, 0) end, {description="move client down by 1px",  group="client"}),
+    awful.key({ "Mod4", "Control" }, "Up",    function(c) c:relative_move( 0, -1, 0, 0) end, {description="move client up by 1px",    group="client"}),
+    awful.key({ "Mod4", "Control" }, "Right", function(c) c:relative_move( 1,  0, 0, 0) end, {description="move client right by 1px", group="client"}),
+    awful.key({ modkey, "Control", "Shift" }, "h", function(c) c:relative_move( 0, 0, -20,   0) end, {description="resize client left by 20px",  group="client"}),
+    awful.key({ modkey, "Control", "Shift" }, "j", function(c) c:relative_move( 0, 0,   0,  20) end, {description="resize client down by 20px",  group="client"}),
+    awful.key({ modkey, "Control", "Shift" }, "k", function(c) c:relative_move( 0, 0,   0, -20) end, {description="resize client up by 20px",    group="client"}),
+    awful.key({ modkey, "Control", "Shift" }, "l", function(c) c:relative_move( 0, 0,  20,   0) end, {description="resize client right by 20px", group="client"}),
+    awful.key({ "Mod4", "Control", "Shift" }, "Left",  function(c) c:relative_move( 0, 0, -1,  0) end, {description="resize client left by 1px",  group="client"}),
+    awful.key({ "Mod4", "Control", "Shift" }, "Down",  function(c) c:relative_move( 0, 0,  0,  1) end, {description="resize client down by 1px",  group="client"}),
+    awful.key({ "Mod4", "Control", "Shift" }, "Up",    function(c) c:relative_move( 0, 0,  0, -1) end, {description="resize client up by 1px",    group="client"}),
+    awful.key({ "Mod4", "Control", "Shift" }, "Right", function(c) c:relative_move( 0, 0,  1,  0) end, {description="resize client right by 1px", group="client"}),
 
     awful.key({ modkey, "Control", "Shift" }, "b",
         function()
