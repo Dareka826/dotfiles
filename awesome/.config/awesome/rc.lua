@@ -322,12 +322,14 @@ local function update_layout_text(scr)
     scr.mylayouttext:get_children_by_id("layout_text")[1]:set_text(txt)
 end
 
+Tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag(Tags, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -551,7 +553,29 @@ clientkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "Return", function(c) c:swap(awful.client.getmaster())   end, {description="move to master",      group="client"}),
     awful.key({ modkey, "Shift"   }, ",",      function(c) c:move_to_screen(c.screen.index-1) end, {description="move to prev screen", group="client"}),
     awful.key({ modkey, "Shift"   }, ".",      function(c) c:move_to_screen(c.screen.index+1) end, {description="move to next screen", group="client"}),
-    awful.key({ modkey, "Shift"   }, "t",      function(c) c.ontop = not c.ontop              end, {description="toggle keep on top",  group="client"})
+    awful.key({ modkey, "Shift"   }, "t",      function(c) c.ontop = not c.ontop              end, {description="toggle keep on top",  group="client"}),
+
+    awful.key({ modkey, "Control", "Shift" }, "b",
+        function()
+            -- get current tag
+            local t = client.focus and client.focus.first_tag or nil
+            if t == nil then return end
+
+            -- get previous tag
+            local tag = client.focus.screen.tags[(t.name - 2) % #Tags + 1]
+            awful.client.movetotag(tag)
+        end, {description = "move client to previous tag", group = "layout"}),
+
+    awful.key({ modkey, "Control", "Shift" }, "n",
+        function()
+            -- get current tag
+            local t = client.focus and client.focus.first_tag or nil
+            if t == nil then return end
+
+            -- get next tag
+            local tag = client.focus.screen.tags[(t.name % #Tags) + 1]
+            awful.client.movetotag(tag)
+        end, {description = "move client to next tag", group = "layout"})
 )
 
 -- Bind all key numbers to tags.
