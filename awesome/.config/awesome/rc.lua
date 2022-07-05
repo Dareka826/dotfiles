@@ -42,9 +42,19 @@ do
 end
 -- }}}
 
+-- {{{ Notifications
+naughty.config.padding = 5 -- 10
+naughty.config.spacing = 5
+naughty.config.defaults.margin = 5
+naughty.config.defaults.border_width = 2
+
+naughty.config.presets.critical.bg = nil
+naughty.config.presets.critical.fg = "#ff0000"
+naughty.config.presets.critical.border_color = "#ff0000"
+-- }}}
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
---beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.

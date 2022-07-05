@@ -34,6 +34,17 @@ theme.border_marked = "#ff6600"
 
 theme.master_width_factor = 0.6
 
+-- Variables set for theming notifications:
+-- notification_font
+theme.notification_bg = "#222222"
+theme.notification_fg = "#ffffff"
+-- notification_[height|margin]
+theme.notification_width = 400
+theme.notification_border_color = "#6600ff"
+theme.notification_border_width = 2
+-- notification_shape
+theme.notification_opacity = 0.9
+
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -83,12 +94,6 @@ do
     cr:set_line_width(1)
     cr:stroke()
 end
-
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
