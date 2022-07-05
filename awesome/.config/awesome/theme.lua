@@ -35,11 +35,11 @@ theme.border_marked = "#ff6600"
 theme.master_width_factor = 0.6
 
 -- Variables set for theming notifications:
--- notification_font
+theme.notification_font = "Source Code Pro Regular 10"
 theme.notification_bg = "#222222"
 theme.notification_fg = "#ffffff"
 -- notification_[height|margin]
-theme.notification_width = 400
+theme.notification_width = 350
 theme.notification_border_color = "#6600ff"
 theme.notification_border_width = 2
 -- notification_shape
