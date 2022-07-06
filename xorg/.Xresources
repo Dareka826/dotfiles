@@ -36,3 +36,9 @@
 *.color15:      #FFFFFF
 
 Xft.dpi: 96
+
+! nsxiv
+Nsxiv.window.background: #111111
+Nsxiv.window.foreground: #ffffff
+Nsxiv.bar.background: #222222
+Nsxiv.bar.foreground: #ffffff
