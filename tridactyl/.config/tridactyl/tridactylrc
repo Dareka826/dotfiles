@@ -37,6 +37,9 @@ bindurl youtube.com ;L hint -Jqc yt-interaction[class*="yt-icon-button"],#checkb
 " Discard all tabs
 command discardall jsb browser.tabs.query({}).then(ts => browser.tabs.discard(ts.map(t=>t.id)))
 
+" Youtbe shorts bad
+autocmd DocStart ^http(s?)://[^.]*.youtube.com/shorts js tri.excmds.urlmodify("-t", "shorts/", "watch?v=")
+
 " Isolate Facebook
 set auconcreatecontainer true
 autocontain facebook\.com facebook
