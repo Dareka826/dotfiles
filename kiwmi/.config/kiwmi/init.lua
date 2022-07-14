@@ -1,87 +1,79 @@
-kiwmi:bg_color("#222222")
--- kiwmi:spawn("foot")
 
--- Keybindings
-local global_keys = {
-    { mods = { super = true, shift = true }, key = "q",      action = function() kiwmi:quit() end },
-    { mods = { super = true },               key = "d",      action = function() kiwmi:spawn("bemenu-run") end },
-    { mods = { super = true },               key = "Return", action = function() kiwmi:spawn("foot") end }
-}
-
--- Utils {{{
-
--- Bind the global_keys to a keyboard
-local function bind_keybindings(kbd, keys) -- {{{
-    kbd:on("key_down", function(data)
-        if data.raw == true then
-
-            local modifiers = kbd:modifiers()
-            -- Check all keybindings {{{
-            for _,keybinding in pairs(keys) do
-                -- Check key
-                if keybinding.key == data.key then
-                    local is_valid = true
-
-                    -- Check modifier keys
-                    for mod,state in pairs(modifiers) do
-                        if (keybinding.mods[mod] or false) ~= state then
-                            is_valid = false
-                            break
-                        end
-                    end
-
-                    -- This is the one
-                    if is_valid == true then
-                        keybinding.action()
-                        return true -- Prevent propagation
-                    end
-                end
-            end -- }}}
-
-        end
-    end)
-end -- }}}
-
--- Draw a border
-local function draw_border(renderer, geometry, color, width) -- {{{
-    -- Top
-    renderer:draw_rect(
-        color,
-        geometry.x, geometry.y,
-        geometry.w, width
-    )
-    -- Left
-    renderer:draw_rect(
-        color,
-        geometry.x, geometry.y,
-        width,      geometry.h
-    )
-    -- Bottom
-    renderer:draw_rect(
-        color,
-        geometry.x, geometry.y + geometry.h - width,
-        geometry.w, width
-    )
-    -- Right
-    renderer:draw_rect(
-        color,
-        geometry.x + geometry.w - width, geometry.y,
-        width,                           geometry.h
-    )
-end -- }}}
-
--- }}}
+-- Imports
+local layout   = require("layouts")
+local keyboard = require("keyboard")
+local graphics = require("graphics")
 
 -- Global state
 local all_keyboards = {}
 local all_outputs   = {}
 local all_views     = {}
 
+-- BG color
+kiwmi:bg_color("#222222")
+
 local config = {
-    screen_padding = { top = 20, left =  0, bottom =  0, right =  0 },
-    window_margin  = { top =  0, left =  0, bottom =  0, right =  0 },
+    screen_padding = { top = 20+10, left =  0+10, bottom =  0+10, right =  0+10 },
+    -- window_margin  = { top =  0, left =  0, bottom =  0, right =  0 },
     border_width = 2,
     border_color = "#6600ff",
+    layouts = {
+        layout.layouts.maximized,
+        layout.layouts.tiling_left,
+    },
+    selected_layout = 1,
+    view_idx = 1,
+}
+
+-- Recalculate the positions of all windows and focus
+local function update_layout()
+    -- A view was added/destroyed
+    local sel = config.layouts[config.selected_layout]
+    local scr_w, scr_h = all_outputs[1]:size()
+
+    local cfg = sel(all_views, config.view_idx, {
+        screen_size = { width = scr_w, height = scr_h },
+        screen_padding = config.screen_padding,
+        -- window_margin = {},
+    })
+
+    for _,v in pairs(cfg.hide) do v:hide() end
+    for _,v in pairs(cfg.show) do v:show() end
+
+    local bw = config.border_width
+    for i,g in pairs(cfg.geometry) do
+        all_views[i]:move(
+            g.x + bw,
+            g.y + bw
+        )
+        all_views[i]:resize(
+            g.w - 2 * bw,
+            g.h - 2 * bw
+        )
+    end
+
+    if #all_views >= config.view_idx then
+        all_views[config.view_idx]:focus()
+    end
+end
+
+-- Keybindings
+local global_keys = {
+    { mods = { super = true, shift = true }, key = "q",      action = function() kiwmi:quit() end },
+    { mods = { super = true },               key = "d",      action = function() kiwmi:spawn("bemenu-run -l 10 -i --nb '#111111' --nf '#ffffff' --ab '#111111' --af '#ffffff' --hb '#6600ff' --hf '#ffffff' --tb '#6600ff' --tf '#ffffff' --fb '#111111' --ff '#ffffff'") end },
+    { mods = { super = true },               key = "Return", action = function() kiwmi:spawn("foot") end },
+    { mods = { super = true },               key = "j",      action = function()
+        if config.view_idx > 1 then
+            config.view_idx = config.view_idx - 1
+            update_layout()
+        end
+    end },
+    { mods = { super = true },               key = "k",      action = function()
+        if config.view_idx < #all_views then
+            config.view_idx = config.view_idx + 1
+            update_layout()
+        end
+    end },
 }
 
 -- Handle arrays with stuff {{{
@@ -90,7 +82,7 @@ kiwmi:on("keyboard", function(kbd)
     print("[I]: New keyboard!")
     -- Add keyboard
     table.insert(all_keyboards, kbd)
-    bind_keybindings(kbd, global_keys)
+    keyboard.bind_keybindings(kbd, global_keys)
 
     kbd:on("destroy", function()
         print("[I]: Destroying a keyboard!")
@@ -127,36 +119,7 @@ kiwmi:on("view", function(view)
     print("[I]: New view!")
     -- Add view
     table.insert(all_views, view)
-
-    if all_outputs[1] ~= nil then
-        local screen_w, screen_h = all_outputs[1]:size()
-
-        if view:hidden() == true then
-            view:show()
-            view:focus()
-
-            local win_geometry = {
-                x = config.screen_padding.left,
-                y = config.screen_padding.top,
-                w = screen_w - (config.screen_padding.left + config.screen_padding.right),
-                h = screen_h - (config.screen_padding.top  + config.screen_padding.bottom)
-            }
-
-            -- Draw a border after the window
-            view:on("post_render", function(data)
-                draw_border(data.renderer, win_geometry, config.border_color, config.border_width)
-            end)
-
-            view:move(
-                win_geometry.x + config.border_width,
-                win_geometry.y + config.border_width
-            )
-            view:resize(
-                win_geometry.w - 2 * config.border_width,
-                win_geometry.h - 2 * config.border_width
-            )
-        end
-    end
+    update_layout()
 
     view:on("destroy", function()
         print("[I]: Destroying a view!")
@@ -168,9 +131,21 @@ kiwmi:on("view", function(view)
             end
         end
 
-        if #all_views > 0 then
-            all_views[#all_views]:focus()
-        end
+        update_layout()
+    end)
+
+    view:on("post_render", function(data)
+        local bw = config.border_width
+        local g = {}
+        g.x, g.y = view:pos()
+        g.w, g.h = view:size()
+
+        graphics.draw_border(data.renderer, {
+            x = g.x - bw,
+            y = g.y - bw,
+            w = g.w + 2 * bw,
+            h = g.h + 2 * bw,
+        }, config.border_color, bw)
     end)
 end) -- }}}
 -- }}}
