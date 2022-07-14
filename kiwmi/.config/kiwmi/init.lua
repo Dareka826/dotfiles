@@ -167,6 +167,10 @@ kiwmi:on("view", function(view)
                 break
             end
         end
+
+        if #all_views > 0 then
+            all_views[#all_views]:focus()
+        end
     end)
 end) -- }}}
 -- }}}
