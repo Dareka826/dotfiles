@@ -27,6 +27,11 @@ local config = {
 
 -- Recalculate the positions of all windows and focus
 local function update_layout()
+    -- Chek if view_idx valid
+    if #all_views < 1 then return end
+    if config.view_idx > #all_views then config.view_idx = #all_views end
+    if config.view_idx < 1 then config.view_idx = 1 end
+
     -- A view was added/destroyed
     local sel = config.layouts[config.selected_layout]
     local scr_w, scr_h = all_outputs[1]:size()
@@ -119,6 +124,10 @@ kiwmi:on("view", function(view)
     print("[I]: New view!")
     -- Add view
     table.insert(all_views, view)
+
+    -- Focus newest view
+    config.view_idx = #all_views
+
     update_layout()
 
     view:on("destroy", function()
