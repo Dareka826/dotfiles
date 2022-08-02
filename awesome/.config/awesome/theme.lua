@@ -137,6 +137,15 @@ theme.tasklist_disable_icon = true
 
 theme.wibar_height = 20
 
+theme.tasklist_sticky    = '<b>S</b>'
+theme.tasklist_ontop     = '<b>T</b>'
+theme.tasklist_above     = '<b>A</b>'
+theme.tasklist_below     = '<b>B</b>'
+theme.tasklist_floating  = '<b>F</b>'
+theme.tasklist_maximized = '<b>M</b>'
+theme.tasklist_maximized_horizontal = '<b>H</b>'
+theme.tasklist_maximized_vertical   = '<b>V</b>'
+
 return theme
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
