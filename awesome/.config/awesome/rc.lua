@@ -138,7 +138,7 @@ mycmus:buttons(
 
 -- Cpu and ram {{{
 mycpuram = {
-    widget = wibox.widget.textbox(" C:??% R:??%+??% "),
+    widget = wibox.widget.textbox(" C:??% R:??%+??%"),
     last_cpu_total_time = 0,
     last_cpu_busy_time = 0
 }
@@ -203,7 +203,7 @@ END {
                             index = index + 1
                         end
 
-                        mycpuram.widget.text = " C:" .. cpu_usage .. "% R:" .. ram_usage .. "%+" .. swap_usage .. "% "
+                        mycpuram.widget.text = " C:" .. cpu_usage .. "% R:" .. ram_usage .. "%+" .. swap_usage .. "%"
                     end
                 )
             end
@@ -225,9 +225,9 @@ gears.timer {
                     {"pamixer", "--get-mute"},
                     function(mute)
                         if mute:sub(1,-2) == "true" then
-                            myvolume.text = " V:M" .. volume:sub(1,-2) .. "M% "
+                            myvolume.text = " V:M" .. volume:sub(1,-2) .. "%M"
                         else
-                            myvolume.text = " V:" .. volume:sub(1,-2) .. "% "
+                            myvolume.text = " V:" .. volume:sub(1,-2) .. "%"
                         end
                     end
                 )
@@ -367,13 +367,17 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create layout text
     s.mylayouttext = wibox.widget {
         {
-            text   = "[]",
-            id     = "layout_text",
-            widget = wibox.widget.textbox,
+            {
+                text   = "[]",
+                id     = "layout_text",
+                widget = wibox.widget.textbox,
+            },
+            left   = 9,
+            right  = 9,
+            widget = wibox.container.margin,
         },
-        left   = 9,
-        right  = 9,
-        widget = wibox.container.margin,
+        bg     = beautiful.bg_dark2,
+        widget = wibox.container.background
     }
     update_layout_text(s)
 
@@ -398,7 +402,7 @@ awful.screen.connect_for_each_screen(function(s)
                 left   = 9,
                 widget = wibox.container.margin,
             },
-            id     = 'background_role',
+            color  = beautiful.bg_dark1,
             widget = wibox.container.background,
         },
         buttons = tasklist_buttons
@@ -419,32 +423,43 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mycmus,
             {
-                text = "| ",
-                widget = wibox.widget.textbox,
+                mycmus,
+                bg     = beautiful.bg_dark3,
+                widget = wibox.container.background,
             },
-            wibox.widget.systray(),
             {
-                text = " |",
-                widget = wibox.widget.textbox,
+                {
+                    {
+                        text   = " ",
+                        widget = wibox.widget.textbox,
+                    },
+                    bg     = beautiful.bg_dark2,
+                    widget = wibox.container.background,
+                },
+                wibox.widget.systray(),
+                {
+                    mycpuram.widget,
+                    bg     = beautiful.bg_dark2,
+                    widget = wibox.container.background,
+                },
+                {
+                    myvolume,
+                    bg     = beautiful.bg_dark2,
+                    widget = wibox.container.background,
+                },
+                {
+                    mybattery,
+                    bg     = beautiful.bg_dark2,
+                    widget = wibox.container.background,
+                },
+                widget = wibox.layout.fixed.horizontal,
             },
-            mycpuram.widget,
             {
-                text = "|",
-                widget = wibox.widget.textbox,
+                mytextclock,
+                bg     = beautiful.bg_focus,
+                widget = wibox.container.background,
             },
-            myvolume,
-            {
-                text = "|",
-                widget = wibox.widget.textbox,
-            },
-            mybattery,
-            {
-                text = "|",
-                widget = wibox.widget.textbox,
-            },
-            mytextclock,
         },
     }
 end)
