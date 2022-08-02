@@ -7,11 +7,13 @@ if [ "$(tty)" = "/dev/tty1" -a -z "$DISPLAY" ]; then
         read SELECTION
 
         case "$SELECTION" in
-            "sx") exec sx ;;
+            "sx"|"x") exec sx ;;
 
-            "nvidia-xrun"|"nvidia") exec nvidia-xrun ;;
+            "nvidia-xrun"|"nvidia"|"n") exec nvidia-xrun ;;
 
-            "tty"|"sh") OK="1"
+            "river"|"r"|"w") exec river ;;
+
+            "tty"|"sh"|"t") OK="1"
                         break
                         ;;
 
