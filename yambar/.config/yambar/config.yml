@@ -1,0 +1,168 @@
+bg-normal: &bgnormal 111111ff
+bg-theme:  &bgtheme  6600ffff
+bg-dark1:  &bgdark1  222222ff
+bg-dark2:  &bgdark2  333333ff
+bg-red:    &bgred    ee0000ff
+
+bar:
+  location: top
+  height: 20
+  layer: top
+  font: Source Code Pro:pixelsize=14:style=Regular
+  background: 111111ff
+  foreground: ffffffff
+
+  # modules: alsa, battery, clock, label, network, removables, river, script
+  left: [
+    river: {
+      content: [
+        map: {
+          tag: focused,
+          values: {
+            true: {
+              string: {
+                text: " {id} ",
+                deco: { background: { color: *bgtheme } }
+              }
+            },
+            false: {
+              map: {
+                tag: occupied,
+                values: {
+                  true: {
+                    string: {
+                      text: " {id} ",
+                      deco: { background: { color: *bgdark2 } }
+                    }
+                  },
+                  false : { map: {
+                    tag: id,
+                    default: { string: {
+                      text: " {id} ",
+                      deco: { background: { color: *bgdark1 } }
+                    } },
+                    values: {
+                       7: { empty: {} },  8: { empty: {} },  9: { empty: {} },
+                      10: { empty: {} }, 11: { empty: {} }, 12: { empty: {} },
+                      13: { empty: {} }, 14: { empty: {} }, 15: { empty: {} },
+                      16: { empty: {} }, 17: { empty: {} }, 18: { empty: {} },
+                      19: { empty: {} }, 20: { empty: {} }, 21: { empty: {} },
+                      22: { empty: {} }, 23: { empty: {} }, 24: { empty: {} },
+                      25: { empty: {} }, 26: { empty: {} }, 27: { empty: {} },
+                      28: { empty: {} }, 29: { empty: {} }, 30: { empty: {} },
+                      31: { empty: {} }, 32: { empty: {} },
+                    }
+                  } }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    river: {
+      title:   { string: { text: " {title}" } },
+      content: [ empty: {} ]
+    }
+  ]
+
+  right: [
+    script: { # CMUS
+      path: "/home/rin/.local/bin/cmus-status.sh",
+      args: [ "yambar-mode" ],
+      poll-interval: 1,
+      content: [
+        string: {
+          text: " {status} ",
+          deco: { background: { color: *bgdark2 } }
+        }
+      ]
+    },
+    cpu: {
+      interval: 1000,
+      content: [
+        string: {
+          text: " C:{cpu}%",
+          deco: { background: { color: *bgdark1 } }
+        }
+      ]
+    },
+    script: { # Memory
+      path: "/home/rin/.config/yambar/scripts/memory.sh",
+      poll-interval: 2000,
+      content: [
+        string: {
+          text: " {status} |",
+          deco: { background: { color: *bgdark1 } }
+        }
+      ]
+    },
+    # swap
+    network: {
+      name: wlan0,
+      content: [
+        map: {
+          tag: state,
+          default: { string: {
+            text: " E:{state}",
+            deco: { background: { color: *bgdark1 } }
+          } },
+          values: {
+            up: { string: {
+              text: " E:^",
+              deco: { background: { color: *bgdark1 } }
+            } },
+            down: { string: {
+              text: " E:v",
+              deco: { background: { color: *bgdark1 } }
+            } }
+          }
+        }
+      ]
+    },
+    script: { # Volume
+      path: "/home/rin/.config/yambar/scripts/pulse-volume.sh",
+      poll-interval: 1,
+      content: [
+        string: {
+          text: " V:{status}",
+          deco: { background: { color: *bgdark1 } }
+        }
+      ]
+    },
+    battery: {
+      name: BAT0,
+      poll-interval: 30,
+      content: [
+        map: {
+          tag: capacity,
+          default: { string: {
+            text: " B:{capacity}% ",
+            deco: { background: { color: *bgdark1 } }
+          } },
+          values: {
+            1: &batcritical { string: {
+              text: " B:{capacity}% ",
+              deco: { background: { color: *bgred } }
+            } },
+             2: *batcritical,  3: *batcritical,  4: *batcritical,
+             5: *batcritical,  6: *batcritical,  7: *batcritical,
+             8: *batcritical,  9: *batcritical, 10: *batcritical,
+            11: *batcritical, 12: *batcritical, 13: *batcritical,
+            14: *batcritical, 15: *batcritical, 16: *batcritical,
+            17: *batcritical, 18: *batcritical, 19: *batcritical,
+          }
+        }
+      ]
+    },
+    clock: {
+      date-format: "%Y-%m-%d",
+      time-format: "%H:%M:%S",
+      content: [
+        string: {
+          text: " {date} {time} ",
+          deco: { background: { color: *bgtheme } }
+        }
+      ]
+    }
+  ]
