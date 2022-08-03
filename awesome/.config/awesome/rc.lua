@@ -332,6 +332,10 @@ local function update_layout_text(scr)
     scr.mylayouttext:get_children_by_id("layout_text")[1]:set_text(txt)
 end
 
+local function taglist_custom_filter(t)
+    return #t:clients() > 0 or t.selected or tonumber(t.name) <= 6
+end
+
 Tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }
 
 awful.screen.connect_for_each_screen(function(s)
@@ -347,7 +351,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
-        filter  = awful.widget.taglist.filter.all,
+        filter  = taglist_custom_filter,
         widget_template = {
             {
                 {
