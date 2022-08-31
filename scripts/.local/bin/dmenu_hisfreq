@@ -1,0 +1,132 @@
+#!/bin/sh
+# Inspired by:
+#   https://github.com/gridbugs/dotfiles/blob/main/bin/dmenu_histogram
+#   https://github.com/Neamar/KISS/blob/master/docs/_posts/2020-05-12-history-modes.md
+set -eu
+
+CACHEDIR="${XDG_CACHE_HOME:-"$HOME/.cache"}/dmenu_hisfreq"
+[ ! -d "$CACHEDIR" ] && mkdir -p "$CACHEDIR"
+
+LISTCACHE="${CACHEDIR}/list"
+PRIOCACHE="${CACHEDIR}/launch_prio" # Priority
+TIMECACHE="${CACHEDIR}/launch_time" # Time
+FREQCACHE="${CACHEDIR}/launch_freq" # Frequency
+
+MATH_PRECISION="10000" # To avoid float math
+
+# Get list for dmenu
+file_list() {
+    # If no list cache, create it
+    [ -f "$LISTCACHE" ] || update_list_cache
+
+    cat "${LISTCACHE}"
+}
+
+# Combine priority cache and dmenu_path
+update_list_cache() {
+    [ -f "${PRIOCACHE}" ] || {
+        # No priority cache, check if we can generate one
+        if [ -f "${FREQCACHE}" ] && [ -f "${TIMECACHE}" ]; then
+            update_priority_cache
+        else
+            touch "${PRIOCACHE}"
+        fi
+    }
+
+    local FIFO1="$(mktemp -u)"
+    local FIFO2="$(mktemp -u)"
+    mkfifo "${FIFO1}"
+    mkfifo "${FIFO2}"
+
+    sort "${PRIOCACHE}" >"${FIFO1}" &
+    dmenu_path >"${FIFO2}" &
+
+    cat "${PRIOCACHE}" >"${LISTCACHE}"
+    # Print dmenu_path entries which are not in priocache
+    comm -13 "${FIFO1}" "${FIFO2}" >>"${LISTCACHE}"
+}
+
+# Create priority cache from time and frequency caches
+update_priority_cache() {
+    [ -f "${FREQCACHE}" ] || { printf "[E]: No frequency cache!\n"; exit 1; }
+    [ -f "${TIMECACHE}" ] || { printf "[E]: No timestamp cache!\n"; exit 1; }
+
+    # Calculate priority
+    # (app_launches / all_launches) * (1 / pos_of_app_in_hist)
+    local ALL_LAUNCHES="0"
+    for l in $(grep -Eo '^[0-9]+' "${FREQCACHE}"); do
+        ALL_LAUNCHES="$(( ${ALL_LAUNCHES} + $l ))"
+    done
+
+    [ "${ALL_LAUNCHES}" != "0" ] || { printf "[E]: Frequency cache exists, but sum of launches is 0!"; exit 1; }
+
+    # Sorted by time
+    local FIFO="$(mktemp -u)"
+    mkfifo -m0700 "${FIFO}"
+    sort -rn "${TIMECACHE}" | sed 's/^[0-9]\+ //' >"${FIFO}" &
+
+    # Calculate recency by time
+    local RECPOS="1"
+    RECENCY_DATA="$(
+        while IFS= read -r APP_NAME; do
+            RECENCY="$(( ${MATH_PRECISION} * 1 / ${RECPOS} ))"
+            printf "%s %s\n" "${RECENCY}" "${APP_NAME}"
+
+            RECPOS="$(( ${RECPOS} + 1 ))"
+        done <"${FIFO}")"
+    rm "${FIFO}"
+
+    # Calculate frequency and priority
+    PRIORITY_DATA="$(
+        while IFS= read -r LINE; do
+            local APP_LAUNCHES="$(printf "%s\n" "${LINE}" | awk '{ print $1 }')"
+            local APP_NAME="$(printf "%s\n" "${LINE}" | sed 's/^[0-9]\+ \(.*\)$/\1/')"
+            local RECENCY="$(printf "%s\n" "${RECENCY_DATA}" | grep -E "^[0-9]+ ${APP_NAME}\$" | awk '{ print $1 }')"
+
+            local FREQUENCY="$(( ${MATH_PRECISION} * ${APP_LAUNCHES} / ${ALL_LAUNCHES} ))"
+            local PRIORITY="$(( ${FREQUENCY} * ${RECENCY} ))"
+
+            printf "%s %s\n" "${PRIORITY}" "${APP_NAME}"
+        done <"${FREQCACHE}")"
+
+    # Sort by priority and strip that info from output
+    printf "%s\n" "${PRIORITY_DATA}" | sort -rn | sed 's/^[0-9]\+ //' >"${PRIOCACHE}"
+}
+
+update_cache() {
+    # Add 1 to freq entry
+    # Set time in time entry
+    local CHOICE="$1"
+    local COUNT="$(grep -E "^[0-9]+ ${CHOICE}\$" "${FREQCACHE}" | awk '{ print $1 }')"
+    local LTIME="$(grep -E "^[0-9]+ ${CHOICE}\$" "${TIMECACHE}" | awk '{ print $1 }')"
+    local CTIME="$(date "+%s")"
+
+    # Update or append run count
+    if [ "${COUNT}" ]; then
+        sed -i "s/^${COUNT} ${CHOICE}\$/$((${COUNT} + 1)) ${CHOICE}/" "${FREQCACHE}"
+    else
+        printf "1 %s\n" "${CHOICE}" >> "${FREQCACHE}"
+    fi
+
+    # Update or append time
+    if [ "${LTIME}" ]; then
+        sed -i "s/^${LTIME} ${CHOICE}\$/${CTIME} ${CHOICE}/" "${TIMECACHE}"
+    else
+        printf "%s\n" "${CTIME} ${CHOICE}" >> "${TIMECACHE}"
+    fi
+
+    update_priority_cache
+    update_list_cache
+}
+
+main() {
+    local CHOICE="$(file_list | dmenu "$@")"
+    [ "${CHOICE}" ] || exit
+
+    if which "${CHOICE}"; then
+        update_cache "${CHOICE}" &
+        printf "%s\n" "${CHOICE}" | "${SHELL:-"/bin/sh"}"
+    fi
+}
+
+main &
