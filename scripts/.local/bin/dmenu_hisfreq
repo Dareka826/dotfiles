@@ -33,8 +33,8 @@ update_list_cache() {
         fi
     }
 
-    local FIFO1="$(mktemp -u)"
-    local FIFO2="$(mktemp -u)"
+    local FIFO1; FIFO1="$(mktemp -u)"
+    local FIFO2; FIFO2="$(mktemp -u)"
     mkfifo "${FIFO1}"
     mkfifo "${FIFO2}"
 
@@ -53,38 +53,40 @@ update_priority_cache() {
 
     # Calculate priority
     # (app_launches / all_launches) * (1 / pos_of_app_in_hist)
-    local ALL_LAUNCHES="0"
+    local ALL_LAUNCHES; ALL_LAUNCHES="0"
+
+    # shellcheck disable=SC2013
     for l in $(grep -Eo '^[0-9]+' "${FREQCACHE}"); do
-        ALL_LAUNCHES="$(( ${ALL_LAUNCHES} + $l ))"
+        ALL_LAUNCHES="$(( ALL_LAUNCHES + l ))"
     done
 
     [ "${ALL_LAUNCHES}" != "0" ] || { printf "[E]: Frequency cache exists, but sum of launches is 0!"; exit 1; }
 
     # Sorted by time
-    local FIFO="$(mktemp -u)"
+    local FIFO; FIFO="$(mktemp -u)"
     mkfifo -m0700 "${FIFO}"
     sort -rn "${TIMECACHE}" | sed 's/^[0-9]\+ //' >"${FIFO}" &
 
     # Calculate recency by time
-    local RECPOS="1"
+    local RECPOS; RECPOS="1"
     RECENCY_DATA="$(
         while IFS= read -r APP_NAME; do
-            RECENCY="$(( ${MATH_PRECISION} * 1 / ${RECPOS} ))"
+            RECENCY="$(( MATH_PRECISION * 1 / RECPOS ))"
             printf "%s %s\n" "${RECENCY}" "${APP_NAME}"
 
-            RECPOS="$(( ${RECPOS} + 1 ))"
+            RECPOS="$(( RECPOS + 1 ))"
         done <"${FIFO}")"
     rm "${FIFO}"
 
     # Calculate frequency and priority
     PRIORITY_DATA="$(
         while IFS= read -r LINE; do
-            local APP_LAUNCHES="$(printf "%s\n" "${LINE}" | awk '{ print $1 }')"
-            local APP_NAME="$(printf "%s\n" "${LINE}" | sed 's/^[0-9]\+ \(.*\)$/\1/')"
-            local RECENCY="$(printf "%s\n" "${RECENCY_DATA}" | grep -E "^[0-9]+ ${APP_NAME}\$" | awk '{ print $1 }')"
+            local APP_LAUNCHES; APP_LAUNCHES="$(printf "%s\n" "${LINE}" | awk '{ print $1 }')"
+            local APP_NAME; APP_NAME="$(printf "%s\n" "${LINE}" | sed 's/^[0-9]\+ \(.*\)$/\1/')"
+            local RECENCY; RECENCY="$(printf "%s\n" "${RECENCY_DATA}" | grep -E "^[0-9]+ ${APP_NAME}\$" | awk '{ print $1 }')"
 
-            local FREQUENCY="$(( ${MATH_PRECISION} * ${APP_LAUNCHES} / ${ALL_LAUNCHES} ))"
-            local PRIORITY="$(( ${FREQUENCY} * ${RECENCY} ))"
+            local FREQUENCY; FREQUENCY="$(( MATH_PRECISION * APP_LAUNCHES / ALL_LAUNCHES ))"
+            local PRIORITY; PRIORITY="$(( FREQUENCY * RECENCY ))"
 
             printf "%s %s\n" "${PRIORITY}" "${APP_NAME}"
         done <"${FREQCACHE}")"
@@ -96,14 +98,14 @@ update_priority_cache() {
 update_cache() {
     # Add 1 to freq entry
     # Set time in time entry
-    local CHOICE="$1"
-    local COUNT="$(grep -E "^[0-9]+ ${CHOICE}\$" "${FREQCACHE}" | awk '{ print $1 }')"
-    local LTIME="$(grep -E "^[0-9]+ ${CHOICE}\$" "${TIMECACHE}" | awk '{ print $1 }')"
-    local CTIME="$(date "+%s")"
+    local CHOICE; CHOICE="$1"
+    local COUNT; COUNT="$(grep -E "^[0-9]+ ${CHOICE}\$" "${FREQCACHE}" | awk '{ print $1 }')"
+    local LTIME; LTIME="$(grep -E "^[0-9]+ ${CHOICE}\$" "${TIMECACHE}" | awk '{ print $1 }')"
+    local CTIME; CTIME="$(date "+%s")"
 
     # Update or append run count
     if [ "${COUNT}" ]; then
-        sed -i "s/^${COUNT} ${CHOICE}\$/$((${COUNT} + 1)) ${CHOICE}/" "${FREQCACHE}"
+        sed -i "s/^${COUNT} ${CHOICE}\$/$(( COUNT + 1 )) ${CHOICE}/" "${FREQCACHE}"
     else
         printf "1 %s\n" "${CHOICE}" >> "${FREQCACHE}"
     fi
@@ -120,7 +122,7 @@ update_cache() {
 }
 
 main() {
-    local CHOICE="$(file_list | dmenu "$@")"
+    local CHOICE; CHOICE="$(file_list | dmenu "$@")"
     [ "${CHOICE}" ] || exit
 
     if which "${CHOICE}"; then
@@ -129,4 +131,4 @@ main() {
     fi
 }
 
-main &
+main "$@" &
