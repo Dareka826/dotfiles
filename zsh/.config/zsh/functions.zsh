@@ -7,7 +7,7 @@ dvod() {
 # Rename all opus files in directory according to their metadata
 otr() {
 	for o in *.opus; do
-		taffy --rename-fs "%N. %R - %T" "$o"
+		taffy --rename-fs "%N. %_R - %_T" "$o"
 	done
 }
 
