@@ -98,9 +98,12 @@ reset_mt7921e() {
 }
 
 find_gainless() {
-    fd --print0 -t f '\.(opus|flac|wav|mp3)$' \
-        | xargs -0 -n 1 \
-            dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' ''
+    fd -t f '\.(opus|flac|wav|mp3)$' -j 1 -x \
+        dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' '' '{}' \;
+
+    # fd --print0 -t f '\.(opus|flac|wav|mp3)$' \
+    #     | xargs -0 -n 1 \
+    #         dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' ''
 }
 
 # vim ls time
