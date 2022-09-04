@@ -2,6 +2,9 @@
     font-family: Source Code Pro;
     font-size: 14px;
     border-radius: 0px;
+
+    animation: none;
+    transition: none;
 }
 
 window#waybar {
@@ -19,22 +22,26 @@ window#waybar {
 /* Empty tags after the first 6 are not shown */
 #tags button:nth-child(n+7) {
     color: rgba(0,0,0,0);
-    padding: 0px;
-    margin: 0px;
-    margin-left: -1000px; /* Move the extra space offscreen, just to be safe */
+    background: none;
     box-shadow: none;
     border: none;
-    background: none;
+    margin-right: -1000px; /* Move the extra space offscreen, just to be safe */
 }
 
 #tags button.occupied {
     background-color: #333333;
+    color: #ffffff;
+    margin: 0px;
 }
 #tags button.focused {
     background-color: #6600ff;
+    color: #ffffff;
+    margin: 0px;
 }
 #tags button.urgent {
     background-color: #ff6600;
+    color: #ffffff;
+    margin: 0px;
 }
 
 
