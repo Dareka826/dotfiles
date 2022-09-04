@@ -1,0 +1,59 @@
+// vim: ft=json
+{
+    "layer": "top",
+    "position": "top",
+    "height": 20,
+
+    "modules-left": ["river/tags", "river/window"],
+    "modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
+
+    "river/tags": {
+        "num-tags": 32, // Unoccupied tags #>6 are hidden with css
+    },
+    "river/window": {
+        "max-length": 50,
+    },
+
+    "custom/cmus": {
+        "format": " {} ",
+        "exec": "~/.local/bin/cmus-status.sh",
+        "restart-interval": 1,
+        "escape": true,
+        "tooltip": false,
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 2,
+    },
+    "cpu": {
+        "format": " C:{usage}%",
+        "interval": 1,
+        "tooltip": false,
+    },
+    "custom/memory": {
+        "format": " {}",
+        "exec": "~/.config/waybar/scripts/memory.sh",
+        "restart-interval": 1,
+        "tooltip": false,
+    },
+    "custom/separator": {
+        "format": " |",
+        "tooltip": false,
+    },
+    "pulseaudio": {
+        "format": " V:{volume}%",
+        "format-muted": " V:M{volume}M%",
+    },
+    "battery": {
+        "format": " B:{capacity}% ",
+        "states": {
+            "warning":  30,
+            "critical": 19,
+        },
+    },
+    "clock": {
+        "format": " {:%Y-%m-%d %H:%M:%S} ",
+        "interval": 1,
+        "tooltip": false,
+    },
+}

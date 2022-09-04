@@ -1,0 +1,72 @@
+* {
+    font-family: Source Code Pro;
+    font-size: 14px;
+    border-radius: 0px;
+}
+
+window#waybar {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+#tags button {
+    padding: 0 8px; /* One space character's width */
+    min-width: unset;
+    background-color: #222222;
+    color: #ffffff;
+}
+
+/* Empty tags after the first 6 are not shown */
+#tags button:nth-child(n+7) {
+    color: rgba(0,0,0,0);
+    padding: 0px;
+    margin: 0px;
+    margin-left: -1000px; /* Move the extra space offscreen, just to be safe */
+    box-shadow: none;
+    border: none;
+    background: none;
+}
+
+#tags button.occupied {
+    background-color: #333333;
+}
+#tags button.focused {
+    background-color: #6600ff;
+}
+#tags button.urgent {
+    background-color: #ff6600;
+}
+
+
+#window {
+    padding-left: 8px; /* One space character's width */
+}
+
+
+#custom-cmus {
+    background-color: #333333;
+}
+
+#tray {
+    padding-left: 8px;
+    background-color: #222222;
+}
+
+#cpu,
+#custom-memory,
+#custom-separator,
+#pulseaudio,
+#battery {
+    background-color: #222222;
+}
+
+#battery.warning:not(.charging) {
+    color: #ff6600;
+}
+#battery.critical:not(.charging) {
+    color: #ee0000;
+}
+
+#clock {
+    background-color: #6600ff;
+}
