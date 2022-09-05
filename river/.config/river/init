@@ -27,7 +27,8 @@ cp ~/.bashrc /mnt/tmp/
 ## Mappings
 riverctl map normal Mod1 Return spawn "${TERMINAL}" # Spawn terminal
 riverctl map normal Mod1+Shift Q exit # Exit river
-riverctl map normal Mod1 D spawn "bemenu-run -l 10 -i --nb '#111111' --nf '#ffffff' --ab '#111111' --af '#ffffff' --hb '#6600ff' --hf '#ffffff' --tb '#6600ff' --tf '#ffffff' --fb '#111111' --ff '#ffffff' "
+riverctl map normal Mod1 D spawn "bemenu-run -i -l 10 -p ''"
+
 riverctl map normal Mod1 L spawn "waylock --init-color '#000000' --input-color '#6633ff' --fail-color '#ff6600' || pkill river"
 riverctl map normal Control F12 spawn "cd /home/rin/Screenshots; grim"
 
