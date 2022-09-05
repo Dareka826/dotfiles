@@ -107,7 +107,11 @@ riverctl map normal Mod1+Control J snap down
 riverctl map normal Mod1+Control K snap up
 riverctl map normal Mod1+Control L snap right
 
-# Media keys
+# Media
+riverctl -repeat map normal Mod1+Control Up   spawn "pamixer --allow-boost --increase 5 && pamixer --get-volume >\"${WOBSOCK}\""
+riverctl -repeat map normal Mod1+Control Down spawn "pamixer --allow-boost --decrease 5 && pamixer --get-volume >\"${WOBSOCK}\""
+riverctl         map normal Mod1+Control M    spawn 'pamixer --toggle-mute && { [ "$(pamixer --get-mute)" = "true" ] && echo 0 >"'"${WOBSOCK}"'"; } || pamixer --get-volume >"'"${WOBSOCK}"'"'
+
 for mode in normal locked; do
     # Eject the optical drive
     riverctl map "${mode}" None XF86Eject spawn "eject -T"
