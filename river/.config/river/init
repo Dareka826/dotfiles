@@ -130,6 +130,11 @@ for mode in normal locked; do
     riverctl map "${mode}" None XF86MonBrightnessDown spawn 'xbacklight -dec 5'
 done
 
+# passthrough mode
+riverctl declare-mode passthrough
+riverctl map normal      Super F11 enter-mode passthrough
+riverctl map passthrough Super F11 enter-mode normal
+
 ## Tags
 # Access more tags than numbers on keyboard
 riverctl declare-mode moretag
