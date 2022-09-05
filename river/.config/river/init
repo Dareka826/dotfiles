@@ -16,10 +16,8 @@ gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 swaybg -m fill -i "${HOME}/Wallpapers/Yagate_Kimi_ni_Naru_Yuu_Touko_Lanterns_Crop.jpg" &
 
 # Start programs
-#yambar &
 waybar &
-#dunst &
-foot &
+mako &
 
 xrdb ~/.Xresources
 unclutter --timeout 1 -b
