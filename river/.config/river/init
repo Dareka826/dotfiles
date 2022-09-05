@@ -3,6 +3,13 @@
 # Vars
 TERMINAL="foot"
 
+# Gtk theming
+gsettings set org.gnome.desktop.interface gtk-theme    'Materia-dark-compact'
+gsettings set org.gnome.desktop.interface icon-theme   'Papirus-Dark'
+gsettings set org.gnome.desktop.interface cursor-theme 'Suwako'
+gsettings set org.gnome.desktop.interface font-name    'Source Code Pro 10'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
 # Wallpaper
 swaybg -m fill -i /home/rin/Wallpapers/Yagate_Kimi_ni_Naru_Yuu_Touko_Lanterns_Crop.jpg &
 
