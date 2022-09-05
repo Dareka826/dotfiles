@@ -4,11 +4,11 @@
 TERMINAL="foot"
 
 # Gtk theming
-gsettings set org.gnome.desktop.interface gtk-theme    'Materia-dark-compact'
-gsettings set org.gnome.desktop.interface icon-theme   'Papirus-Dark'
-gsettings set org.gnome.desktop.interface cursor-theme 'Suwako'
-gsettings set org.gnome.desktop.interface font-name    'Source Code Pro 10'
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme    "Materia-dark-compact"
+gsettings set org.gnome.desktop.interface icon-theme   "Papirus-Dark"
+gsettings set org.gnome.desktop.interface cursor-theme "Suwako"
+gsettings set org.gnome.desktop.interface font-name    "Source Code Pro 10"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # Wallpaper
 swaybg -m fill -i /home/rin/Wallpapers/Yagate_Kimi_ni_Naru_Yuu_Touko_Lanterns_Crop.jpg &
@@ -108,27 +108,27 @@ riverctl map normal Mod1+Control L snap right
 # Media keys
 for mode in normal locked; do
     # Eject the optical drive
-    riverctl map "${mode}" None XF86Eject spawn 'eject -T'
+    riverctl map "${mode}" None XF86Eject spawn "eject -T"
 
     # Control pulse audio volume with pamixer
-    riverctl map "${mode}" None XF86AudioRaiseVolume spawn 'pamixer --allow-boost --increase 5'
-    riverctl map "${mode}" None XF86AudioLowerVolume spawn 'pamixer --allow-boost --decrease 5'
-    riverctl map "${mode}" None XF86AudioMute        spawn 'pamixer --toggle-mute'
+    riverctl map "${mode}" None XF86AudioRaiseVolume spawn "pamixer --allow-boost --increase 5"
+    riverctl map "${mode}" None XF86AudioLowerVolume spawn "pamixer --allow-boost --decrease 5"
+    riverctl map "${mode}" None XF86AudioMute        spawn "pamixer --toggle-mute"
 
     # Control MPRIS aware media players with playerctl
-    #riverctl map "${mode}" None XF86AudioPlay spawn 'playerctl play-pause'
-    #riverctl map "${mode}" None XF86AudioPrev spawn 'playerctl previous'
-    #riverctl map "${mode}" None XF86AudioNext spawn 'playerctl next'
+    #riverctl map "${mode}" None XF86AudioPlay spawn "playerctl play-pause"
+    #riverctl map "${mode}" None XF86AudioPrev spawn "playerctl previous"
+    #riverctl map "${mode}" None XF86AudioNext spawn "playerctl next"
 
     # Control cmus
-    riverctl map "${mode}" None XF86AudioPlay spawn 'cmus-remote --pause'
-    riverctl map "${mode}" None XF86AudioStop spawn 'cmus-remote --stop'
-    riverctl map "${mode}" None XF86AudioPrev spawn 'cmus-remote --prev'
-    riverctl map "${mode}" None XF86AudioNext spawn 'cmus-remote --next'
+    riverctl map "${mode}" None XF86AudioPlay spawn "cmus-remote --pause"
+    riverctl map "${mode}" None XF86AudioStop spawn "cmus-remote --stop"
+    riverctl map "${mode}" None XF86AudioPrev spawn "cmus-remote --prev"
+    riverctl map "${mode}" None XF86AudioNext spawn "cmus-remote --next"
 
     # Control screen backlight brightness
-    riverctl map "${mode}" None XF86MonBrightnessUp   spawn 'xbacklight -inc 5'
-    riverctl map "${mode}" None XF86MonBrightnessDown spawn 'xbacklight -dec 5'
+    riverctl map "${mode}" None XF86MonBrightnessUp   spawn "xbacklight -inc 5"
+    riverctl map "${mode}" None XF86MonBrightnessDown spawn "xbacklight -dec 5"
 done
 
 # passthrough mode
@@ -180,8 +180,6 @@ riverctl border-width 2
 
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp disabled
-
-# Set keyboard repeat rate
 #riverctl set-repeat 50 400
 
 # Make certain views start floating
@@ -191,6 +189,6 @@ riverctl set-cursor-warp disabled
 # Set app-ids and titles of views which should use client side decorations
 #riverctl csd-filter-add app-id "gedit"
 
-# Set the default layout generator and start it.
+# Set the default layout generator and start it
 riverctl default-layout rivercarro
 rivercarro -main-location left -main-count 1 -main-ratio 0.6 -outer-gaps 0 -inner-gaps 0 -no-smart-gaps
