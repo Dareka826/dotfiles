@@ -34,5 +34,8 @@ max-visible=10
 layer=overlay
 anchor=top-right
 
+[mode=locked]
+invisible=1
+
 [app-name="discord"]
 ignore-timeout=1
