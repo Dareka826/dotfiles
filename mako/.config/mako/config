@@ -1,4 +1,4 @@
-max-history=20
+max-history=100
 sort=+time
 
 on-button-left=dismiss
@@ -30,7 +30,7 @@ actions=1
 history=1
 text-alignment=left
 default-timeout=5000
-max-visible=-1
+max-visible=10
 layer=overlay
 anchor=top-right
 
