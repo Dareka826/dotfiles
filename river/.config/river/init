@@ -2,6 +2,8 @@
 
 # Vars
 TERMINAL="foot"
+WOBSOCK="${XDG_RUNTIME_DIR}/wob.sock"
+rm -f "${WOBSOCK}" && mkfifo "${WOBSOCK}" && tail -f "${WOBSOCK}" | wob -t 500 -o 2 -b 4 -p 2 --border-color '#ffffffff' --background-color '#111111ff' --bar-color '#ffffffff' --overflow-mode wrap --overflow-bar-color '#ff6600ff' &
 
 # Gtk theming
 gsettings set org.gnome.desktop.interface gtk-theme    "Materia-dark-compact"
@@ -111,9 +113,9 @@ for mode in normal locked; do
     riverctl map "${mode}" None XF86Eject spawn "eject -T"
 
     # Control pulse audio volume with pamixer
-    riverctl map "${mode}" None XF86AudioRaiseVolume spawn "pamixer --allow-boost --increase 5"
-    riverctl map "${mode}" None XF86AudioLowerVolume spawn "pamixer --allow-boost --decrease 5"
-    riverctl map "${mode}" None XF86AudioMute        spawn "pamixer --toggle-mute"
+    riverctl map -repeat "${mode}" None XF86AudioRaiseVolume spawn "pamixer --allow-boost --increase 5 && pamixer --get-volume >\"${WOBSOCK}\""
+    riverctl map -repeat "${mode}" None XF86AudioLowerVolume spawn "pamixer --allow-boost --decrease 5 && pamixer --get-volume >\"${WOBSOCK}\""
+    riverctl map         "${mode}" None XF86AudioMute        spawn "pamixer --toggle-mute"
 
     # Control MPRIS aware media players with playerctl
     #riverctl map "${mode}" None XF86AudioPlay spawn "playerctl play-pause"
@@ -127,8 +129,8 @@ for mode in normal locked; do
     riverctl map "${mode}" None XF86AudioNext spawn "cmus-remote --next"
 
     # Control screen backlight brightness
-    riverctl map "${mode}" None XF86MonBrightnessUp   spawn "xbacklight -inc 5"
-    riverctl map "${mode}" None XF86MonBrightnessDown spawn "xbacklight -dec 5"
+    riverctl map "${mode}" None XF86MonBrightnessUp   spawn "xbacklight -inc 5 && xbacklight -get >\"${WOBSOCK}\""
+    riverctl map "${mode}" None XF86MonBrightnessDown spawn "xbacklight -dec 5 && xbacklight -get >\"${WOBSOCK}\""
 done
 
 # passthrough mode
