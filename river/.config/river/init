@@ -129,6 +129,7 @@ done
 riverctl declare-mode moretag
 riverctl map normal  Mod1+Shift Grave enter-mode moretag # Enter moretag mode
 riverctl map moretag Mod1+Shift Grave enter-mode normal  # Go back to normal mode
+riverctl map moretag None       Escape enter-mode normal
 
 # Standard tags
 for i in $(seq 1 10); do
