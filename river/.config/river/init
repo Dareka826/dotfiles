@@ -180,6 +180,16 @@ riverctl border-width 2
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp disabled
 
+# Set keyboard repeat rate
+#riverctl set-repeat 50 400
+
+# Make certain views start floating
+#riverctl float-filter-add app-id float
+#riverctl float-filter-add title "popup title with spaces"
+
+# Set app-ids and titles of views which should use client side decorations
+#riverctl csd-filter-add app-id "gedit"
+
 # Set the default layout generator and start it.
 riverctl default-layout rivercarro
 rivercarro -main-location left -main-count 1 -main-ratio 0.6 -outer-gaps 0 -inner-gaps 0 -no-smart-gaps
