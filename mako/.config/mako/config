@@ -1,0 +1,38 @@
+max-history=20
+sort=+time
+
+on-button-left=dismiss
+on-button-middle=dismiss
+on-button-right=exec makoctl menu -n "$id" bemenu -p 'Select action: '
+
+on-notify=exec mpv --volume=60 /usr/share/sounds/freedesktop/stereo/message.oga
+
+font=Source Code Pro 10
+background-color=#111111ee
+text-color=#ffffffee
+border-color=#6600ffee
+progress-color=over #ff6600ee
+
+width=400
+height=300
+outer-margin=10
+margin=0
+padding=5
+border-size=2
+border-radius=0
+
+icons=1
+max-icon-size=64
+icon-location=left
+
+markup=1
+actions=1
+history=1
+text-alignment=left
+default-timeout=5000
+max-visible=-1
+layer=overlay
+anchor=top-right
+
+[app-name="discord"]
+ignore-timeout=1
