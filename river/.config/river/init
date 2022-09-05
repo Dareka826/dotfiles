@@ -98,6 +98,12 @@ riverctl map resize Mod1+Shift   J resize vertical    100
 riverctl map resize Mod1+Shift   K resize vertical   -100
 riverctl map resize Mod1+Shift   L resize horizontal  100
 
+# Snap windows to screen edges
+riverctl map normal Mod1+Control H snap left
+riverctl map normal Mod1+Control J snap down
+riverctl map normal Mod1+Control K snap up
+riverctl map normal Mod1+Control L snap right
+
 # Media keys
 for mode in normal locked; do
     # Eject the optical drive
