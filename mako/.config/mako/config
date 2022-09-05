@@ -37,5 +37,12 @@ anchor=top-right
 [mode=locked]
 invisible=1
 
+[urgency="critical"]
+text-color=#ffffffee
+border-color=#ff0000ee
+progress-color=over #ff0000ee
+default-timeout=0
+ignore-timeout=1
+
 [app-name="discord"]
 ignore-timeout=1
