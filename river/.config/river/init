@@ -11,7 +11,7 @@ gsettings set org.gnome.desktop.interface font-name    "Source Code Pro 10"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # Wallpaper
-swaybg -m fill -i /home/rin/Wallpapers/Yagate_Kimi_ni_Naru_Yuu_Touko_Lanterns_Crop.jpg &
+swaybg -m fill -i "${HOME}/Wallpapers/Yagate_Kimi_ni_Naru_Yuu_Touko_Lanterns_Crop.jpg" &
 
 # Start programs
 #yambar &
@@ -27,10 +27,10 @@ cp ~/.bashrc /mnt/tmp/
 ## Mappings
 riverctl map normal Mod1 Return spawn "${TERMINAL}" # Spawn terminal
 riverctl map normal Mod1+Shift Q exit # Exit river
-riverctl map normal Mod1 D spawn "/home/rin/.local/bin/dmenu_hisfreq"
+riverctl map normal Mod1 D spawn "${HOME}/.local/bin/dmenu_hisfreq"
 
 riverctl map normal Mod1 L spawn "waylock --init-color '#000000' --input-color '#6633ff' --fail-color '#ff6600' || pkill river"
-riverctl map normal Control F12 spawn "cd /home/rin/Screenshots; grim"
+riverctl map normal Control F12 spawn "cd ${HOME}/Screenshots; grim"
 
 # Windows
 riverctl map normal Mod1+Shift c close # Close window
