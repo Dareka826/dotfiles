@@ -333,7 +333,7 @@ augroup END
 " Treesitter
 lua <<EOF
 require('nvim-treesitter.configs').setup({
-    ensure_installed = { "c", "lua" },
+    ensure_installed = { "c", "lua", "comment" },
     sync_install = false,
     highlight = { enable = true },
     indent    = { enable = true },
