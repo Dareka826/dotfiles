@@ -180,6 +180,7 @@ riverctl border-width 2
 
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp disabled
+riverctl xcursor-theme Suwako
 #riverctl set-repeat 50 400
 
 # Make certain views start floating
