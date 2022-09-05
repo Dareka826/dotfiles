@@ -37,6 +37,11 @@ anchor=top-right
 [mode=locked]
 invisible=1
 
+[urgency="low"]
+text-color=#ffffff99
+border-color=#44444499
+progress-color=over #33333399
+
 [urgency="critical"]
 text-color=#ffffffee
 border-color=#ff0000ee
