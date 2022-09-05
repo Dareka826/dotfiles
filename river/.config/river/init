@@ -30,6 +30,7 @@ riverctl map normal Mod1+Shift Q exit # Exit river
 riverctl map normal Mod1 D spawn "bemenu-run -l 10 -i --nb '#111111' --nf '#ffffff' --ab '#111111' --af '#ffffff' --hb '#6600ff' --hf '#ffffff' --tb '#6600ff' --tf '#ffffff' --fb '#111111' --ff '#ffffff' "
 riverctl map normal Mod1 L spawn "waylock --init-color '#000000' --input-color '#6633ff' --fail-color '#ff6600' || pkill river"
 riverctl map normal Control F12 spawn "cd /home/rin/Screenshots; grim"
+
 # Windows
 riverctl map normal Mod1+Shift c close # Close window
 riverctl map normal Mod1 J focus-view next     # Focus next win
@@ -37,11 +38,13 @@ riverctl map normal Mod1 K focus-view previous # Focus prev win
 riverctl map normal Mod1+Shift J swap next     # Swap with next win
 riverctl map normal Mod1+Shift K swap previous # Swap with prev win
 riverctl map normal Mod1+Shift Return zoom # Bump to top of stack
+
 # Screens
 riverctl map normal Mod1 Period focus-output next     # Focus next scr
 riverctl map normal Mod1 Comma  focus-output previous # Focus prev scr
 riverctl map normal Mod1+Shift Period send-to-output next     # Move win to next scr
 riverctl map normal Mod1+Shift Comma  send-to-output previous # Move win to prev scr
+
 # Layout
 riverctl map normal Mod1+Shift H send-layout-cmd rivercarro "main-ratio -0.05" # Decrease master ratio
 riverctl map normal Mod1+Shift L send-layout-cmd rivercarro "main-ratio +0.05" # Increase master ratio
@@ -49,12 +52,51 @@ riverctl map normal Mod1+Shift I send-layout-cmd rivercarro "main-count +1" # In
 riverctl map normal Mod1+Shift D send-layout-cmd rivercarro "main-count -1" # Decrease master win count
 riverctl map normal Mod1 T send-layout-cmd rivercarro "main-location left" # Tiling layout
 riverctl map normal Mod1 M send-layout-cmd rivercarro "main-location monocle" # Monocle layout
+
 # Toggle stuff
 riverctl map normal Mod1+Shift Space toggle-float      # Toggle floating
 riverctl map normal Mod1+Shift F     toggle-fullscreen # Toggle fullscreen
+
 # Mouse
 riverctl map-pointer normal Mod1 BTN_LEFT  move-view   # Mouse drag
 riverctl map-pointer normal Mod1 BTN_RIGHT resize-view # Mouse resize
+
+# Manipulating windows
+riverctl declare-mode move
+riverctl map normal Mod1+Shift M enter-mode move
+riverctl map move   Mod1+Shift M enter-mode normal
+riverctl map move   None       Escape enter-mode normal
+
+riverctl map move Mod1         H move left  10
+riverctl map move Mod1         J move down  10
+riverctl map move Mod1         K move up    10
+riverctl map move Mod1         L move right 10
+riverctl map move Mod1+Control H move left  1
+riverctl map move Mod1+Control J move down  1
+riverctl map move Mod1+Control K move up    1
+riverctl map move Mod1+Control L move right 1
+riverctl map move Mod1+Shift   H move left  100
+riverctl map move Mod1+Shift   J move down  100
+riverctl map move Mod1+Shift   K move up    100
+riverctl map move Mod1+Shift   L move right 100
+
+riverctl declare-mode resize
+riverctl map normal Mod1+Shift R enter-mode resize
+riverctl map resize Mod1+Shift R enter-mode normal
+riverctl map resize None       Escape enter-mode normal
+
+riverctl map resize Mod1         H resize horizontal -10
+riverctl map resize Mod1         J resize vertical    10
+riverctl map resize Mod1         K resize vertical   -10
+riverctl map resize Mod1         L resize horizontal  10
+riverctl map resize Mod1+Control H resize horizontal -1
+riverctl map resize Mod1+Control J resize vertical    1
+riverctl map resize Mod1+Control K resize vertical   -1
+riverctl map resize Mod1+Control L resize horizontal  1
+riverctl map resize Mod1+Shift   H resize horizontal -100
+riverctl map resize Mod1+Shift   J resize vertical    100
+riverctl map resize Mod1+Shift   K resize vertical   -100
+riverctl map resize Mod1+Shift   L resize horizontal  100
 
 ## Tags
 # Access more tags than numbers on keyboard
