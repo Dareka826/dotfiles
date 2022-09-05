@@ -161,7 +161,8 @@ for i in $(seq 1 10); do
         riverctl map "${mode}" Mod1+Shift+Control "${j}" toggle-view-tags    "${tags}" # Toggle tag on focused win
     done
 done
-riverctl map normal Mod1 Tab focus-previous-tags
+riverctl map normal Mod1       Tab focus-previous-tags
+riverctl map normal Mod1+Shift Tab send-to-previous-tags
 
 # Map tags 11-32 to keys A-V
 for i in $(seq 11 32); do
