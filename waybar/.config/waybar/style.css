@@ -2,6 +2,7 @@
     font-family: Source Code Pro;
     font-size: 14px;
     border-radius: 0px;
+    min-height: 0px;
 
     animation: none;
     transition: none;
