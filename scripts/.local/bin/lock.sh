@@ -1,47 +1,41 @@
 #!/bin/sh
 
 i3lock \
-    -i ~/Wallpapers/lockscreen2.png \
-    --indicator \
+    --color=000000ff \
     --force-clock \
-    -S 0 \
 \
-    --ringver-color=222222ff \
-    --ringwrong-color=EE99BB \
-    --ring-color=DD5588FF \
+    --ring-color=ff8ab7ff \
+    --ringver-color=333333ff \
+    --ringwrong-color=ff6600ff \
 \
-    --keyhl-color=FFFFFFFF \
-    --bshl-color=111111ff \
+    --keyhl-color=ffffffff \
+    --bshl-color=333333ff \
 \
+    --inside-color=00000000 \
     --insidever-color=00000000 \
     --insidewrong-color=00000000 \
-    --inside-color=00000000 \
 \
     --line-color=00000000 \
     --separator-color=00000000 \
 \
-    --verif-color=00000000 \
-    --wrong-color=00000000 \
+    --time-color=ff8ab7ff \
+    --date-color=eeeeeeff \
 \
-    --time-color=DD5588FF \
-    --date-color=FF22AAFF \
+    --date-str="%a, %d/%m/%Y" \
 \
-    --date-str="%A %d/%m/%Y" \
-\
-    --time-align 2 \
-    --date-align 2 \
+    --time-align 1 \
+    --date-align 1 \
 \
     --time-font="Source Code Pro"\
     --date-font="Source Code Pro" \
 \
-    --time-size=80 \
-    --date-size=15 \
+    --time-size=60 \
+    --date-size=20 \
 \
     --radius 50 \
-    --ring-width 15 \
+    --ring-width 10 \
 \
-    --ind-pos="x+r+20:y+h-r-20" \
-    --time-pos="x+w-25:y+h-55" \
+    --time-pos="x+25:y+h-55" \
     --date-pos="tx:ty+30" \
 \
     --verif-text="" \
