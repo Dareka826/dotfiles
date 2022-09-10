@@ -1,0 +1,3 @@
+#!/usr/bin/execlineb -P
+
+/usr/bin/pactl load-module module-tunnel-sink server=tcp:10.0.0.3:4656
