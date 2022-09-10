@@ -110,6 +110,8 @@ riverctl map -repeat normal Mod1+Control Up   spawn "pamixer --allow-boost --inc
 riverctl map -repeat normal Mod1+Control Down spawn "pamixer --allow-boost --decrease 5 && pamixer --get-volume >\"${WOBSOCK}\""
 riverctl map         normal Mod1+Control M    spawn 'pamixer --toggle-mute && { [ "$(pamixer --get-mute)" = "true" ] && echo 0 >"'"${WOBSOCK}"'"; } || pamixer --get-volume >"'"${WOBSOCK}"'"'
 
+riverctl map normal Mod1 c spawn "cmus-remote --pause"
+
 for mode in normal locked; do
     # Eject the optical drive
     riverctl map "${mode}" None XF86Eject spawn "eject -T"
