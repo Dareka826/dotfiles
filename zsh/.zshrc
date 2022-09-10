@@ -2,9 +2,9 @@
 
 ########## History ##########
 
-HISTFILE=~/.zsh_history         # History file
-HISTSIZE=10000                  # Max lines in history file
-SAVEHIST=$HISTSIZE              # Max history lines appended by a single shell
+export HISTFILE="$XDG_STATE_HOME"/zsh/history # History file
+export HISTSIZE=10000000        # Max lines in history file
+export SAVEHIST=$HISTSIZE       # Max history lines appended by a single shell
 setopt INC_APPEND_HISTORY       # Don't wait for exit to write history
 setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicates
 setopt HIST_IGNORE_SPACE        # Remove lines that start with a space
