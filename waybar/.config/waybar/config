@@ -1,7 +1,8 @@
 // vim: ft=json
 {
-    "layer": "top",
+    "layer": "bottom",
     "position": "top",
+    "exclusive": true,
     "height": 20,
 
     "modules-left": ["river/tags", "river/window"],
@@ -20,6 +21,7 @@
         "restart-interval": 1,
         "escape": true,
         "tooltip": false,
+        "on-click": "cmus-remote --pause",
     },
     "tray": {
         "icon-size": 18,
