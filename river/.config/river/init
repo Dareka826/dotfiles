@@ -149,8 +149,8 @@ riverctl map moretag None       Escape enter-mode normal
 
 # Standard tags
 for i in $(seq 1 10); do
-    tags="$(( 1 << ($i - 1) ))"
-    j="$(( ${i} % 10 ))"
+    tags="$(( 1 << (i - 1) ))"
+    j="$(( i % 10 ))"
 
     for mode in normal moretag; do
         riverctl map "${mode}" Mod1               "${j}" set-focused-tags    "${tags}" # Focus tag
@@ -164,14 +164,15 @@ riverctl map normal Mod1+Shift Tab send-to-previous-tags
 
 # Map tags 11-32 to keys A-V
 for i in $(seq 11 32); do
-    tags=$((1 << ($i - 1))) # Choose one tag
-    KEY_CODE="$(( ${i} - 11 + $(printf "%d" "'A") ))"       # Choose letter based on tag number
+    tags="$(( 1 << (i - 1) ))" # Choose one tag
+    KEY_CODE="$(( i - 11 + $(printf "%d" "'A") ))"       # Choose letter based on tag number
     KEY_CHAR="$(printf "\\$(printf "%03o" "${KEY_CODE}")")" # Convert key code to ascii
 
-    riverctl map moretag Mod1               "${KEY_CHAR}" set-focused-tags    $tags # Focus tag
-    riverctl map moretag Mod1+Shift         "${KEY_CHAR}" set-view-tags       $tags # Set tag on focused win
-    riverctl map moretag Mod1+Control       "${KEY_CHAR}" toggle-focused-tags $tags # Toggle tag focus
-    riverctl map moretag Mod1+Shift+Control "${KEY_CHAR}" toggle-view-tags    $tags # Toggle tag on focused win
+    # Exit moretag mode after the desired action
+    riverctl map moretag Mod1               "${KEY_CHAR}" set-focused-tags    "${tags}" # Focus tag
+    riverctl map moretag Mod1+Shift         "${KEY_CHAR}" set-view-tags       "${tags}" # Set tag on focused win
+    riverctl map moretag Mod1+Control       "${KEY_CHAR}" toggle-focused-tags "${tags}" # Toggle tag focus
+    riverctl map moretag Mod1+Shift+Control "${KEY_CHAR}" toggle-view-tags    "${tags}" # Toggle tag on focused win
 done
 
 ## Config
