@@ -3,7 +3,7 @@
 # Vars
 TERMINAL="foot"
 WOBSOCK="${XDG_RUNTIME_DIR}/wob.sock"
-rm -f "${WOBSOCK}" && mkfifo "${WOBSOCK}" && tail -f "${WOBSOCK}" | wob -t 500 -o 2 -b 4 -p 2 --border-color '#ffffffff' --background-color '#111111ff' --bar-color '#ffffffff' --overflow-mode wrap --overflow-bar-color '#ff6600ff' &
+rm -f "${WOBSOCK}" && mkfifo "${WOBSOCK}" && tail -f "${WOBSOCK}" | wob -t 1000 -o 2 -b 4 -p 2 --border-color '#ffffffff' --background-color '#111111ff' --bar-color '#ffffffff' --overflow-mode wrap --overflow-bar-color '#ff6600ff' &
 
 # Gtk theming
 gsettings set org.gnome.desktop.interface gtk-theme    "Materia-dark-compact"
