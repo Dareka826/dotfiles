@@ -181,7 +181,7 @@ done
 riverctl attach-mode top
 riverctl background-color 0x111111
 
-riverctl border-color-focused 0x6633FF
+riverctl border-color-focused 0x6600FF
 riverctl border-color-unfocused 0x444444
 riverctl border-color-urgent 0xFF6600
 riverctl border-width 2
