@@ -178,13 +178,20 @@ filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
 "          \<video/*>
 "         \ ffprobe -pretty %c 2>&1
 " Video thumbnails ueberzug/w3m
+""""fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
+""""           \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
+""""           \*.as[fx]},
+""""          \<video/*>
+""""          \ vifm_thumb draw %px %py %pw %ph %c %N
+""""          \ %pc
+""""          \ vifm_thumb clear
 fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
            \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
            \*.as[fx]},
           \<video/*>
-          \ vifm_thumb draw %px %py %pw %ph %c
+          \ vifm-sixel video %pw %ph %c %pd
           \ %pc
-          \ vifm_thumb clear
+          \ vifm-sixel clear
 
 " Web
 filextype {*.html,*.htm},<text/html>
@@ -204,10 +211,14 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
         \ {View in sxiv}
         \ sxiv %f
 " Image previews ueberzug/w3m
+""""fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
+""""        \ vifm_img draw %px %py %pw %ph %c %N
+""""        \ %pc
+""""        \ vifm_img clear
 fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
-        \ vifm_img draw %px %py %pw %ph %c
+        \ vifm-sixel draw %pw %ph %c %pd
         \ %pc
-        \ vifm_img clear
+        \ vifm-sixel clear
 
 "fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
 "         \ identify %f
