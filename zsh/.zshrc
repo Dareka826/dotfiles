@@ -136,6 +136,7 @@ alias  ll="$LSPROG $LSOPTS -hl"
 alias  la="$LSPROG $LSOPTS -a"
 alias  li="$LSPROG $LSOPTS -hali"
 alias lli="$LSPROG $LSOPTS -hli"
+alias lsd="$LSPROG $LSOPTS --group-directories-first"
 
 # Mkdir shortcut, rm and mv confirmation
 alias md="mkdir -p"
