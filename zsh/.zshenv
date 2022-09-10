@@ -26,6 +26,9 @@ export PATH=$PATH:/mnt/DATA/android/apktool
 # dbus
 export DBUS_SESSION_BUS_ADDRESS="unix:abstract=/${UID}/dbus"
 
+# Wayland gtk theme
+export GTK_THEME="Materia-dark-compact"
+
 # Config for bemenu
 export BEMENU_OPTS="-i -l 10 -p '' --tb '#6600ff' --tf '#ffffff' --fb '#111111' --ff '#ffffff' --cb '#111111' --cf '#ffffff' --nb '#111111' --nf '#ffffff' --hb '#6600ff' --hf '#ffffff' --sb '#222222' --sf '#ffffff'"
 
