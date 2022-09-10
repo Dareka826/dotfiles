@@ -1,0 +1,3 @@
+#!/usr/bin/execlineb -P
+
+/usr/bin/pactl load-module module-native-protocol-tcp "auth-ip-acl=10.0.0.2;127.0.0.1 port=4656"

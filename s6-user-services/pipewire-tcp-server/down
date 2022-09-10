@@ -1,0 +1,3 @@
+#!/usr/bin/execlineb -P
+
+pactl unload-module module-native-protocol-tcp

@@ -1,0 +1,8 @@
+#!/usr/bin/execlineb -P
+
+# Run at the start of every hour
+foreground { snooze -H* -M0 -S0 }
+
+# Display a notification with the time
+backtick -E TIME_VAR { date "+%H:%M:%S" }
+notify-send -u critical "Time: ${TIME_VAR}"

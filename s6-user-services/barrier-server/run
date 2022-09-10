@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+fdmove -c 2 1
+
+/usr/bin/barriers -f -a 10.0.0.3 --disable-client-cert-checking -c data/barrier.conf
