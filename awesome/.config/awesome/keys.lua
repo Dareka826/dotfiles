@@ -237,6 +237,7 @@ globalkey_modes["resize"] = gears.table.join(
 )
 
 clientkey_modes["resize"] = gears.table.join(
+    -- Floating window
     awful.key({ modkey            }, "h", function(c) c:relative_move( 0, 0, -10,   0) end, {description="resize client left by 20px",  group="client"}),
     awful.key({ modkey            }, "j", function(c) c:relative_move( 0, 0,   0,  10) end, {description="resize client down by 20px",  group="client"}),
     awful.key({ modkey            }, "k", function(c) c:relative_move( 0, 0,   0, -10) end, {description="resize client up by 20px",    group="client"}),
@@ -250,7 +251,12 @@ clientkey_modes["resize"] = gears.table.join(
     awful.key({ modkey, "Shift"   }, "h", function(c) c:relative_move( 0, 0, -100,    0) end, {description="resize client left by 100px",  group="client"}),
     awful.key({ modkey, "Shift"   }, "j", function(c) c:relative_move( 0, 0,    0,  100) end, {description="resize client down by 100px",  group="client"}),
     awful.key({ modkey, "Shift"   }, "k", function(c) c:relative_move( 0, 0,    0, -100) end, {description="resize client up by 100px",    group="client"}),
-    awful.key({ modkey, "Shift"   }, "l", function(c) c:relative_move( 0, 0,  100,    0) end, {description="resize client right by 100px", group="client"})
+    awful.key({ modkey, "Shift"   }, "l", function(c) c:relative_move( 0, 0,  100,    0) end, {description="resize client right by 100px", group="client"}),
+
+    -- Tiled window
+    awful.key({ modkey            }, "i", function(c) awful.client.incwfact( 1, c) end, {description="increase window factor of client by 1", group="client"}),
+    awful.key({ modkey            }, "d", function(c) awful.client.incwfact(-1, c) end, {description="decrease window factor of client by 1", group="client"}),
+    awful.key({ modkey            }, "w", function(c) awful.client.setwfact( 1, c) end, {description="set window factor of client to 1", group="client"})
 )
 -- }}}
 
