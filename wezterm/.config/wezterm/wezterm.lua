@@ -6,10 +6,10 @@ local wezterm = require("wezterm")
 M.enable_tab_bar = false
 
 -- Stop cursor fade
-M.animation_fps = 2
+M.animation_fps = 1
 M.cursor_blink_ease_in  = "Constant"
 M.cursor_blink_ease_out = "Constant"
-M.cursor_blink_rate = 500
+M.cursor_blink_rate = 0
 
 -- Colorscheme {{{
 M.colors = {
