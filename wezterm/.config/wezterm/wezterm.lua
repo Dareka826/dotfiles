@@ -67,7 +67,10 @@ M.window_padding = {
 }
 M.enable_scroll_bar = true
 
-M.font = wezterm.font("Source Code Pro", { weight = "Regular" })
+M.font = wezterm.font_with_fallback(
+    { family = "Source Code Pro",     weight = "Regular" },
+    { family = "Twitter Color Emoji", weight = "Regular" }
+)
 M.font_size = 12
 M.adjust_window_size_when_changing_font_size = false
 
