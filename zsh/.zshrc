@@ -2,7 +2,8 @@
 
 ########## History ##########
 
-export HISTFILE="$XDG_STATE_HOME"/zsh/history # History file
+[ -z "${XDG_STATE_HOME}" ] && XDG_STATE_HOME="${HOME}/.local/state"
+export HISTFILE="${XDG_STATE_HOME}/zsh/history" # History file
 export HISTSIZE=10000000        # Max lines in history file
 export SAVEHIST=$HISTSIZE       # Max history lines appended by a single shell
 setopt INC_APPEND_HISTORY       # Don't wait for exit to write history
@@ -10,6 +11,9 @@ setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicates
 setopt HIST_IGNORE_SPACE        # Remove lines that start with a space
 setopt HIST_VERIFY              # Confirm after history substitution
 setopt INTERACTIVE_COMMENTS     # Allow comments in interactive mode
+
+# Create folder containing history file, if nonexistent
+[ -d "${HISTFILE%/*}" ] || mkdir -p "${HISTFILE%/*}"
 
 ########## Prompt ##########
 
