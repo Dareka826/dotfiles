@@ -69,6 +69,7 @@ M.enable_scroll_bar = true
 
 M.font = wezterm.font_with_fallback({
     { family = "Source Code Pro",     weight = "Regular" },
+    { family = "Source Han Sans JP",  weight = "Regular" },
     { family = "Twitter Color Emoji", weight = "Regular" },
 })
 M.font_size = 12
