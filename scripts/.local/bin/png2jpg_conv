@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fd -t f '\.png$' -X dash -c 'for p in "$@"; do if [ -f "${p%png}jpg" ]; then rm "${p}"; printf "rm %s\n" "${p}"; else convert "${p}" -quality 99 "${p%png}jpg"; touch -r "${p}" "${p%png}jpg"; printf "conv %s -> %s\n" "${p}" "${p%png}jpg"; fi; done' ''
