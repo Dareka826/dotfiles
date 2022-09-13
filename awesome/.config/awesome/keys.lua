@@ -161,6 +161,7 @@ globalkey_modes["default"] = gears.table.join(
     awful.key({ modkey, "Shift" }, "m",   function() set_mode("move")        end, {description="enter move mode",    group="mode"}),
     awful.key({ modkey, "Shift" }, "r",   function() set_mode("resize")      end, {description="enter resize mode",  group="mode"}),
     awful.key({ modkey, "Shift" }, "t",   function() set_mode("moretag")     end, {description="enter moretag mode", group="mode"}),
+    awful.key({ modkey, "Shift" }, "x",   function() set_mode("mouse")       end, {description="enter mouse mode",   group="mode"}),
     awful.key({ "Mod4"          }, "F11", function() set_mode("passthrough") end, {description="enter passthrough mode", group="mode"})
 )
 
@@ -284,11 +285,59 @@ end
 
 -- }}}
 
+-- MODE: mouse {{{
+globalkey_modes["mouse"] = gears.table.join(
+    awful.key({ modkey, "Shift" }, "x",      function() set_mode("default") end, {description="exit mouse mode", group="mode"}),
+    awful.key({                 }, "Escape", function() set_mode("default") end, {description="exit mouse mode", group="mode"}),
+
+    awful.key({ }, "h", function() awful.spawn("ydotool mousemove -- -20   0") end, {description="move mouse left by 20px",  group="mouse"}),
+    awful.key({ }, "j", function() awful.spawn("ydotool mousemove --   0  20") end, {description="move mouse down by 20px",  group="mouse"}),
+    awful.key({ }, "k", function() awful.spawn("ydotool mousemove --   0 -20") end, {description="move mouse up by 20px",    group="mouse"}),
+    awful.key({ }, "l", function() awful.spawn("ydotool mousemove --  20   0") end, {description="move mouse right by 20px", group="mouse"}),
+
+    awful.key({ "Control" }, "h", function() awful.spawn("ydotool mousemove -- -5  0") end, {description="move mouse left by 5px",  group="mouse"}),
+    awful.key({ "Control" }, "j", function() awful.spawn("ydotool mousemove --  0  5") end, {description="move mouse down by 5px",  group="mouse"}),
+    awful.key({ "Control" }, "k", function() awful.spawn("ydotool mousemove --  0 -5") end, {description="move mouse up by 5px",    group="mouse"}),
+    awful.key({ "Control" }, "l", function() awful.spawn("ydotool mousemove --  5  0") end, {description="move mouse right by 5px", group="mouse"}),
+
+    awful.key({ "Shift"   }, "h", function() awful.spawn("ydotool mousemove -- -100    0") end, {description="move mouse left by 100px",  group="mouse"}),
+    awful.key({ "Shift"   }, "j", function() awful.spawn("ydotool mousemove --    0  100") end, {description="move mouse down by 100px",  group="mouse"}),
+    awful.key({ "Shift"   }, "k", function() awful.spawn("ydotool mousemove --    0 -100") end, {description="move mouse up by 100px",    group="mouse"}),
+    awful.key({ "Shift"   }, "l", function() awful.spawn("ydotool mousemove --  100    0") end, {description="move mouse right by 100px", group="mouse"}),
+
+    awful.key({ "Control", "Shift" }, "h", function() awful.spawn("ydotool mousemove -- -1  0") end, {description="move mouse left by 1px",  group="mouse"}),
+    awful.key({ "Control", "Shift" }, "j", function() awful.spawn("ydotool mousemove --  0  1") end, {description="move mouse down by 1px",  group="mouse"}),
+    awful.key({ "Control", "Shift" }, "k", function() awful.spawn("ydotool mousemove --  0 -1") end, {description="move mouse up by 1px",    group="mouse"}),
+    awful.key({ "Control", "Shift" }, "l", function() awful.spawn("ydotool mousemove --  1  0") end, {description="move mouse right by 1px", group="mouse"}),
+
+    awful.key({           }, "1", function() awful.spawn("xdotool click --clearmodifiers 1") end, {description="click left mouse button",   group="mouse"}),
+    awful.key({           }, "2", function() awful.spawn("xdotool click --clearmodifiers 2") end, {description="click middle mouse button", group="mouse"}),
+    awful.key({           }, "3", function() awful.spawn("xdotool click --clearmodifiers 3") end, {description="click right mouse button",  group="mouse"}),
+    awful.key({           }, "4", function() awful.spawn("xdotool click --clearmodifiers 4") end, {description="scroll up",   group="mouse"}),
+    awful.key({           }, "5", function() awful.spawn("xdotool click --clearmodifiers 5") end, {description="scroll down", group="mouse"}),
+
+    awful.key({ "Control" }, "1", function() awful.spawn.with_shell("xdotool keyup ctrl; xdotool mousedown 1") end, {description="press down left mouse button",   group="mouse"}),
+    awful.key({ "Control" }, "2", function() awful.spawn.with_shell("xdotool keyup ctrl; xdotool mousedown 2") end, {description="press down middle mouse button", group="mouse"}),
+    awful.key({ "Control" }, "3", function() awful.spawn.with_shell("xdotool keyup ctrl; xdotool mousedown 3") end, {description="press down right mouse button",  group="mouse"}),
+
+    awful.key({ "Shift"   }, "1", function() awful.spawn.with_shell("xdotool keyup shift; xdotool mouseup 1") end, {description="release left mouse button",   group="mouse"}),
+    awful.key({ "Shift"   }, "2", function() awful.spawn.with_shell("xdotool keyup shift; xdotool mouseup 2") end, {description="release middle mouse button", group="mouse"}),
+    awful.key({ "Shift"   }, "3", function() awful.spawn.with_shell("xdotool keyup shift; xdotool mouseup 3") end, {description="release right mouse button",  group="mouse"}),
+
+    -- Allow client switching for convienience
+    awful.key({ modkey, }, "j", function() awful.client.focus.byidx( 1) end, {description="focus next by index",     group="client"}),
+    awful.key({ modkey, }, "k", function() awful.client.focus.byidx(-1) end, {description="focus previous by index", group="client"})
+)
+
+clientkey_modes["mouse"] = {}
+-- }}}
+
 -- Tags 1-10
 for i = 1, 10 do
     local keys = gen_tag_keys(i, tostring(i % 10))
     globalkey_modes["default"] = gears.table.join(globalkey_modes["default"], keys)
     globalkey_modes["moretag"] = gears.table.join(globalkey_modes["moretag"], keys)
+    globalkey_modes["mouse"]   = gears.table.join(globalkey_modes["mouse"],   keys)
 end
 
 M.globalkeys = globalkey_modes["default"]
