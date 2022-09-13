@@ -59,10 +59,10 @@ _prompt_git() {
 
     # Print + if modified/added, print - if deleted
     local git_status="$(git --no-optional-locks status --porcelain 2>/dev/null)"
-    echo "$git_status" | grep -E "^\ *\?" >/dev/null && echo -n "%F{cyan}?"
-    echo "$git_status" | grep -E "^\ *D" >/dev/null && echo -n "%F{red}-"
-    echo "$git_status" | grep -E "^\ *M" >/dev/null && echo -n "%F{green}+"
-    echo "$git_status" | grep -E "^\ *A" >/dev/null && echo -n "%F{yellow}+"
+    echo "$git_status" | grep -E '^ *\?' >/dev/null && echo -n "%F{cyan}?"
+    echo "$git_status" | grep -E '^ *D' >/dev/null && echo -n "%F{red}-"
+    echo "$git_status" | grep -E '^ *M' >/dev/null && echo -n "%F{green}+"
+    echo "$git_status" | grep -E '^ *A' >/dev/null && echo -n "%F{yellow}+"
 
     # Git bisect
     git bisect log >/dev/null 2>&1 && echo -n "%F{yellow}B"
