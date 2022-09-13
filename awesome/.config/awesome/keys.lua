@@ -255,9 +255,14 @@ clientkey_modes["resize"] = gears.table.join(
     awful.key({ modkey, "Shift"   }, "l", function(c) c:relative_move( 0, 0,  100,    0) end, {description="resize client right by 100px", group="client"}),
 
     -- Tiled window
-    awful.key({ modkey            }, "i", function(c) awful.client.incwfact( 1, c) end, {description="increase window factor of client by 1", group="client"}),
-    awful.key({ modkey            }, "d", function(c) awful.client.incwfact(-1, c) end, {description="decrease window factor of client by 1", group="client"}),
-    awful.key({ modkey            }, "w", function(c) awful.client.setwfact( 1, c) end, {description="set window factor of client to 1", group="client"})
+    awful.key({ modkey            }, "i", function(c) awful.client.incwfact( 0.025, c) end, {description="increase client window factor by 0.025", group="client"}),
+    awful.key({ modkey            }, "d", function(c) awful.client.incwfact(-0.025, c) end, {description="decrease client window factor by 0.025", group="client"}),
+
+    awful.key({ modkey, "Control" }, "i", function(c) awful.client.incwfact( 0.001, c) end, {description="increase client window factor by 0.001", group="client"}),
+    awful.key({ modkey, "Control" }, "d", function(c) awful.client.incwfact(-0.001, c) end, {description="decrease client window factor by 0.001", group="client"}),
+
+    awful.key({ modkey, "Shift"   }, "i", function(c) awful.client.incwfact( 0.1, c)   end, {description="increase client window factor by 0.1", group="client"}),
+    awful.key({ modkey, "Shift"   }, "d", function(c) awful.client.incwfact(-0.1, c)   end, {description="decrease client window factor by 0.1", group="client"})
 )
 -- }}}
 
