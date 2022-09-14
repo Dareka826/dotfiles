@@ -318,8 +318,8 @@ globalkey_modes["mouse"] = gears.table.join(
     awful.key({           }, "1", function() awful.spawn("xdotool click --clearmodifiers 1") end, {description="click left mouse button",   group="mouse"}),
     awful.key({           }, "2", function() awful.spawn("xdotool click --clearmodifiers 2") end, {description="click middle mouse button", group="mouse"}),
     awful.key({           }, "3", function() awful.spawn("xdotool click --clearmodifiers 3") end, {description="click right mouse button",  group="mouse"}),
-    awful.key({           }, "4", function() awful.spawn("xdotool click --clearmodifiers 4") end, {description="scroll up",   group="mouse"}),
-    awful.key({           }, "5", function() awful.spawn("xdotool click --clearmodifiers 5") end, {description="scroll down", group="mouse"}),
+    awful.key({           }, "4", function() awful.spawn("xdotool click --clearmodifiers 5") end, {description="scroll down",   group="mouse"}),
+    awful.key({           }, "5", function() awful.spawn("xdotool click --clearmodifiers 4") end, {description="scroll up", group="mouse"}),
 
     awful.key({ "Control" }, "1", function() awful.spawn.with_shell("xdotool keyup ctrl; xdotool mousedown 1") end, {description="press down left mouse button",   group="mouse"}),
     awful.key({ "Control" }, "2", function() awful.spawn.with_shell("xdotool keyup ctrl; xdotool mousedown 2") end, {description="press down middle mouse button", group="mouse"}),
