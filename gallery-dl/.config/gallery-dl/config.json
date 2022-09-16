@@ -2,9 +2,25 @@
   "extractor": {
     "base-directory": ".",
     "directory": [],
+    "postprocessors": [
+      {
+        "name": "exec", "event": "after",
+        "command": ["/home/rin/.config/gallery-dl/post.sh", "{extension}", "{_path}"]
+      },
+      {
+        "name": "exec", "event": "prepare",
+        "command": ["/home/rin/.config/gallery-dl/pre.sh", "{extension}", "{_path}"]
+      },
+      {
+        "name": "exec", "event": "skip",
+        "command": ["/home/rin/.config/gallery-dl/skip.sh", "{extension}", "{_path}"]
+      }
+    ],
+
     "pixiv": {
       "refresh-token": "####",
       "ugoira": true
+      "filename": "pixiv_{user[name]}_({user[account]})_{id:09}_p{num:L1/num:02/}.{extension}"
     },
     "fanbox": {
       "cookies": {
@@ -25,6 +41,10 @@
       "filename": "r34p_{id}.{extension}"
     },
     "twitter": {
+      "username": "####",
+      "cookies": {
+        "auth_token": "####"
+      },
       "filename": "twitter_{author[name]}_{tweet_id}_{num}.{extension}"
     }
   },
