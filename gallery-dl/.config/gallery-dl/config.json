@@ -19,7 +19,7 @@
 
     "pixiv": {
       "refresh-token": "####",
-      "ugoira": true
+      "ugoira": true,
       "filename": "pixiv_{user[name]}_({user[account]})_{id:09}_p{num:L1/num:02/}.{extension}"
     },
     "fanbox": {
