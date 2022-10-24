@@ -1,5 +1,7 @@
 #!/bin/sh
 
-cd ~/Screenshots
-scrot
+OPTS=""
+[ "$1" = "select" ] && OPTS+=" -s"
 
+cd ~/Screenshots
+scrot $OPTS
