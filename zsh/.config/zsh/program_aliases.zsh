@@ -15,7 +15,7 @@ alias mgg="mega-get"
 alias mdl="megadl"
 
 # Rename file with taffy according to metadata
-alias trfs="taffy --rename-fs \"%R - %T\""
+alias trfs="taffy --rename-fs \"%_R - %_T\""
 
 # Audacity no network
 alias audacity="firejail --net=none audacity"
