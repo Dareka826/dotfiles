@@ -42,3 +42,11 @@ Nsxiv.window.background: #111111
 Nsxiv.window.foreground: #ffffff
 Nsxiv.bar.background: #222222
 Nsxiv.bar.foreground: #ffffff
+
+! XTerm
+XTerm*decTerminalID: vt340
+XTerm*numColorRegisters: 256
+XTerm*utf8: 1
+XTerm*ScrollBar: false
+XTerm*visualBell: false
+xterm*faceName: Source Code Pro:style=Regular:size=11
