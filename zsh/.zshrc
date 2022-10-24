@@ -295,7 +295,7 @@ zstyle ':completion:*' menu select          # Use menu select unconditionally
 zstyle ':completion:*' matcher-list \
     'm:{a-zA-Z}={A-Za-z}' \
     'r:|=*' 'l:|=* r:|=*'                   # Match specification
-zstyle ':completion:*' special-dirs true    # Allow completion for special dirs
+#zstyle ':completion:*' special-dirs true    # Allow completion for special dirs
 unsetopt COMPLETE_ALIASES                   # Expand aliases before attempting completion
 compinit                                    # Initialize completion
 
