@@ -144,9 +144,6 @@ globalkey_modes["default"] = gears.table.join(
     -- Music control
     awful.key({ modkey, }, "c", function() awful.spawn("cmus-remote -u") end, {description="toggle cmus playback", group="misc"}),
 
-    -- Lockscreen
-    awful.key({ modkey, }, "l", function() awful.spawn("dash " .. os.getenv("HOME") .. "/.local/bin/lock.sh") end, {description="lock screen", group="lock"}),
-
     -- XF86
     awful.key({ }, "XF86AudioRaiseVolume", function() awful.spawn("pamixer --allow-boost --increase 5") end, {description="increase volume", group="volume"}),
     awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn("pamixer --allow-boost --decrease 5") end, {description="decrease volume", group="volume"}),
@@ -338,6 +335,18 @@ for i = 1, 10 do
     globalkey_modes["default"] = gears.table.join(globalkey_modes["default"], keys)
     globalkey_modes["moretag"] = gears.table.join(globalkey_modes["moretag"], keys)
     globalkey_modes["mouse"]   = gears.table.join(globalkey_modes["mouse"],   keys)
+end
+
+-- Lock screen
+local lock_modes = { "default", "moretag" }
+for _,m in ipairs(lock_modes) do
+    globalkey_modes[m] = gears.table.join(
+        globalkey_modes[m],
+        awful.key({ modkey, }, "l", function()
+            set_mode("default")
+            awful.spawn("dash " .. os.getenv("HOME") .. "/.local/bin/lock.sh")
+        end, {description="lock screen", group="lock"})
+    )
 end
 
 M.globalkeys = globalkey_modes["default"]
