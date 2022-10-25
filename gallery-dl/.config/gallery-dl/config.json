@@ -20,22 +20,18 @@
     "pixiv": {
       "refresh-token": "####",
       "ugoira": true,
-      "filename": "pixiv_{user[name]}_({user[account]})_{id:09}_p{num:L1/num:02/}.{extension}"
+      "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>02}.{extension}"
     },
     "fanbox": {
       "cookies": {
         "FANBOXSESSID": "####"
       },
-      "filename": "fanbox_{id}_{num}.{extension}"
+      "filename": "fanbox_{user[name]}_({creatorId})_{id:>07}_{num:>02}.{extension}"
     },
     "gelbooru": {
       "cookies": {
         "fringeBenefits": "yup"
       }
-    },
-    "e621": {
-      "username": "####",
-      "password": "####"
     },
     "paheal": {
       "filename": "r34p_{id}.{extension}"
@@ -46,6 +42,14 @@
         "auth_token": "####"
       },
       "filename": "twitter_{author[name]}_{tweet_id}_{num}.{extension}"
+    },
+    "e621": {
+        "username": "####",
+        "password": "####",
+        "filename": "e621_{id:>010}.{extension}"
+    },
+    "kemonoparty": {
+        "filename": "kemonoparty_{service}_{user:>010}_{id:>010}_{num:>02}.{extension}"
     }
   },
   "downloader": {
