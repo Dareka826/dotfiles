@@ -14,7 +14,7 @@ map.vnoremap = function(lhs, rhs) map.noremap("v", lhs, rhs) end
 map.inoremap = function(lhs, rhs) map.noremap("i", lhs, rhs) end
 
 -- Open netrw
-map.nnoremap("<leader>pv", "<cmd>Ex<CR>")
+map.nnoremap("<leader>pv", vim.cmd.Ex)
 
 -- Telescope
 map.nnoremap("<leader>T", ":Telescope<space>")
