@@ -4,8 +4,11 @@ return require("packer").startup(function()
     -- Packer can manage itself
     use('wbthomason/packer.nvim')
 
-    -- Colorscheme
+    -- Colorschemes
+    --use('tomasr/molokai')
     use('sainnhe/sonokai')
+    use('axvr/photon.vim')
+    --use('Luxed/ayu-vim')
     use('arzg/vim-colors-xcode')
     use('folke/tokyonight.nvim')
 
@@ -36,20 +39,27 @@ return require("packer").startup(function()
             -- Snippets
             {'L3MON4D3/LuaSnip'},
             {'rafamadriz/friendly-snippets'},
+
+            -- LSP Progress
+            {'j-hui/fidget.nvim'},
         }
     })
 
-    -- Lua common
-    use('nvim-lua/plenary.nvim')
-    use('nvim-lua/popup.nvim')
-
     -- Telescope
     use({
-        'nvim-telescope/telescope.nvim', branch = '0.1.x',
+        'nvim-telescope/telescope.nvim',
+        branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     })
-    use('nvim-telescope/telescope-fzf-native.nvim', {
-        run = "make"
+    use({
+        'nvim-telescope/telescope-fzf-native.nvim',
+        run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+    })
+
+    -- Statusline
+    use({
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     })
 
     -- Line indents
@@ -62,7 +72,13 @@ return require("packer").startup(function()
     use('vimwiki/vimwiki')
 
     -- Harpoon
-    use('ThePrimeagen/harpoon')
+    use({
+        'ThePrimeagen/harpoon',
+        requires = {
+            { 'nvim-lua/plenary.nvim' },
+            { 'nvim-lua/popup.nvim' },
+        }
+    })
 
     -- Show colors
     use('norcalli/nvim-colorizer.lua')
@@ -80,18 +96,27 @@ return require("packer").startup(function()
     use('junegunn/gv.vim')
     use('TimUntersberger/neogit')
 
+    -- Info pages
+    use('alx741/vinfo')
+
+    -- Useful short binds
+    use('tpope/vim-unimpaired')
+
     -- DAP
     use('mfussenegger/nvim-dap')
     use('rcarriga/nvim-dap-ui')
     use('theHamsta/nvim-dap-virtual-text')
 
-    -- Statusline
-    use({
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-    })
-
     -- Twilight
     use('folke/twilight.nvim')
+
+    use('mattn/emmet-vim')
+--use('baskerville/vim-sxhkdrc')
+--use('rubixninja314/vim-mcfunction')
+--use('ekalinin/Dockerfile.vim')
+--use('sbdchd/neoformat')
+--use('puremourning/vimspector')
+
+--use('tridactyl/vim-tridactyl')
 
 end)

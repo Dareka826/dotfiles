@@ -16,29 +16,6 @@ map.inoremap = function(lhs, rhs) map.noremap("i", lhs, rhs) end
 -- Open netrw
 map.nnoremap("<leader>pv", vim.cmd.Ex)
 
--- Telescope
-map.nnoremap("<leader>T", ":Telescope<space>")
-
-map.nnoremap("<leader>fb",  "<cmd>Telescope buffers<CR>")
-map.nnoremap("<leader>fg",  "<cmd>Telescope git_files<CR>")
-map.nnoremap("<leader>ff",  "<cmd>Telescope find_files<CR>")
-map.nnoremap("<leader>fd",  "<cmd>Telescope diagnostics<CR>")
-map.nnoremap("<leader>ft",  "<cmd>Telescope treesitter<CR>")
-map.nnoremap("<leader>fk",  "<cmd>Telescope keymaps<CR>")
-map.nnoremap("<leader>fq",  "<cmd>Telescope quickfix<CR>")
-map.nnoremap("<leader>fll", "<cmd>Telescope loclist<CR>")
-map.nnoremap("<leader>fh",  "<cmd>Telescope help_tags<CR>")
-map.nnoremap("<leader>fm",  "<cmd>Telescope man_pages<CR>")
-map.nnoremap("<leader>flr", "<cmd>Telescope lsp_references<CR>")
-map.nnoremap("<leader>fld", "<cmd>Telescope lsp_definitions<CR>")
-map.nnoremap("<leader>fli", "<cmd>Telescope lsp_implementations<CR>")
-
-map.nnoremap("<c-p>", "<cmd>Telescope git_files<CR>")
-map.nnoremap("<c-f>", "<cmd>Telescope find_files<CR>")
-
--- CTRL-/ to fuzzy find in current buffer
-map.nnoremap("<c-_>", "<cmd>Telescope current_buffer_fuzzy_find sorting_strategy=ascending<CR>")
-
 -- Yank to eol
 map.nnoremap("Y", "y$")
 map.vnoremap("Y", "y$")
@@ -51,9 +28,9 @@ map.vnoremap("<leader>y", '"+y')
 map.vnoremap("<leader>Y", '"+y$')
 
 -- Leader save, quit
-map.nnoremap("<leader>w", "<cmd>w<CR>")
-map.nnoremap("<leader>q", "<cmd>q<CR>")
-map.nnoremap("<leader>Q", "<cmd>q!<CR>")
+map.nnoremap("<leader>w", vim.cmd.write)
+map.nnoremap("<leader>q", vim.cmd.quit)
+map.nnoremap("<leader>Q", vim.cmd['quit!'])
 
 -- Break undo sequence on these
 map.inoremap(",", ",<c-g>u")
@@ -62,5 +39,39 @@ map.inoremap("!", "!<c-g>u")
 map.inoremap("?", "?<c-g>u")
 
 -- Clear highlight after search
-map.nnoremap("<leader><space>", "<cmd>noh<CR>")
+map.nnoremap("<leader><space>", vim.cmd.nohlsearch) -- silent?
 
+-- Center and unfold after these:
+map.nnoremap('<c-o>', '<c-o>zzzv')
+map.nnoremap('n', 'nzzzv')
+map.nnoremap('N', 'Nzzzv')
+
+-- Signify
+map.nmap('<leader>gj', '<plug>(signify-next-hunk)')
+map.nmap('<leader>gk', '<plug>(signify-prev-hunk)')
+map.nmap('<leader>gy', vim.cmd.SignifyToggleHighlight)
+
+-- Make bg transparent
+map.nnoremap('<leader>t', ':hi Normal guibg=NONE ctermbg=NONE<CR>')
+--map.nnoremap('<leader>t', ':let g:sonokai_transparent_background = 1<CR>:colorscheme sonokai<CR>')
+
+-- Git Fugitive
+map.nnoremap('<leader>gs', '<cmd>Git<CR>')
+map.nnoremap('<leader>gh', '<cmd>diffget //2<CR>')
+map.nnoremap('<leader>gl', '<cmd>diffget //3<CR>')
+
+-- Vimspector
+--map.nnoremap('<leader>dd', ':call vimspector#Launch()<CR>')
+--map.nnoremap('<leader>dc', ':call vimspector#Continue()<CR>')
+--map.nnoremap('<leader>dl', ':call vimspector#StepInto()<CR>')
+--map.nnoremap('<leader>dj', ':call vimspector#StepOver()<CR>')
+--map.nnoremap('<leader>dk', ':call vimspector#StepOut()<CR>')
+--map.nnoremap('<leader>dr', ':call vimspector#Restart()<CR>')
+--map.nnoremap('<leader>dt', ':call vimspector#RunToCursor()<CR>')
+--map.nnoremap('<leader>db', ':call vimspector#ToggleBreakpoint()<CR>')
+--map.nnoremap('<leader>do', ':call vimspector#ToggleConditionalBreakpoint()<CR>')
+--map.nnoremap('<leader>dp', ':call vimspector#Pause()<CR>')
+--map.nnoremap('<leader>dx', ':call vimspector#Stop()<CR>')
+
+-- Clear cmdline
+map.nnoremap('<leader>c', ':<BS>')

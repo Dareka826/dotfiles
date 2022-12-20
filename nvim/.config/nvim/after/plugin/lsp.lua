@@ -3,8 +3,8 @@ local lsp = require("lsp-zero")
 lsp.preset("recommended")
 
 lsp.ensure_installed({
-    "clangd",
-    "sumneko_lua",
+    --"clangd",
+    --"sumneko_lua",
     --"html",
     --"cssls",
     --"rust_analyzer",
@@ -13,10 +13,22 @@ lsp.ensure_installed({
     --"eslint",
 })
 
+lsp.configure('clangd', {
+    force_setup = true,
+    cmd = { 'clangd' }
+})
+
+lsp.configure('sumneko_lua', {
+    force_setup = true,
+    cmd = { 'lua-language-server' }
+})
+
 lsp.set_preferences({
     sign_icons = {
         error = 'E',
-        warn = 'W',
+        warn  = 'W',
+        hint  = 'H',
+        info  = 'I',
     }
 })
 
@@ -34,6 +46,10 @@ lsp.on_attach(function()
     vim.keymap.set("n", "<leader>gj", vim.diagnostic.goto_next,    { buffer = 0 })
     vim.keymap.set("n", "<leader>gk", vim.diagnostic.goto_prev,    { buffer = 0 })
 end)
+
+lsp.nvim_workspace({
+    library = vim.api.nvim_get_runtime_file('', true)
+})
 
 lsp.setup()
 
@@ -83,3 +99,9 @@ cmp_config.experimental = {
 }
 
 cmp.setup(cmp_config)
+
+vim.cmd([[hi! link CmpItemAbbr           Fg     " Completion suggestions]])
+vim.cmd([[hi! link CmpItemAbbrDeprecated Red    " Deprecated cmp suggestions]])
+vim.cmd([[hi! link CmpItemAbbrMatch      Purple " Matched chars in cmp suggestions]])
+vim.cmd([[hi! link CmpItemAbbrMatchFuzzy Purple " Matched chars in cmp suggestions]])
+vim.cmd([[hi! link CmpItemMenu           Grey   " Source of suggestion]])
