@@ -36,7 +36,7 @@ alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_pl
 alias urlencode='python3 -c "import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))"'
 
 # gallery-dl
-alias gdl="gallery-dl --sleep 1 --ugoira-conv-lossles"
+alias gdl="gallery-dl --sleep 1 --ugoira-conv-lossless"
 
 alias cal="cal -3 -m"
 alias c="cal"
