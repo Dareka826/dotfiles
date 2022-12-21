@@ -52,7 +52,7 @@ map.nmap('<leader>gk', '<plug>(signify-prev-hunk)')
 map.nmap('<leader>gy', vim.cmd.SignifyToggleHighlight)
 
 -- Make bg transparent
-map.nnoremap('<leader>t', ':hi Normal guibg=NONE ctermbg=NONE<CR>')
+--map.nnoremap('<leader>t', ':hi Normal guibg=NONE ctermbg=NONE<CR>')
 --map.nnoremap('<leader>t', ':let g:sonokai_transparent_background = 1<CR>:colorscheme sonokai<CR>')
 
 -- Git Fugitive

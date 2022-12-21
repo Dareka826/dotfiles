@@ -1,16 +1,16 @@
 local lsp = require("lsp-zero")
+local cmp = require("cmp")
 
 lsp.preset("recommended")
 
-lsp.ensure_installed({
-    --"clangd",
-    --"sumneko_lua",
-    --"html",
-    --"cssls",
-    --"rust_analyzer",
-    --"zls",
-    "tsserver",
-    --"eslint",
+lsp.set_preferences({
+    suggest_lsp_servers = false,
+    sign_icons = {
+        error = 'E',
+        warn  = 'W',
+        hint  = 'H',
+        info  = 'I',
+    }
 })
 
 lsp.configure('clangd', {
@@ -23,13 +23,42 @@ lsp.configure('sumneko_lua', {
     cmd = { 'lua-language-server' }
 })
 
-lsp.set_preferences({
-    sign_icons = {
-        error = 'E',
-        warn  = 'W',
-        hint  = 'H',
-        info  = 'I',
-    }
+-- cmp mappings
+local cmp_mappings = {
+    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+
+    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<C-space>"] = cmp.mapping.complete(),
+
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs( 4),
+}
+
+lsp.setup_nvim_cmp({
+    mapping = cmp_mappings,
+    completion = {
+        border = 'none',
+    },
+    documentation = {
+        border = {'', '', '', ' ', '', '', '', ' '},
+        scrollable = true,
+        winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
+    },
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.menu = ({
+                buffer   = "[buf]",
+                nvim_lsp = "[LSP]",
+                nvim_lua = "[api]",
+                path     = "[path]",
+                luasnip  = "[snip]",
+            })[entry.source.name]
+
+            return vim_item
+        end
+    },
 })
 
 lsp.on_attach(function()
@@ -53,55 +82,40 @@ lsp.nvim_workspace({
 
 lsp.setup()
 
--- Adjust cmp config
-local cmp = require("cmp")
-local cmp_config = lsp.defaults.cmp_config()
-
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-cmp_config.mapping = {
-    ["<C-p>"] = cmp.mapping( cmp.mapping.select_prev_item(cmp_select), {'i'} ),
-    ["<C-n>"] = cmp.mapping( cmp.mapping.select_next_item(cmp_select), {'i'} ),
-
-    ["<C-y>"] = cmp.mapping( cmp.mapping.confirm({ select = true }), {'i'} ),
-    ["<C-e>"] = cmp.mapping( cmp.mapping.close(), {'i'} ),
-    ["<C-space>"] = cmp.mapping( cmp.mapping.complete(), {'i'} ),
-
-    ["<C-b>"] = cmp.mapping( cmp.mapping.scroll_docs(-4), {'i'} ),
-    ["<C-f>"] = cmp.mapping( cmp.mapping.scroll_docs( 4), {'i'} ),
-}
-
-cmp_config.window = {
-    completion = {
+vim.diagnostic.config({
+    virtual_text = true,
+    float = {
         border = 'none',
-    },
-    documentation = {
-        border = {'', '', '', ' ', '', '', '', ' '},
-        scrollable = true,
-        winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
-    },
-}
+    }
+})
 
-cmp_config.formatting = {
-    format = function(entry, vim_item)
-        vim_item.menu = ({
-            buffer   = "[buf]",
-            nvim_lsp = "[LSP]",
-            nvim_lua = "[api]",
-            path     = "[path]",
-            luasnip  = "[snip]",
-        })[entry.source.name]
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = 'none', }
+)
 
-        return vim_item
-    end
-}
-cmp_config.experimental = {
-    ghost_text = true,
-}
-
-cmp.setup(cmp_config)
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+    vim.lsp.handlers.signature_help,
+    { border = 'none', }
+)
 
 vim.cmd([[hi! link CmpItemAbbr           Fg     " Completion suggestions]])
 vim.cmd([[hi! link CmpItemAbbrDeprecated Red    " Deprecated cmp suggestions]])
 vim.cmd([[hi! link CmpItemAbbrMatch      Purple " Matched chars in cmp suggestions]])
 vim.cmd([[hi! link CmpItemAbbrMatchFuzzy Purple " Matched chars in cmp suggestions]])
 vim.cmd([[hi! link CmpItemMenu           Grey   " Source of suggestion]])
+
+-- Snippet config
+local luasnip = require("luasnip")
+
+vim.keymap.set({"i", "s"}, "<C-u>", function()
+    if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+    end
+end, { silent = true, noremap = true })
+
+vim.keymap.set({"i", "s"}, "<C-d>", function()
+    if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+    end
+end, { silent = true, noremap = true })
