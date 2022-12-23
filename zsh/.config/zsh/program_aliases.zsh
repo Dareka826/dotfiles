@@ -44,3 +44,5 @@ alias c="cal"
 alias w="when c m"
 alias ww="when c w"
 alias we="when e"
+
+alias dnd="dragon-drop"
