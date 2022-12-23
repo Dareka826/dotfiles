@@ -1,7 +1,7 @@
 # Youtube-dl
 YTD="youtube-dl"
 command -v yt-dlp >/dev/null 2>&1 && YTD="yt-dlp"
-YTD+=" --no-mtime"
+YTD+=" --no-mtime -o \"[%(webpage_url_domain)s]_[%(id)s]_%(title)s.%(ext)s\""
 
 alias  ytd="${YTD} --embed-thumbnail"
 alias ytdx="${YTD} -x -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best'"
