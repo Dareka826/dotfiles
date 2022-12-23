@@ -545,6 +545,14 @@ client.connect_signal("manage", function(c)
         c:raise()
     end
 
+    -- Don't allow windows to be maximized on spawn
+    c.maximized = false
+    c.maximized_horizontal = false
+    c.maximized_vertical   = false
+
+    -- Don't allow windows to be minimized on spawn
+    c.minimized = false
+
     -- Update number of clients on creation
     update_layout_text(c.screen)
 end)
