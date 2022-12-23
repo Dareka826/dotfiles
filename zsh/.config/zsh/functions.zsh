@@ -110,3 +110,7 @@ find_gainless() {
 vlt() {
     ls --sort=time -r | nvim
 }
+
+mounts() {
+    mount | sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | column -t -s$'\t'
+}
