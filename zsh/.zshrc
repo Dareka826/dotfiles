@@ -35,45 +35,46 @@ _short_pwd() {
         done
 
     # Join the array back using "/"
-    echo "${(j:/:)pwd}"
+    printf "%s\n" "${(j:/:)pwd}"
 }
 
 # Don't display username and hostname if not over ssh
 _prompt_user_host() {
-    [[ -n "${SSH_CLIENT}" ]] && echo "%n@%m " || :
+    [[ -n "${SSH_CLIENT}" ]] && printf "%n@%m " || :
 }
 
 # Git status in prompt
 _prompt_git() {
     # Print nothing and return if not in a working tree
-    ! git rev-parse --is-inside-work-tree >/dev/null 2>&1 && return
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
 
     # Print branch (shorten if over 14 chars long)
     local git_branch="$(git branch --show-current 2>/dev/null)"
     [ "${#git_branch}" -gt 24 ] && \
         git_branch="${git_branch:0:21}..."
+
     # If no branch, print the latest commit hash
     [ -z "${git_branch}" ] && \
-        git_branch="$(git log --oneline | head -1 | awk '{ print $1 }' 2>/dev/null)"
-    echo -n " $git_branch"
+        git_branch="$(git rev-parse --short HEAD)"
+    printf " %s" "${git_branch}"
 
     # Print + if modified/added, print - if deleted
     local git_status="$(git --no-optional-locks status --porcelain 2>/dev/null)"
-    echo "$git_status" | grep -E '^ *\?' >/dev/null && echo -n "%F{cyan}?"
-    echo "$git_status" | grep -E '^ *D' >/dev/null && echo -n "%F{red}-"
-    echo "$git_status" | grep -E '^ *M' >/dev/null && echo -n "%F{green}+"
-    echo "$git_status" | grep -E '^ *A' >/dev/null && echo -n "%F{yellow}+"
+    printf "%s" "${git_status}" | grep -E '^ *\?' >/dev/null && printf "%s" "%F{cyan}?"
+    printf "%s" "${git_status}" | grep -E '^ *D'  >/dev/null && printf "%s" "%F{red}-"
+    printf "%s" "${git_status}" | grep -E '^ *M'  >/dev/null && printf "%s" "%F{green}+"
+    printf "%s" "${git_status}" | grep -E '^ *A'  >/dev/null && printf "%s" "%F{yellow}+"
 
     # Git bisect
-    git bisect log >/dev/null 2>&1 && echo -n "%F{yellow}B"
+    git bisect log >/dev/null 2>&1 && printf "%s" "%F{yellow}B"
 
     # git-bug integration
     command -v git-bug >/dev/null && {
-        [ "$(git-bug ls -s open 2>/dev/null | wc -l)" -gt 0 ] && echo "%F{yellow}#"
+        [ "$(git-bug ls -s open 2>/dev/null | wc -l)" -gt 0 ] && printf "%s" "%F{yellow}#"
     }
 
     # Print * if stash in use
-    [[ -n "$(git stash list 2>/dev/null)" ]] && echo -n "%F{yellow}*" || :
+    [[ -n "$(git stash list 2>/dev/null)" ]] && printf "%s" "%F{yellow}*" || :
 }
 
 # Set prompt
