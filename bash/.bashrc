@@ -160,11 +160,7 @@ _short_pwd() {
     # Shorten all parent directories' names to one letter
     local SHORT_PATH="$(printf "%s" "${CUSTOM_PWD}" | sed 's|\(\.\?[^./]\)[^/]\+/|\1/|g')"
 
-    # Add leading / if not home
-    [ "$(printf "%s" "$CUSTOM_PWD" | cut -c1)" != "~" ] && \
-        CUSTOM_PWD="/${SHORT_PATH}"
-
-    printf "%s" "${CUSTOM_PWD}"
+    printf "%s" "${SHORT_PATH}"
 }
 
 # Don't display username and hostname if not over ssh
