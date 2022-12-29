@@ -68,8 +68,13 @@
             "root": "https://aethy.com",
             "client-id": "####",
             "client-secret": "####",
-            "access-token": "####"
-        }
+            "access-token": "####",
+            "filename": "mastodon_@{account[username]}@{instance}_()_{id}_{media[id]}.{extension}"
+        },
+        "pawoo.net": {
+            "filename": "mastodon_@{account[username]}@{instance}_()_{id}_{media[id]}.{extension}"
+        },
+        "filename": "mastodon_@{account[username]}@{instance}_()_{id}_{media[id]}.{extension}"
     }
   },
   "downloader": {
