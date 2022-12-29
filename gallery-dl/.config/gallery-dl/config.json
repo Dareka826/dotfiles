@@ -20,7 +20,10 @@
     "pixiv": {
       "refresh-token": "####",
       "ugoira": true,
-      "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>02}.{extension}",
+      "filename": {
+          ""               : "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>02}.{extension}",
+          "page_count > 99": "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>03}.{extension}"
+      },
       "postprocessors": [
           {"name": "metadata", "event": "post", "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_metadata.json"}
       ]
