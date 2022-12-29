@@ -20,13 +20,19 @@
     "pixiv": {
       "refresh-token": "####",
       "ugoira": true,
-      "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>02}.{extension}"
+      "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_p{num:>02}.{extension}",
+      "postprocessors": [
+          {"name": "metadata", "event": "post", "filename": "pixiv_{user[name]}_({user[account]})_{id:>09}_metadata.json"}
+      ]
     },
     "fanbox": {
       "cookies": {
         "FANBOXSESSID": "####"
       },
-      "filename": "fanbox_{user[name]}_({creatorId})_{id:>07}_{num:>02}.{extension}"
+      "filename": "fanbox_{user[name]}_({creatorId})_{id:>07}_{num:>02}.{extension}",
+      "postprocessors": [
+          {"name": "metadata", "event": "post", "filename": "fanbox_{user[name]}_({creatorId})_{id:>07}_metadata.json"}
+      ]
     },
     "gelbooru": {
       "cookies": {
@@ -49,7 +55,10 @@
         "filename": "e621_{id:>010}.{extension}"
     },
     "kemonoparty": {
-        "filename": "kemonoparty_{service}_{user:>010}_{id:>010}_{num:>02}.{extension}"
+        "filename": "kemonoparty_{service}_{user:>010}_{id:>010}_{num:>02}.{extension}",
+      "postprocessors": [
+          {"name": "metadata", "event": "post", "filename": "kemonoparty_{service}_{user:>010}_{id:>010}_metadata.json"}
+      ]
     }
   },
   "downloader": {
