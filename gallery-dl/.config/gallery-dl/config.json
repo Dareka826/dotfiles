@@ -59,6 +59,14 @@
       "postprocessors": [
           {"name": "metadata", "event": "post", "filename": "kemonoparty_{service}_{user:>010}_{id:>010}_metadata.json"}
       ]
+    },
+    "mastodon": {
+        "aethy.com": {
+            "root": "https://aethy.com",
+            "client-id": "####",
+            "client-secret": "####",
+            "access-token": "####"
+        }
     }
   },
   "downloader": {
