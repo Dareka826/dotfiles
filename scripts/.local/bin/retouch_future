@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+DATE_CURR="$(date "+%s")" # when to time from
+DATE_STEP="1"             # seconds (integer)
+
+for FNAME in "$@"; do
+    touch --date="@${DATE_CURR}" "${FNAME}"
+    printf "touch: %s : %s\n" "$(date --date="@${DATE_CURR}" "+%Y-%m-%d %H:%M:%S")" "${FNAME}"
+
+    DATE_CURR="$((DATE_CURR + DATE_STEP))"
+done
