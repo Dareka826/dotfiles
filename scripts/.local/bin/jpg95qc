@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+
+for FNAME in "$@"; do
+    TMP_FNAME="${FNAME%.jpg}.q95.jpg"
+
+    convert "${FNAME}" -quality 95 "${TMP_FNAME}"
+    touch -r "${FNAME}" "${TMP_FNAME}"
+
+    if [ "$(stat -c "%s" "${TMP_FNAME}")" -lt "$(stat -c "%s" "${FNAME}")" ]; then
+        mv "${TMP_FNAME}" "${FNAME}"
+        printf "conv: %s\n" "${FNAME}"
+    else
+        rm "${TMP_FNAME}"
+        printf "skip: %s\n" "${FNAME}"
+    fi
+done

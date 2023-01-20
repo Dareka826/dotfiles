@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+for FNAME in "$@"; do
+    TMP_FNAME="${FNAME%.png}.jpg"
+
+    if [ -f "${TMP_FNAME}" ]; then
+        rm "${FNAME}"
+        printf "  rm: %s\n" "${FNAME}"
+    else
+        convert "${FNAME}" -quality 95 "${TMP_FNAME}"
+        touch -r "${FNAME}" "${TMP_FNAME}"
+        rm "${FNAME}"
+        printf "conv: %s\n" "${TMP_FNAME}"
+    fi
+done
