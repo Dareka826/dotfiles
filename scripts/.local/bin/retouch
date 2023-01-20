@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+for FNAME in "$@"; do
+    touch "${FNAME}"
+    printf "touch: %s\n" "${FNAME}"
+    sleep 1
+done
