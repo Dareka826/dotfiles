@@ -11,7 +11,7 @@ if ! [ -f "$1" ]; then
 fi
 
 for FNAME in "$@"; do
-    touch --date="@${DATE_CURR}" "${FNAME}"
+    touch -c --date="@${DATE_CURR}" "${FNAME}"
     printf "touch: %s : %s\n" "$(date --date="@${DATE_CURR}" "+%Y-%m-%d %H:%M:%S")" "${FNAME}"
 
     DATE_CURR="$((DATE_CURR + DATE_STEP))"

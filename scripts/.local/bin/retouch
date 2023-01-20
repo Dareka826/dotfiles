@@ -2,7 +2,7 @@
 set -eu
 
 for FNAME in "$@"; do
-    touch "${FNAME}"
+    touch -c "${FNAME}"
     printf "touch: %s\n" "${FNAME}"
     sleep 1
 done
