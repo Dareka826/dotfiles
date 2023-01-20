@@ -19,7 +19,7 @@ MATH_PRECISION="10000" # To avoid float math
 # Get list for dmenu
 file_list() {
     # If no list cache, create it
-    [ -f "$LISTCACHE" ] || update_list_cache
+    update_list_cache
 
     cat "${LISTCACHE}"
 }
