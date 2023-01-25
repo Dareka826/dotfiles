@@ -5,11 +5,14 @@
     "exclusive": true,
     "height": 20,
 
-    "modules-left": ["river/tags", "river/window"],
+    "modules-left": ["river/tags", "river/mode", "river/window"],
     "modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
 
     "river/tags": {
         "num-tags": 32, // Unoccupied tags #>6 are hidden with css
+    },
+    "river/mode": {
+        "format": "{}",
     },
     "river/window": {
         "max-length": 50,

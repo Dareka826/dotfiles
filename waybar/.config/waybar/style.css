@@ -45,6 +45,10 @@ window#waybar {
     margin: 0px;
 }
 
+#mode {
+    background-color: #60f;
+    padding: 0 8px 0 8px; /* One space character's width */
+}
 
 #window {
     padding-left: 8px; /* One space character's width */
