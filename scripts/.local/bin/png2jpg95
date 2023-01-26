@@ -2,6 +2,7 @@
 set -eu
 
 for FNAME in "$@"; do
+    [ -e "${FNAME}" ] || continue
     TMP_FNAME="${FNAME%.png}.jpg"
 
     if [ -f "${TMP_FNAME}" ]; then

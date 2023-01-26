@@ -5,12 +5,14 @@ DATE_CURR="$(date "+%s")" # when to time from
 DATE_STEP="1"             # seconds (integer)
 
 # Check if first argument is a date (file that doesn't exist)
-if ! [ -f "$1" ]; then
+if ! [ -e "$1" ]; then
     DATE_CURR="$(date --date="$1" "+%s")"
     shift 1
 fi
 
 for FNAME in "$@"; do
+    [ -e "${FNAME}" ] || continue
+
     touch -c --date="@${DATE_CURR}" "${FNAME}"
     printf "touch: %s : %s\n" "$(date --date="@${DATE_CURR}" "+%Y-%m-%d %H:%M:%S")" "${FNAME}"
 
