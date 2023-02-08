@@ -1,6 +1,7 @@
 calendar = /home/rin/.when/calendar
 editor = nvim
 monday_first = 1
+ampm = 0
 paging = 1
 paging_less_options = -rXF
 calendar_today_style = bold,fgblue
