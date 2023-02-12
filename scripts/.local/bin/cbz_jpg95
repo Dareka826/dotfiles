@@ -1,0 +1,33 @@
+#!/bin/sh
+set -eu
+
+for FNAME in "$@"; do
+    [ "$(printf "%s\n" "${FNAME}" | grep -Eo '\.[^.]+$')" = ".cbz" ] || continue
+    [ -s "${FNAME}" ] || continue
+    TMP_FNAME="${FNAME%.cbz}.q95.cbz"
+
+    # Create temporary dir for contents
+    TMPDIR="$(mktemp -d)" 
+
+    # Extract cbz
+    7z e "${FNAME}" -o"${TMPDIR}" >/dev/null
+
+    # Quality compress jpg and png
+    png2jpg95 "${TMPDIR}"/*.png || :
+    jpg95qc   "${TMPDIR}"/*.jpg || :
+
+    # Recompress cbz
+    7z a -mx=9 "${TMP_FNAME}" "${TMPDIR}"/* >/dev/null
+
+    # Swap if smaller
+    if [ "$(stat -c "%s" "${TMP_FNAME}")" -lt "$(stat -c "%s" "${FNAME}")" ]; then
+        mv -v "${TMP_FNAME}" "${FNAME}"
+    else
+        printf "skip: %s\n" "${FNAME}"
+        rm "${TMP_FNAME}"
+    fi
+
+    # Clean up
+    [ -n "${TMPDIR}" ] && rm -r "${TMPDIR}"
+    printf "\n"
+done
