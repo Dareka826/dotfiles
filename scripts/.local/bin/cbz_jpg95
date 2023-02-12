@@ -7,17 +7,17 @@ for FNAME in "$@"; do
     TMP_FNAME="${FNAME%.cbz}.q95.cbz"
 
     # Create temporary dir for contents
-    TMPDIR="$(mktemp -d)" 
+    TMP_DIR="$(mktemp -d)" 
 
     # Extract cbz
-    7z e "${FNAME}" -o"${TMPDIR}" >/dev/null
+    7z e "${FNAME}" -o"${TMP_DIR}" >/dev/null
 
     # Quality compress jpg and png
-    png2jpg95 "${TMPDIR}"/*.png || :
-    jpg95qc   "${TMPDIR}"/*.jpg || :
+    png2jpg95 "${TMP_DIR}"/*.png || :
+    jpg95qc   "${TMP_DIR}"/*.jpg || :
 
     # Repack cbz
-    7z a -mx=0 "${TMP_FNAME}" "${TMPDIR}"/* >/dev/null
+    7z a -mx=0 "${TMP_FNAME}" "${TMP_DIR}"/* >/dev/null
 
     # Swap if smaller
     if [ "$(stat -c "%s" "${TMP_FNAME}")" -lt "$(stat -c "%s" "${FNAME}")" ]; then
@@ -28,6 +28,6 @@ for FNAME in "$@"; do
     fi
 
     # Clean up
-    [ -n "${TMPDIR}" ] && rm -r "${TMPDIR}"
+    [ -n "${TMP_DIR}" ] && rm -r "${TMP_DIR}"
     printf "\n"
 done
