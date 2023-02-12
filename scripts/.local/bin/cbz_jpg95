@@ -10,14 +10,14 @@ for FNAME in "$@"; do
     TMP_DIR="$(mktemp -d)" 
 
     # Extract cbz
-    7z e "${FNAME}" -o"${TMP_DIR}" >/dev/null
+    unzip "${FNAME}" -d "${TMP_DIR}" >/dev/null
 
     # Quality compress jpg and png
     png2jpg95 "${TMP_DIR}"/*.png || :
     jpg95qc   "${TMP_DIR}"/*.jpg || :
 
     # Repack cbz
-    7z a -mx=0 "${TMP_FNAME}" "${TMP_DIR}"/* >/dev/null
+    zip -Z store -r "${TMP_FNAME}" "${TMP_DIR}"/* >/dev/null
 
     # Swap if smaller
     if [ "$(stat -c "%s" "${TMP_FNAME}")" -lt "$(stat -c "%s" "${FNAME}")" ]; then
