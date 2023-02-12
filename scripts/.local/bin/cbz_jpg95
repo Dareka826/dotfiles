@@ -16,8 +16,8 @@ for FNAME in "$@"; do
     png2jpg95 "${TMPDIR}"/*.png || :
     jpg95qc   "${TMPDIR}"/*.jpg || :
 
-    # Recompress cbz
-    7z a -mx=9 "${TMP_FNAME}" "${TMPDIR}"/* >/dev/null
+    # Repack cbz
+    7z a -mx=0 "${TMP_FNAME}" "${TMPDIR}"/* >/dev/null
 
     # Swap if smaller
     if [ "$(stat -c "%s" "${TMP_FNAME}")" -lt "$(stat -c "%s" "${FNAME}")" ]; then
