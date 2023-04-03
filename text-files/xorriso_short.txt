@@ -1,0 +1,116 @@
+Terms:
+    sector   - 2KiB section of data
+    [...]    - multiple args (must be terminated by list delimiter or be at end of arg list)
+    [***]    - multiple args + pattern expansion
+    --       - default list delimiter (may be changed with -list_delimiter)
+
+    pattern expansion - globbing, ('*', '?', '[xyz]'), '/' is matched literally,
+                        only some commands use it
+                        controlled by: -iso_rr_pattern and -disk_pattern
+
+    disk_path      - path to object in local fs tree
+    iso_rr_path    - rr name of file object in the iso image
+
+settings/actions:
+    # Acquiring source and target drive:
+    -dev        - set indev and outdev
+    -indev      - set input device
+    -outdev     - set output device
+
+
+    # Before loading an image:
+    -read_speed
+    -load
+    -md5
+    -rom_toc_scan
+    -data_cache_size
+
+
+    # Inserting files into ISO image:
+    -disk_pattern        - set pattern expansion mode of diks_path params
+
+    -add
+    -path_list
+    -map
+    -map_l
+    -update
+    -update_r
+
+    # Settings for file insertion:
+    -file_size_limit
+    -pathspecs
+    -overwrite
+    -split_size
+
+    # File manipulations:
+    -iso_rr_pattern      - set pattern expansion mode of iso_rr_path params
+    -rm
+    -rm_r
+    -move
+    -mv
+
+    # Tree traversal command:
+    -find
+
+
+    # Writing the result, drive control:
+    -commit
+    -eject
+    -blank
+    -list_speeds
+    -list_profiles
+    -close_damaged
+
+    # Settings for result writing:
+    -joliet
+    -compliance iso_9660_level=num
+    -volid
+    -speed
+    -dummy
+    -fs
+    -close
+    -write_type
+    -padding 0 ?
+
+
+    # Drive and media related inquiry actions:
+    -devices
+    -device_links
+    -toc
+    -toc_of
+    -mount_cmd
+    -mount_opts
+    -print_size
+    -tell_media_space
+
+    # Navigation in ISO image and disk fs:
+    -cd
+    -cdx
+    -pwd
+    -pwdx
+    -ls
+    -lsx
+    -du
+    -dux
+    -compare
+    -show_stream
+
+    # Evaluation of readability and recovery:
+    -check_media
+    -check_media_defaults
+    -check_md5
+
+    # osirrox ISO to disk restore commands
+    -osirrox
+    -extract
+    -extract_single
+    -cpx
+    -cp_rx
+    -concat
+    -mount
+
+
+    # Other
+    -print
+    -print_info
+    -reassure
