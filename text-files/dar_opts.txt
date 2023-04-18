@@ -1,0 +1,42 @@
+-c, --create   (see -@)
+-l, --list
+-t, --test
+-d, --diff
+-C, --isolate
+-+, --merge   (see -@, -A)
+
+-vm, --verbose=messages
+-vd, --verbose=dir
+-vf, --verbose=finished
+-vs, --verbose=skipped
+
+-B, --batch
+-A, --ref
+-@, --aux  (see -$ for enc)
+
+-R, --fs-root
+-X, --exclude  (see -ar, -am)
+-P, --prune
+-g, --go-into  (no wildcards)
+-], --exclude-from-file
+
+-ar, --alter=regex
+-ag, --alter=glob
+
+-O, --comparison-field
+
+-K, --key
+-J, --ref-key
+-$, --aux-key
+
+-e, --dry-run
+
+-9, --min-digits
+
+-z, --compression
+-s, --slice
+-ah, --alter=holes-recheck
+-/, --overwriting-policy
+-., --user-comment
+-3, --hash
+-T, --kdf-param
