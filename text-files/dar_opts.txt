@@ -41,13 +41,23 @@
 -3, --hash
 -T, --kdf-param
 
-Example:
+Examples:
 ```sh
+# Create archive
 dar -vd -vs \
     -c bkp_"$(date "+%Y-%m-%d_%H%M%S")"_lv0 \
     -R /mnt/mnt0/ \
     -\] bkp_exclude.txt \
     -P '.cache' -P '*/.cache' \
     -K "aes256:" -T "20k:argon2" \
-    -z"zstd:19
+    -z"bzip2:9"
+```
+
+```sh
+# Recompress archive
+dar -vm \
+    -+ bkp_recompressed \
+    -A bkp_old \
+    -K "aes256:" -T "20k:argon2" \
+    -z"bzip2:9"
 ```
