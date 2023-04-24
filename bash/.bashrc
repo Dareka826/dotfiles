@@ -174,7 +174,7 @@ _short_pwd() {
 
 # Don't display username and hostname if not over ssh
 _prompt_user_host() {
-    [ -n "${SSH_CLIENT}" ] && printf "\u@\h" || :
+    [ -n "${SSH_CLIENT}" ] && printf "%s " "\u@\h" || :
 }
 
 # Git status in prompt
