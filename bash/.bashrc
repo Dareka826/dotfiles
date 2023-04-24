@@ -65,6 +65,9 @@ export LIBVIRT_DEFAULT_URI="qemu:///system"
 # Lynx colors
 #export LYNX_LSS="${HOME}/.config/lynx/lynx.lss"
 
+# Use nvim for man pages
+export MANPAGER='nvim +Man!'
+
 # Disable less history
 export LESSHISTFILE=-
 
