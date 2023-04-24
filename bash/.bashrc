@@ -86,6 +86,7 @@ shopt -s histappend
 set -o vi
 bind -m vi-command '"\C-l": clear-screen'
 bind -m vi-insert  '"\C-l": clear-screen'
+bind 'set show-mode-in-prompt on'
 
 # FZF
 [ -f /usr/share/fzf/key-bindings.bash ] && {
@@ -216,7 +217,7 @@ bash_prompt_command() {
     }
 
     # Update the prompt
-    PS1="${PROMPT_USER}\[${PATH_COLOR}\]${SHORT_PWD}\[\033[0m\]${PROMPT_GIT}\[\033[0m\]${PS_SYMBOL} "
+    PS1=" ${PROMPT_USER}\[${PATH_COLOR}\]${SHORT_PWD}\[\033[0m\]${PROMPT_GIT}\[\033[0m\]${PS_SYMBOL} "
 }
 
 PROMPT_COMMAND="history -a; history -c; history -r; bash_prompt_command"
