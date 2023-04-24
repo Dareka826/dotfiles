@@ -83,6 +83,15 @@ export HISTSIZE=100000
 export HISTILESIZE=100000
 shopt -s histappend
 
+# Completion
+bind 'set completion-ignore-case on'
+bind 'set show-all-if-ambiguous on'
+bind 'set colored-stats on'
+bind 'set skip-completed-text on'
+
+bind '"\C-g":glob-list-expansions'
+bind '"\C-x":glob-expand-word'
+
 # Vi mode
 set -o vi
 bind -m vi-command '"\C-l": clear-screen'
