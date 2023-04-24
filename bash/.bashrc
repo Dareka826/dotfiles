@@ -152,6 +152,13 @@ alias  gcft="git cat-file -t"
 alias  gcfp="git cat-file -p"
 alias   gfu="git fsck --no-reflogs --unreachable"
 
+# Additional config files
+if [ -d ~/.config/bash.d ] && stat -t ~/.config/bash.d/*.sh >/dev/null 2>&1; then
+    for conf_file in ~/.config/bash.d/*.sh; do
+        . "${conf_file}"
+    done
+fi
+
 ## PROMPT {{{
 # Shorten current path
 _short_pwd() {
