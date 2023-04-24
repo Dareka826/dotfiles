@@ -39,6 +39,7 @@ export BEMENU_OPTS="-i -l 10 -p '' --tb '#6600ff' --tf '#ffffff' --fb '#111111' 
 
 # Fix java apps
 export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true"
 
 export XKB_DEFAULT_OPTIONS="caps:backspace,compose:menu"
 
