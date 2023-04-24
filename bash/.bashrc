@@ -123,6 +123,15 @@ alias  l="$LSPROG $LSOPTS -hal"
 alias clo="curl -LO"
 alias info="info --vi-keys"
 alias f="vifm"
+alias gdl="gallery-dl --sleep 1 --ugoira-conv-lossless --write-metadata"
+alias ytd='yt-dlp --no-mtime -o "[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s" --write-info-json --embed-thumbnail'
+
+cloa() {
+    local URL
+    for URL in "$@"; do
+        curl -LO "${URL}"
+    done
+}
 
 # Nvim
 alias v="nvim"
