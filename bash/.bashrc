@@ -129,13 +129,6 @@ alias f="vifm"
 alias gdl="gallery-dl --sleep 1 --ugoira-conv-lossless --write-metadata"
 alias ytd='yt-dlp --no-mtime -o "[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s" --write-info-json --embed-thumbnail'
 
-cloa() {
-    local URL
-    for URL in "$@"; do
-        curl -LO "${URL}"
-    done
-}
-
 # Nvim
 alias v="nvim"
 
@@ -145,6 +138,29 @@ alias sudo="sudo "
 
 # Package management
 alias pac="pacman"
+
+# Functions
+bash_tmp() {
+    env -u XDG_DATA_HOME \
+        -u XDG_CONFIG_HOME \
+        -u XDG_CACHE_HOME \
+        -u XDG_STATE_HOME \
+        -u XDG_DATA_DIRS \
+        -u HISTFILE \
+        HOME=/tmp \
+            bash
+}
+
+mounts () {
+    mount | sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | column -t -s$'\t'
+}
+
+cloa() {
+    local URL
+    for URL in "$@"; do
+        curl -LO "${URL}"
+    done
+}
 
 # Git aliases
 alias    gs="git status"
