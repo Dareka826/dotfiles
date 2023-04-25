@@ -95,8 +95,9 @@ bind 'set show-mode-in-prompt on'
 # Completion
 bind 'set completion-ignore-case on'
 bind 'set show-all-if-ambiguous on'
-bind 'set colored-stats on'
 bind 'set skip-completed-text on'
+bind 'set colored-stats on'
+bind 'set visible-stats on'
 
 bind -m vi-insert '"\C-g":glob-list-expansions'
 bind -m vi-insert '"\C-x":glob-expand-word'
