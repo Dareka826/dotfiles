@@ -1,3 +1,5 @@
+# vim: ft=sh
+
 # Xinitrc
 xrandr --dpi 96
 
@@ -8,18 +10,23 @@ eval `dbus-launch --sh-syntax --exit-with-session`
 #xrandr --output DVI-D-0 --mode 1920x1080 --rate 144 --output HDMI3 --mode 1920x1200 --left-of DVI-D-0
 
 # Disable power saving and mouse acceleration
-xset -dpms
 xset s off
+xset -dpms
 xset m 0 0
 
+# Pipewire
+/usr/bin/pipewire &
+/usr/bin/pipewire-pulse &
+/usr/bin/wireplumber &
 # Load Xresources
 xrdb ~/.Xresources
 
-# Keyboard light effects
-#ckb-next -b &
-
 # Unclutter
 unclutter --timeout 1 -b
+
+# Xob
+XOBSOCK="${XDG_RUNTIME_DIR}/xob.sock"
+rm -f "${XOBSOCK}" && mkfifo "${XOBSOCK}" && tail -f "${XOBSOCK}" | xob -t 1000 &
 
 # Notification daemon
 dunst &
@@ -28,9 +35,6 @@ dunst &
 #nitrogen --restore
 #~/Wallpapers/_rand_time.sh &
 picom &
-
-# Polybar
-#~/.config/polybar/start-polybar.sh &
 
 # Copy bashrc to /mnt/tmp
 #cp ~/.bashrc /mnt/tmp/
@@ -43,17 +47,18 @@ sxhkd &
 keynav &
 
 # Start the input method
-fcitx &
+fcitx5 &
 
 # Make capslock act like backspace
 setxkbmap -option caps:backspace
-
-# Update dwm status
-#dwm_status.sh &
+# Enable Shift+NumLock mouse emulation
+setxkbmap -option keypad:pointerkeys
+# Compose key
+xmodmap -e "keysym Insert = Multi_key"
 
 # Monitor battery
 #battery_mon.sh &
+#kmonad ~/kmonad-laptop-kbd.kbd &
 
 # Start the wm
 exec awesome
-#exec dwm
