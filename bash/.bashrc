@@ -91,6 +91,8 @@ set -o vi
 bind -m vi-command '"\C-l": clear-screen'
 bind -m vi-insert  '"\C-l": clear-screen'
 bind 'set show-mode-in-prompt on'
+bind 'set vi-ins-mode-string "[I]"'
+bind 'set vi-cmd-mode-string "[N]"'
 
 # Completion
 bind 'set completion-ignore-case on'
