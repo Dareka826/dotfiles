@@ -2,7 +2,7 @@
 set -eu
 
 for FNAME in "$@"; do
-    [ -e "${FNAME}" ] || continue
+    [ -s "${FNAME}" ] || continue
     TMP_FNAME="${FNAME%.jpg}.q95.jpg"
 
     convert "${FNAME}" -quality 95 "${TMP_FNAME}"

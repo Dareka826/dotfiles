@@ -1,0 +1,9 @@
+#!/bin/sh
+
+exec kitty --name cmus -o background_opacity=0.6 abduco -A cmus cmus
+
+# if tmux list-sessions -F\#S | grep '^cmus$' >/dev/null; then
+#     exec kitty --name cmus -o background_opacity=0.6 tmux attach-session -t cmus
+# else
+#     exec kitty --name cmus -o background_opacity=0.6 tmux new-session -s cmus cmus
+# fi

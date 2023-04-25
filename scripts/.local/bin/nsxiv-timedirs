@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Loop over script args
+for d in "$@"; do
+    # Check if the argument is a valid directory
+    [ -d "${d}" ] && {
+        # Find all images in the directory, sort them by time and
+        # open in nsxiv
+        fd -t f '\.(jpg|png|gif)' "${d}" \
+            -X ls -Q --sort=time -r | xargs nsxiv &
+
+        # Add delay so that everything has time to open in order
+        sleep 1
+    }
+done

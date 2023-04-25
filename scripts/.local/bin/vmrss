@@ -1,0 +1,18 @@
+#!/bin/sh
+
+[ "$1" = "" ] && {
+    printf "Error: No PID given\n" >&2
+    exit 1
+}
+
+while true; do
+    OUT="$(cat "/proc/$1/status" | grep VmRSS | tr -s '\t' ' ')"
+
+    [ "${OUT}" = "" ] && {
+        printf "No VmRSS field.\n"
+        exit 1
+    }
+
+    printf "%s\n" "${OUT}"
+    sleep 1
+done

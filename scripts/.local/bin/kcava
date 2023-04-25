@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec kitty --name cava -o background_opacity=0.1 cava
