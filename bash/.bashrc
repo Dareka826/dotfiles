@@ -101,8 +101,8 @@ bind 'set skip-completed-text on'
 bind 'set colored-stats on'
 bind 'set visible-stats on'
 
-bind -m vi-insert '"\C-g":glob-list-expansions'
-bind -m vi-insert '"\C-x":glob-expand-word'
+bind -m vi-insert '"\C-g": glob-list-expansions'
+bind -m vi-insert '"\C-x": glob-expand-word'
 
 # FZF
 [ -f /usr/share/fzf/key-bindings.bash ] && {
