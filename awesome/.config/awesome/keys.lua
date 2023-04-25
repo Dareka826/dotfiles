@@ -9,6 +9,7 @@ local sharedconf = require("shared")
 local modkey   = sharedconf.modkey
 local Tags     = sharedconf.tags
 local terminal = sharedconf.terminal
+local xobsock  = sharedconf.xobsock
 
 local globalkey_modes = {}
 local clientkey_modes = {}
@@ -137,17 +138,20 @@ globalkey_modes["default"] = gears.table.join(
               end, {description="lua execute prompt", group="awesome"}),
 
     -- Volume
-    awful.key({ modkey, "Control" }, "Up",   function() awful.spawn("pamixer --allow-boost --increase 5") end, {description="increase volume", group="volume"}),
-    awful.key({ modkey, "Control" }, "Down", function() awful.spawn("pamixer --allow-boost --decrease 5") end, {description="decrease volume", group="volume"}),
-    awful.key({ modkey, "Control" }, "m",    function() awful.spawn("pamixer --toggle-mute") end,              {description="toggle mute",     group="volume"}),
+    awful.key({ modkey, "Control" }, "Up",   function() awful.spawn.with_shell("pamixer --allow-boost --increase 5 && pamixer --get-volume > \""..xobsock.."\"") end, {description="increase volume", group="volume"}),
+    awful.key({ modkey, "Control" }, "Down", function() awful.spawn.with_shell("pamixer --allow-boost --decrease 5 && pamixer --get-volume > \""..xobsock.."\"") end, {description="decrease volume", group="volume"}),
+    awful.key({ modkey, "Control" }, "m",    function() awful.spawn.with_shell("pamixer --toggle-mute && { [ \"$(pamixer --get-mute)\" = \"true\" ] && echo 0 >\""..xobsock.."\"; } || pamixer --get-volume >\""..xobsock.."\"") end,              {description="toggle mute",     group="volume"}),
 
     -- Music control
     awful.key({ modkey, }, "c", function() awful.spawn("cmus-remote -u") end, {description="toggle cmus playback", group="misc"}),
 
     -- XF86
-    awful.key({ }, "XF86AudioRaiseVolume", function() awful.spawn("pamixer --allow-boost --increase 5") end, {description="increase volume", group="volume"}),
-    awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn("pamixer --allow-boost --decrease 5") end, {description="decrease volume", group="volume"}),
-    awful.key({ }, "XF86AudioMute",        function() awful.spawn("pamixer --toggle-mute") end,              {description="toggle mute",     group="volume"}),
+    awful.key({ }, "XF86AudioRaiseVolume", function() awful.spawn.with_shell("pamixer --allow-boost --increase 5 && pamixer --get-volume > \""..xobsock.."\"") end, {description="increase volume", group="volume"}),
+    awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn.with_shell("pamixer --allow-boost --decrease 5 && pamixer --get-volume > \""..xobsock.."\"") end, {description="decrease volume", group="volume"}),
+    awful.key({ }, "XF86AudioMute",        function() awful.spawn.with_shell("pamixer --toggle-mute && { [ \"$(pamixer --get-mute)\" = \"true\" ] && echo 0 >\""..xobsock.."\"; } || pamixer --get-volume >\""..xobsock.."\"") end,              {description="toggle mute",     group="volume"}),
+
+    awful.key({ }, "XF86MonBrightnessUp",   function() awful.spawn.with_shell("xbacklight -inc 5 && xbacklight -get >\""..xobsock.."\"") end, {description="increase brightness"}),
+    awful.key({ }, "XF86MonBrightnessDown", function() awful.spawn.with_shell("xbacklight -dec 5 && xbacklight -get >\""..xobsock.."\"") end, {description="decrease brightness"}),
 
     awful.key({ }, "XF86AudioPlay",  function() awful.spawn("cmus-remote --pause") end),
     awful.key({ }, "XF86AudioStop",  function() awful.spawn("cmus-remote --stop" ) end),

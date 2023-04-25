@@ -15,4 +15,6 @@ for i = 1,32 do
     table.insert(M.tags, tostring(i))
 end
 
+M.xobsock = os.getenv("XDG_RUNTIME_DIR") .. "/xob.sock"
+
 return M
