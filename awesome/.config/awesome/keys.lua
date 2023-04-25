@@ -4,6 +4,7 @@ local M = {}
 local gears = require("gears")
 local awful = require("awful")
 local naughty = require("naughty")
+local beautiful = require("beautiful")
 
 local sharedconf = require("shared")
 local modkey   = sharedconf.modkey
@@ -238,12 +239,100 @@ globalkey_modes["resize"] = gears.table.join(
     awful.key({                 }, "Escape", function() set_mode("default") end, {description="exit resize mode", group="mode"})
 )
 
+local function resize_window(c, height_change) -- {{{
+    local c_idx_data = awful.client.idx(c)
+
+    -- Check if more than one client in column (else terminate early)
+    if c_idx_data.num <= 1 then return end
+
+    local other_c = nil
+    -- Find client to steal/give space from/to {{{
+    do
+        local c_last_win = (c_idx_data.idx == c_idx_data.num)
+
+        for _, oc in ipairs(client.get()) do
+            local oc_idx_data = awful.client.idx(oc)
+
+            -- Check if same column
+            if oc_idx_data.col == c_idx_data.col then
+                -- If last window, find previous client
+                -- else find next client
+                if c_last_win then
+                    if oc_idx_data.idx == c_idx_data.idx - 1 then
+                        other_c = oc
+                        break
+                    end
+                else
+                    if oc_idx_data.idx == c_idx_data.idx + 1 then
+                        other_c = oc
+                        break
+                    end
+                end
+            end
+        end
+    end -- }}}
+
+    local wa = c.screen.workarea
+    local cg = c:geometry()
+    local og = other_c:geometry()
+
+    -- Make sure windows after resize are at least 1px in height {{{
+    if height_change > 0 then
+        if og.height - height_change < 1 then
+            return
+        end
+    else
+        if cg.height + height_change < 1 then
+            return
+        end
+    end -- }}}
+
+    local heights = {}
+    -- Read client heights in current column
+    for _, oc in ipairs(client.get()) do
+        local idx_data = awful.client.idx(oc)
+        if idx_data and idx_data.col == c_idx_data.col then
+            local g = oc:geometry()
+            heights[idx_data.idx] = g.height
+        end
+    end
+
+    local oc_idx_data = awful.client.idx(other_c)
+    -- Set heights
+    for _, oc in ipairs(client.get()) do
+        local idx_data = awful.client.idx(oc)
+        if idx_data and idx_data.col == c_idx_data.col then
+            local h = heights[idx_data.idx]
+
+            if idx_data.idx ==  c_idx_data.idx then h = h + height_change end
+            if idx_data.idx == oc_idx_data.idx then h = h - height_change end
+
+            h = h + beautiful.border_width * 2
+
+            awful.client.setwfact(h / wa.height, oc)
+        end
+    end
+end -- }}}
+
+local function reset_wfact(c) -- {{{
+    local c_idx_data = awful.client.idx(c)
+    local wfact = 1 / c_idx_data.num
+
+    for _, oc in ipairs(client.get()) do
+        local idx_data = awful.client.idx(oc)
+
+        if idx_data and idx_data.col == c_idx_data.col then
+            awful.client.setwfact(wfact, oc)
+        end
+    end
+end -- }}}
+
 clientkey_modes["resize"] = gears.table.join(
     -- Floating window
-    awful.key({ modkey            }, "h", function(c) c:relative_move( 0, 0, -10,   0) end, {description="resize client left by 20px",  group="client"}),
-    awful.key({ modkey            }, "j", function(c) c:relative_move( 0, 0,   0,  10) end, {description="resize client down by 20px",  group="client"}),
-    awful.key({ modkey            }, "k", function(c) c:relative_move( 0, 0,   0, -10) end, {description="resize client up by 20px",    group="client"}),
-    awful.key({ modkey            }, "l", function(c) c:relative_move( 0, 0,  10,   0) end, {description="resize client right by 20px", group="client"}),
+    awful.key({ modkey            }, "h", function(c) c:relative_move( 0, 0, -10,   0) end, {description="resize client left by 10px",  group="client"}),
+    awful.key({ modkey            }, "j", function(c) c:relative_move( 0, 0,   0,  10) end, {description="resize client down by 10px",  group="client"}),
+    awful.key({ modkey            }, "k", function(c) c:relative_move( 0, 0,   0, -10) end, {description="resize client up by 10px",    group="client"}),
+    awful.key({ modkey            }, "l", function(c) c:relative_move( 0, 0,  10,   0) end, {description="resize client right by 10px", group="client"}),
 
     awful.key({ modkey, "Control" }, "h", function(c) c:relative_move( 0, 0, -1,  0) end, {description="resize client left by 1px",  group="client"}),
     awful.key({ modkey, "Control" }, "j", function(c) c:relative_move( 0, 0,  0,  1) end, {description="resize client down by 1px",  group="client"}),
@@ -256,14 +345,16 @@ clientkey_modes["resize"] = gears.table.join(
     awful.key({ modkey, "Shift"   }, "l", function(c) c:relative_move( 0, 0,  100,    0) end, {description="resize client right by 100px", group="client"}),
 
     -- Tiled window
-    awful.key({ modkey            }, "i", function(c) awful.client.incwfact( 0.025, c) end, {description="increase client window factor by 0.025", group="client"}),
-    awful.key({ modkey            }, "d", function(c) awful.client.incwfact(-0.025, c) end, {description="decrease client window factor by 0.025", group="client"}),
+    awful.key({ modkey            }, "i", function(c) resize_window(c,   10) end, {description="increase client window factor by 10px", group="client"}),
+    awful.key({ modkey            }, "d", function(c) resize_window(c,  -10) end, {description="decrease client window factor by 10px", group="client"}),
 
-    awful.key({ modkey, "Control" }, "i", function(c) awful.client.incwfact( 0.001, c) end, {description="increase client window factor by 0.001", group="client"}),
-    awful.key({ modkey, "Control" }, "d", function(c) awful.client.incwfact(-0.001, c) end, {description="decrease client window factor by 0.001", group="client"}),
+    awful.key({ modkey, "Control" }, "i", function(c) resize_window(c,    1) end, {description="increase client window factor by 1px", group="client"}),
+    awful.key({ modkey, "Control" }, "d", function(c) resize_window(c,   -1) end, {description="decrease client window factor by 1px", group="client"}),
 
-    awful.key({ modkey, "Shift"   }, "i", function(c) awful.client.incwfact( 0.1, c)   end, {description="increase client window factor by 0.1", group="client"}),
-    awful.key({ modkey, "Shift"   }, "d", function(c) awful.client.incwfact(-0.1, c)   end, {description="decrease client window factor by 0.1", group="client"})
+    awful.key({ modkey, "Shift"   }, "i", function(c) resize_window(c,  100) end, {description="increase client window factor by 100px", group="client"}),
+    awful.key({ modkey, "Shift"   }, "d", function(c) resize_window(c, -100) end, {description="decrease client window factor by 100px", group="client"}),
+
+    awful.key({ modkey,           }, "r", function(c) reset_wfact(c) end, {description="decrease client window factor by 100px", group="client"})
 )
 -- }}}
 
