@@ -1,0 +1,19 @@
+set editing-mode vi
+
+set show-mode-in-prompt on
+set vi-ins-mode-string "[I]"
+set vi-cmd-mode-string "[N]"
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set skip-completed-text on
+set colored-stats on
+set visible-stats on
+
+set keymap vi-insert
+"\C-l": clear-screen
+"\C-g": glob-list-expansions
+"\C-x": glob-expand-word
+
+set keymap vi-command
+"\C-l": clear-screen
