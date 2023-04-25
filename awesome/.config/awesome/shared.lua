@@ -1,7 +1,7 @@
 local M = {}
 
 -- Default terminal
-M.terminal = "wezterm" -- "alacritty"
+M.terminal = "alacritty"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
