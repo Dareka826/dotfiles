@@ -39,6 +39,7 @@ else
     SCRUB_EXIT="$?"
     fi
 fi
+printf "[I]: Scrub on %s finished with exit code: %s\n" "${BTRFS_PATH}" "${SCRUB_EXIT}"
 
 # Check for errors
 if [ "${SCRUB_EXIT}" != "0" ]; then
@@ -47,4 +48,5 @@ fi
 
 # The timefile should only be updated after a scrub finishes
 [ -d "/var/snooze" ] || mkdir -p "/var/snooze"
+printf "[I]: Updating timefile...\n"
 touch "${TIMEFILE_PATH}"
