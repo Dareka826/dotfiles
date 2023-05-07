@@ -1,0 +1,47 @@
+#!/bin/sh
+set -eu
+
+usage() {
+    printf "%s [watch_seconds] dir command...\n" "${0}"
+    exit 0
+}
+
+praw()  { printf "%s" "${1}"; }
+isnum() { [ "$(praw "${1}" | tr -cd '0-9')" = "${1}" ]; }
+isdir() { [ -d "${1}" ]; }
+iscmd() { command -v "${1}" >/dev/null 2>&1; }
+
+qhash()   { iscmd xxhsum && xxhsum - || md5sum -; }
+hashdir() { tar cf - --sort=name -C "${1}" . | qhash; }
+
+# At least 2 args
+[ -n "${1}" ] || usage
+[ -n "${2}" ] || usage
+
+WAIT_SEC="5"
+DIR=""
+CMD=""
+
+# Check if seconds supplied
+if isnum "${1}"; then
+    WAIT_SEC="${1}"
+    shift 1
+fi
+
+DIR="${1}"
+isdir "${DIR}" || usage
+shift 1
+
+CMD="$@"
+[ -n "${CMD}" ] || usage
+
+LAST_HASH="$(hashdir "${DIR}")"
+while true; do
+    sleep "${WAIT_SEC}"
+    CURR_HASH="$(hashdir "${DIR}")"
+
+    if [ "${CURR_HASH}" != "${LAST_HASH}" ]; then
+        "${CMD}"
+        LAST_HASH="${CURR_HASH}"
+    fi
+done
