@@ -46,6 +46,9 @@ update_list_cache() {
     cat "${PRIOCACHE}" >"${LISTCACHE}"
     # Print dmenu_path entries which are not in priocache
     comm -13 "${FIFO1}" "${FIFO2}" >>"${LISTCACHE}"
+
+    # Clean up fifos
+    rm "${FIFO1}" "${FIFO2}"
 }
 
 # Create priority cache from time and frequency caches
