@@ -41,7 +41,7 @@ update_list_cache() {
     mkfifo "${FIFO2}"
 
     sort "${PRIOCACHE}" >"${FIFO1}" &
-    dmenu_path >"${FIFO2}" &
+    dmenu_path | sort >"${FIFO2}" &
 
     cat "${PRIOCACHE}" >"${LISTCACHE}"
     # Print dmenu_path entries which are not in priocache
