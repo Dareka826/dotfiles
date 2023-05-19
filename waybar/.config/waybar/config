@@ -5,8 +5,20 @@
     "exclusive": true,
     "height": 20,
 
-    "modules-left": ["river/tags", "river/mode", "river/window"],
+    "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
+    //"modules-left": ["river/tags", "river/mode", "river/window"],
     "modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
+
+    "sway/workspaces": {
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        }
+    },
 
     "river/tags": {
         "num-tags": 32, // Unoccupied tags #>6 are hidden with css

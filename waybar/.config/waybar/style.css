@@ -13,7 +13,7 @@ window#waybar {
     color: #ffffff;
 }
 
-#tags button {
+#tags button, #workspaces button {
     padding: 0 8px; /* One space character's width */
     min-width: unset;
     background-color: #222222;
@@ -29,17 +29,22 @@ window#waybar {
     margin-right: -1000px; /* Move the extra space offscreen, just to be safe */
 }
 
-#tags button.occupied {
+#tags button.occupied, #workspaces button {
     background-color: #333333;
     color: #ffffff;
     margin: 0px;
 }
-#tags button.focused {
+#workspaces button.persistent {
+    background-color: #222222;
+    color: #ffffff;
+    margin: 0px;
+}
+#tags button.focused, #workspaces button.focused {
     background-color: #6633ff;
     color: #ffffff;
     margin: 0px;
 }
-#tags button.urgent {
+#tags button.urgent, #workspaces button.urgent {
     background-color: #ff6600;
     color: #ffffff;
     margin: 0px;
