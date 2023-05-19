@@ -35,7 +35,7 @@ window#waybar {
     margin: 0px;
 }
 #tags button.focused {
-    background-color: #6600ff;
+    background-color: #6633ff;
     color: #ffffff;
     margin: 0px;
 }
@@ -46,7 +46,7 @@ window#waybar {
 }
 
 #mode {
-    background-color: #60f;
+    background-color: #6633ff;
     padding: 0 8px 0 8px; /* One space character's width */
 }
 
@@ -80,5 +80,5 @@ window#waybar {
 }
 
 #clock {
-    background-color: #6600ff;
+    background-color: #6633ff;
 }
