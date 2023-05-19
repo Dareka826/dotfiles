@@ -1,0 +1,239 @@
+# Read `man 5 sway` for a complete reference.
+
+# Variables
+set $MOD Mod1
+set $TERM foot
+set $WOBSOCK ${XDG_RUNTIME_DIR}/wob.sock
+
+### Gtk theming {{{
+exec gsettings set org.gnome.desktop.interface gtk-theme    "Materia-dark-compact"
+exec gsettings set org.gnome.desktop.interface icon-theme   "Papirus-Dark"
+exec gsettings set org.gnome.desktop.interface cursor-theme "Suwako"
+exec gsettings set org.gnome.desktop.interface font-name    "Source Code Pro 10"
+exec gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+### }}}
+
+# Wallpaper
+output * bg ~/Wallpapers/83517721_p0.png fill
+
+### Start programs {{{
+exec mako
+exec xrdb ~/.Xresources
+exec unclutter --timeout 1 -b
+exec kmonad ~/kmonad-laptop-kbd.kbd
+exec tail -f $WOBSOCK | wob
+
+bar swaybar_command waybar
+### }}}
+
+### Keybinds {{{
+
+# Spawn a terminal
+bindsym $MOD+Return exec $TERM
+# Exit sway
+bindsym $MOD+Shift+q exec swaymsg exit
+# Start your launcher
+bindsym $MOD+d exec ~/.local/bin/dmenu_hisfreq
+
+# Lock
+bindsym $MOD+l exec ~/.local/bin/wlock.sh
+# Screenshot
+bindsym Ctrl+F12 exec "cd ${HOME}/Screenshots; grim"
+
+## Windows {{{
+# Close window
+bindsym $MOD+Shift+c kill
+
+# Move focus
+# bindsym $MOD+h focus left
+# bindsym $MOD+j focus down
+# bindsym $MOD+k focus up
+# bindsym $MOD+l focus right
+bindsym $MOD+j focus next sibling
+bindsym $MOD+k focus prev sibling
+
+# Move the focused window
+bindsym $MOD+Shift+h move left
+bindsym $MOD+Shift+j move down
+bindsym $MOD+Shift+k move up
+bindsym $MOD+Shift+l move right
+
+# Move focus to parent/child container
+bindsym $MOD+a focus parent
+bindsym $MOD+i focus child
+
+## }}}
+
+## Screens {{{
+## }}}
+
+## Layout {{{
+bindsym $MOD+b splith
+bindsym $MOD+v splitv
+
+# Switch the current container between different layout styles
+bindsym $MOD+s layout stacking
+bindsym $MOD+t layout tabbed
+bindsym $MOD+e layout toggle split
+bindsym $MOD+w exec foot -- dash -c "~/repos/swaytree/swaytree; while true; do :; done"
+
+# Make the current focus fullscreen
+bindsym $MOD+Shift+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $MOD+Shift+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $MOD+space focus mode_toggle
+## }}}
+
+floating_modifier $MOD normal
+
+# Reload the configuration file
+bindsym $MOD+Ctrl+r reload
+
+## Workspaces {{{
+# Switch to workspace
+bindsym $MOD+1 workspace number  1
+bindsym $MOD+2 workspace number  2
+bindsym $MOD+3 workspace number  3
+bindsym $MOD+4 workspace number  4
+bindsym $MOD+5 workspace number  5
+bindsym $MOD+6 workspace number  6
+bindsym $MOD+7 workspace number  7
+bindsym $MOD+8 workspace number  8
+bindsym $MOD+9 workspace number  9
+bindsym $MOD+0 workspace number 10
+
+# Move focused container to workspace
+bindsym $MOD+Shift+1 move container to workspace number  1
+bindsym $MOD+Shift+2 move container to workspace number  2
+bindsym $MOD+Shift+3 move container to workspace number  3
+bindsym $MOD+Shift+4 move container to workspace number  4
+bindsym $MOD+Shift+5 move container to workspace number  5
+bindsym $MOD+Shift+6 move container to workspace number  6
+bindsym $MOD+Shift+7 move container to workspace number  7
+bindsym $MOD+Shift+8 move container to workspace number  8
+bindsym $MOD+Shift+9 move container to workspace number  9
+bindsym $MOD+Shift+0 move container to workspace number 10
+
+# Toggle last workspace
+bindsym $MOD+Tab workspace back_and_forth
+## }}}
+
+## Media {{{
+bindsym $MOD+Ctrl+k    exec "pamixer --allow-boost --increase 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+j    exec "pamixer --allow-boost --decrease 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+Up   exec "pamixer --allow-boost --increase 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+Down exec "pamixer --allow-boost --decrease 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+m    exec 'pamixer --toggle-mute && { [ "$(pamixer --get-mute)" = "true" ] && echo 0 >>"'$WOBSOCK'"; } || pamixer --get-volume >>'$WOBSOCK
+
+bindsym $MOD+c cmus-remote --pause
+
+# Eject the optical drive
+bindsym XF86Eject exec eject -T
+
+# Control pulse audio volume with pamixer
+bindsym XF86AudioRaiseVolume exec "pamixer --allow-boost --increase 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym XF86AudioLowerVolume exec "pamixer --allow-boost --decrease 5 && pamixer --get-volume >>"$WOBSOCK
+bindsym XF86AudioMute        exec "pamixer --toggle-mute"
+
+# Control MPRIS aware media players with playerctl
+# riverctl map "${mode}" None XF86AudioPlay spawn "playerctl play-pause"
+# riverctl map "${mode}" None XF86AudioPrev spawn "playerctl previous"
+# riverctl map "${mode}" None XF86AudioNext spawn "playerctl next"
+
+# Control cmus
+bindsym XF86AudioPlay exec cmus-remote --pause
+bindsym XF86AudioStop exec cmus-remote --stop
+bindsym XF86AudioPrev exec cmus-remote --prev
+bindsym XF86AudioNext exec cmus-remote --next
+
+# Control screen backlight brightness
+# riverctl map "${mode}" None XF86MonBrightnessUp   spawn "xbacklight -inc 5 && xbacklight -get >>\"${WOBSOCK}\""
+# riverctl map "${mode}" None XF86MonBrightnessDown spawn "xbacklight -dec 5 && xbacklight -get >>\"${WOBSOCK}\""
+
+## }}}
+
+# Resizing
+mode "resize" {
+    bindsym h resize shrink width  10px
+    bindsym j resize grow   height 10px
+    bindsym k resize shrink height 10px
+    bindsym l resize grow   width  10px
+
+    bindsym Ctrl+h resize shrink width  1px
+    bindsym Ctrl+j resize grow   height 1px
+    bindsym Ctrl+k resize shrink height 1px
+    bindsym Ctrl+l resize grow   width  1px
+
+    bindsym Shift+h resize shrink width  100px
+    bindsym Shift+j resize grow   height 100px
+    bindsym Shift+k resize shrink height 100px
+    bindsym Shift+l resize grow   width  100px
+
+    bindsym Escape       mode "default"
+    bindsym $MOD+Shift+r mode "default"
+}
+bindsym $MOD+Shift+r mode "resize"
+
+# Moving
+mode "move" {
+    bindsym h move left  10px
+    bindsym j move down  10px
+    bindsym k move up    10px
+    bindsym l move right 10px
+
+    bindsym Ctrl+h move left  1px
+    bindsym Ctrl+j move down  1px
+    bindsym Ctrl+k move up    1px
+    bindsym Ctrl+l move right 1px
+
+    bindsym Shift+h move left  100px
+    bindsym Shift+j move down  100px
+    bindsym Shift+k move up    100px
+    bindsym Shift+l move right 100px
+
+    bindsym Escape       mode "default"
+    bindsym $MOD+Shift+m mode "default"
+}
+bindsym $MOD+Shift+m mode "move"
+
+### }}}
+
+### Config {{{
+font Source Code Pro 14px
+
+# Border
+default_border pixel 2
+default_floating_border normal 2
+
+# Border colors
+# class                 border  bground text    indicator child_border
+client.focused          #6633FF #6633FF #FFFFFF #33EFFF   #6633FF
+client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
+client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
+client.urgent           #FF6600 #FF6600 #FFFFFF #FF6600   #FF6600
+client.placeholder      #000000 #000000 #FFFFFF #222222   #222222
+client.background       #222222
+
+default_orientation horizontal
+focus_on_window_activation urgent
+
+# Discord opacity
+for_window [class="WebCord"] opacity set 0.9
+
+### }}}
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
