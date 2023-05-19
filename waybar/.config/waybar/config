@@ -7,7 +7,8 @@
 
     "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
     //"modules-left": ["river/tags", "river/mode", "river/window"],
-    "modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
+    "modules-right": ["custom/sway-tree", "custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
+    //"modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
 
     "sway/workspaces": {
         "persistent_workspaces": {
@@ -18,6 +19,12 @@
             "5": [],
             "6": [],
         }
+    },
+    "custom/sway-tree": {
+        "format": " {} ",
+        "exec": "~/.config/waybar/scripts/sway-tree.sh",
+        "restart-interval": 1,
+        "tooltip": false,
     },
 
     "river/tags": {
