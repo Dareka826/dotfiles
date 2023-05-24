@@ -1,0 +1,38 @@
+/* Make space for 2 columns */
+.wrapper-1_HaEi {
+  width: 144px !important;
+}
+
+/* Wrap servers into 2 columns */
+.scroller-3X7KbA > div[aria-label=Servers] {
+  display: flex;
+  flex-direction: row;
+  width: 144px;
+  flex-wrap: wrap;
+}
+
+/* Center and resize server separator */
+.scroller-3X7KbA > div.listItem-3SmSlK {
+  width: 144px;
+}
+
+.guildSeparator-a4uisj {
+  width: 64px;
+}
+
+/* Center Home button */
+.tutorialContainer-1pL9QS {
+  display: flex;
+  justify-content: center;
+}
+
+/* Adjust unread notifs width */
+.unreadMentionsIndicatorBottom-3RJMnQ, .unreadMentionsIndicatorTop-2bTgUU {
+  width: 144px !important;
+}
+
+/* Center create server */
+.tutorialContainer-2jwoiB {
+    display: flex;
+    justify-content: center;
+}
