@@ -1,0 +1,39 @@
+/* No roundness */
+* {
+    border-radius: 0px !important;
+}
+
+/* Square Icons */
+svg > foreignObject {
+  -webkit-mask: none;
+          mask: none;
+}
+
+/* Text input no padding */
+.form-3gdLxP {
+    padding: 0px !important;
+}
+.channelTextArea-1FufC0 {
+    margin: 0px !important;
+}
+
+/* Make text input a bit bigger */
+.scrollableContainer-15eg7h {
+    padding: 4px 0 4px 0;
+    min-height: 0px !important;
+}
+
+/* Make DM text less padded */
+.privateChannelsHeaderContainer-1UWASm {
+    padding-top: 8px !important;
+    height: fit-content !important;
+}
+
+/* Enlarge search bar */
+.searchBar-3TnChZ {
+    padding: 0px !important;
+}
+.searchBar-3TnChZ > button {
+    height: 100% !important;
+    padding-left: 12px;
+}
