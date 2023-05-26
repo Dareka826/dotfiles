@@ -178,9 +178,13 @@ gdln() { _gdl --ugoira-conv "${@}"; }
 alias doas="doas "
 alias sudo="sudo "
 
-mounts () {
-    mount | sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | column -t -s$'\t'
+mounts() {
+    mount | \
+        sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | \
+        column -t -s$'\t'
 }
+
+tmux() { command tmux -S "${HOME}/.tmux-socket"; }
 
 # Git {{{
 alias    gs="git status"
