@@ -3,12 +3,6 @@
 #unset LD_LIBRARY_PATH
 
 # Env {{{
-# XDG stuff
-#export XDG_CONFIG_HOME=$HOME/.config
-#export   XDG_DATA_HOME=$HOME/.local/share
-#export  XDG_CACHE_HOME=$HOME/.cache
-#export  XDG_STATE_HOME=$HOME/.local/state
-
 # Fcitx
 #export GTK_IM_MODULE="fcitx"
 #export QT_IM_MODULE="fcitx"
@@ -19,17 +13,15 @@
 #export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # Path
-export PATH=$PATH:~/.local/bin
+export PATH="${PATH}:${HOME}/.local/bin"
 
-export GOPATH=~/.go
-export PATH=$PATH:$GOPATH/bin
+export GOPATH="${HOME}/.go"
+export PATH="${PATH}:${GOPATH}/bin"
 
 # Rust
-[ -f "$CARGO_HOME/env" ] && \
-    . "$CARGO_HOME/env"
-
-# dbus
-#export DBUS_SESSION_BUS_ADDRESS="unix:abstract=/${UID}/dbus"
+[ -n "${CARGO_HOME}" ] || CARGO_HOME="${HOME}/.cargo"
+[ -f "${CARGO_HOME}/env" ] && \
+    . "${CARGO_HOME}/env"
 
 # Wayland gtk theme
 export GTK_THEME="Materia-dark-compact"
@@ -46,12 +38,12 @@ export XKB_DEFAULT_OPTIONS="caps:backspace,compose:menu"
 # Default applications
 export EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="wezterm" # "alacritty"
-export BROWSER="firefox"
+export TERMINAL="foot"
+export BROWSER="firefox-esr"
 export VIDEO="mpv"
 export IMAGE="nsxiv"
 export PAGER="less"
-export WM="awesome"
+export WM="sway"
 
 # Diff
 export DIFFPROG="nvim -d"
@@ -80,92 +72,117 @@ LESS_TERMCAP_ue=$'\e[0m'
 LESS_TERMCAP_us=$'\e[0;36m'
 # }}}
 
-# History stuff
-export HISTCONTROL=ignoredups:erasedups
+# History {{{
+export HISTFILE="${HOME}/.bash_history"
+export HISTCONTROL=ignorespace
 export HISTSIZE=100000
 export HISTILESIZE=100000
 shopt -s histappend
+shopt -s histreedit
+shopt -s histverify
+# }}}
 
-# Vi mode
+# Vi mode {{{
 set -o vi
 bind -m vi-command '"\C-l": clear-screen'
 bind -m vi-insert  '"\C-l": clear-screen'
 bind 'set show-mode-in-prompt on'
 bind 'set vi-ins-mode-string "[I]"'
 bind 'set vi-cmd-mode-string "[N]"'
+# }}}
 
-# Completion
+# Completion {{{
 bind 'set completion-ignore-case on'
-bind 'set show-all-if-ambiguous on'
+bind 'set show-all-if-unmodified on'
 bind 'set skip-completed-text on'
+bind 'set completion-query-items 0'
 bind 'set colored-stats on'
 bind 'set visible-stats on'
 
 bind -m vi-insert '"\C-g": glob-list-expansions'
 bind -m vi-insert '"\C-x": glob-expand-word'
+# }}}
 
-# FZF
+# FZF {{{
 [ -f /usr/share/fzf/key-bindings.bash ] && {
     . /usr/share/fzf/key-bindings.bash
     bind -m vi-command '"\C-n": "\C-z\ec\C-z"'
     bind -m vi-insert  '"\C-n": "\C-z\ec\C-z"'
 }
+# }}}
 
-alias md="mkdir -p"
-alias mv="mv -i"
-alias rm="rm -i"
-
-# ls -> exa
-LSOPTS="-F"
+# ls -> exa {{{
 LSPROG="ls"
-command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gF"
+LSOPTS="-F"
+command -v exa >/dev/null && {
+    LSPROG="exa"
+    LSOPTS="-bgF"
+}
 
 alias ls="$LSPROG $LSOPTS"
 alias la="$LSPROG $LSOPTS -a"
 alias ll="$LSPROG $LSOPTS -l"
 alias  l="$LSPROG $LSOPTS -hal"
+# }}}
 
-# Command aliases
-alias clo="curl -LO"
-alias info="info --vi-keys"
-alias f="vifm"
-alias gdl="gallery-dl --sleep 1 --ugoira-conv-lossless --write-metadata"
-alias ytd='yt-dlp --no-mtime -o "[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s" --write-info-json --embed-thumbnail'
+# Aliases / functions
+alias  md="mkdir -p"
+alias  mv="mv -i"
+alias  rm="rm -i"
+alias rmn="rm"
+alias mvv="mv -v"
 
-# Nvim
+# curl
+clo()  { curl -LO "${@}"; }
+cloa() {
+    for URL in "$@"; do
+        clo "${URL}"
+    done
+}
+
 alias v="nvim"
+alias f="vifm"
 
-# doas, sudo alias expansion trick
-alias doas="doas "
-alias sudo="sudo "
-
-# Package management
 alias pac="pacman"
 
-# Functions
-bash_tmp() {
-    env -u XDG_DATA_HOME \
-        -u XDG_CONFIG_HOME \
-        -u XDG_CACHE_HOME \
-        -u XDG_STATE_HOME \
-        -u XDG_DATA_DIRS \
-        -u HISTFILE \
-        HOME=/tmp \
-            bash
+# yt-dlp / youtube-dl {{{
+_ytd() {
+    local YTD
+    YTD="$(command -v yt-dlp)"
+    [ -n "${YTD}" ] || YTD="$(command -v youtube-dl)"
+    [ -n "${YTD}" ] || {
+        printf "Neither yt-dlp nor youtube-dl found!\n"
+        return
+    }
+
+    "${YTD}" --no-mtime \
+             --write-info-json \
+             -o "[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s" \
+             "${@}"
 }
+ytd()  { _ytd --embed-thumbnail "${@}"; }
+ytdx() { _ytd -x -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best' "${@}"; }
+# }}}
+
+info() { command info "${@}" | nvim -R -; }
+
+_gdl() {
+    gallery-dl --sleep 1 \
+               --write-metadata \
+               "${@}"
+}
+gdl()  { _gdl --ugoira-conv-lossless "${@}"; }
+gdln() { _gdl --ugoira-conv "${@}"; }
+
+# doas, sudo alias expansion
+alias doas="doas "
+alias sudo="sudo "
 
 mounts () {
     mount | sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | column -t -s$'\t'
 }
 
-cloa() {
-    local URL
-    for URL in "$@"; do
-        curl -LO "${URL}"
-    done
-}
-
-# Git aliases
+# Git {{{
 alias    gs="git status"
 alias   gss="git status -s"
 alias    gc="git commit"
@@ -192,6 +209,7 @@ alias   gcf="git cat-file"
 alias  gcft="git cat-file -t"
 alias  gcfp="git cat-file -p"
 alias   gfu="git fsck --no-reflogs --unreachable"
+# }}}
 
 # Additional config files
 if [ -d ~/.config/bash.d ] && stat -t ~/.config/bash.d/*.sh >/dev/null 2>&1; then
