@@ -184,7 +184,7 @@ mounts() {
         column -t -s$'\t'
 }
 
-tmux() { command tmux -S "${HOME}/.tmux-socket"; }
+tmux() { command tmux -S "${HOME}/.tmux-socket" "${@}"; }
 
 # Git {{{
 alias    gs="git status"
