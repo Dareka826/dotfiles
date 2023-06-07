@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+# Convert to opus
+for fname in "${@}"; do
+    ffmpeg \
+        -hide_banner \
+        -i "${fname}" \
+        -c:a libopus -b:a 128k \
+        "${fname%.*}.opus"
+done
