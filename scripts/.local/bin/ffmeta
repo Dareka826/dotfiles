@@ -1,0 +1,51 @@
+#!/bin/sh
+set -eu
+
+# ASCII record separator
+SEP="$(printf "\036")"
+IFS="${SEP}"
+
+# xorriso-style multiple options
+DELIM="--"
+
+# Remove files after exit / if cancelled
+cleanup() { [ -z "${_TMPDIR}" ] || rm -rf "${_TMPDIR}"; }
+trap cleanup TERM INT HUP EXIT
+
+_TMPDIR="$(mktemp -d)"
+
+# Turn tags into ffmpeg arguments
+TAGS=""
+while true; do
+    [ "${#}" -ge 1 ] || exit 1
+    [ -n "${1}" ]    || exit 1
+
+    [ "${1}" != "${DELIM}" ] || { shift 1; break; }
+
+    TAGS="${TAGS}-metadata${SEP}${1}${SEP}"
+    shift 1
+done
+TAGS="${TAGS%${SEP}}"
+
+# Tag files
+while [ "${#}" -ge 1 ] && [ -n "${1}" ]; do
+    FILE="${1}"
+    shift 1
+
+    F_EXT="${FILE##*.}"
+    TMP_FILE="${_TMPDIR}/out.${F_EXT}"
+
+    ffmpeg \
+        -hide_banner \
+        -i "${FILE}" \
+        -map_metadata 0:s:0 \
+        ${TAGS} \
+        -c copy \
+        "${TMP_FILE}"
+
+    if [ "${?}" = "0" ]; then
+        mv "${TMP_FILE}" "${FILE}"
+    else
+        rm -f "${TMP_FILE}"
+    fi
+done
