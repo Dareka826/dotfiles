@@ -5,12 +5,30 @@ set -eu
 SEP="$(printf "\036")"
 IFS="${SEP}"
 
+# List all tag names
+get_tag_keys() {
+    local DATA="${1}"
+    printf "%s\n" "${DATA}" | jq -r 'keys[]'
+}
+
+# Print tag value
 print_tag() {
     local DATA="${1}"
     local  TAG="${2}"
 
-    printf "%s\n" "${DATA}" | \
-        jq -r ".streams[0].tags[\"${TAG}\"]"
+    local VALUE
+    VALUE="$(printf "%s\n" "${DATA}" | jq -e -r ".[\"${TAG}\"]")"
+    [ "${?}" = "0" ] && printf "%s\n" "${VALUE}"
+}
+
+# Print tag with same name, but case-insensitive
+find_tag() {
+    local DATA="${1}"
+    local  TAG="${2}"
+
+    local NEW_TAG
+    NEW_TAG="$(get_tag_keys "${DATA}" | grep -Fi "${TAG}")"
+    [ "${?}" = "0" ] && print_tag "${DATA}" "${NEW_TAG}"
 }
 
 # Check if enough arguments
@@ -28,20 +46,21 @@ fi
 # Check for file existence
 [ -e "${FILE}" ] || exit 1
 
+# Get tag data from stream 0
 DATA="$(ffprobe \
     -hide_banner \
     -print_format json \
     -show_streams \
     "${FILE}" \
-    2>/dev/null)"
+    2>/dev/null | jq '.streams[0].tags')"
 
 if [ "${TAG}" != "" ]; then
     # Get tag value
-    print_tag "${DATA}" "${TAG}"
+    print_tag "${DATA}" "${TAG}" || \
+        find_tag "${DATA}" "${TAG}"
 else
     # Print all file tags
-    TAG_KEYS="$(printf "%s\n" "${DATA}" | \
-        jq -r '.streams[0].tags | keys[]' | tr '\n' '\036')"
+    TAG_KEYS="$(get_tag_keys "${DATA}" | tr '\n' '\036')"
 
     for TAG in ${TAG_KEYS}; do
         printf "%s:" "${TAG}"
