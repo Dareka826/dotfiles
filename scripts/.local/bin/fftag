@@ -27,7 +27,7 @@ find_tag() {
     local  TAG="${2}"
 
     local NEW_TAG
-    NEW_TAG="$(get_tag_keys "${DATA}" | grep -Fi "${TAG}")"
+    NEW_TAG="$(get_tag_keys "${DATA}" | grep -Fxi "${TAG}")"
     [ "${?}" = "0" ] && print_tag "${DATA}" "${NEW_TAG}"
 }
 
