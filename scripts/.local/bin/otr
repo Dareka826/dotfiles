@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+# Illegal chars: "*/:<>?\|
+replace_special() {
+    tr '*/:<>?\|' '_'
+}
+
+# Rename music files
+for fname in "${@}"; do
+       EXT="${fname##*.}"
+     TRACK="$(fftag TRACK  "${fname}")" || TRACK=""
+     TITLE="$(fftag TITLE  "${fname}")" || continue
+    ARTIST="$(fftag ARTIST "${fname}")" || continue
+
+    [ -n "${TRACK}" ] && [ "${TRACK}" -le 9 ] && TRACK="0${TRACK}" || :
+
+     TITLE="$(printf "%s" "${TITLE}"  | replace_special)"
+    ARTIST="$(printf "%s" "${ARTIST}" | replace_special)"
+
+    if [ -n "${TRACK}" ]; then
+        NEW_FNAME="$(printf "%s. %s - %s.%s\n" "${TRACK}" "${ARTIST}" "${TITLE}" "${EXT}")"
+    else
+        NEW_FNAME="$(printf "%s - %s.%s\n" "${ARTIST}" "${TITLE}" "${EXT}")"
+    fi
+
+    if [ -e "${NEW_FNAME}" ]; then
+        printf "already exists (skipping): %s\n" "${NEW_FNAME}"
+    else
+        mv "${fname}" "${NEW_FNAME}"
+    fi
+done
