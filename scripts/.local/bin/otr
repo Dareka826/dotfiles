@@ -10,6 +10,7 @@ replace_special() {
 for fname in "${@}"; do
        EXT="${fname##*.}"
      FPATH="${fname%/*}"
+    [ "${FPATH}" != "${fname}" ] || FPATH="."
      TRACK="$(fftag TRACK  "${fname}")" || TRACK=""
      TITLE="$(fftag TITLE  "${fname}")" || continue
     ARTIST="$(fftag ARTIST "${fname}")" || continue
