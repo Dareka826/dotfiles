@@ -1,0 +1,50 @@
+#!/bin/sh
+set -eu
+
+# ASCII record separator
+SEP="$(printf "\036")"
+IFS="${SEP}"
+
+print_tag() {
+    local DATA="${1}"
+    local  TAG="${2}"
+
+    printf "%s\n" "${DATA}" | \
+        jq -r ".streams[0].tags[\"${TAG}\"]"
+}
+
+# Check if enough arguments
+[ "${#}" -ge 1 ] || exit 1
+
+# Determine mode of operation
+if [ "${#}" = "1" ]; then
+    TAG=""
+    FILE="${1}"
+else
+    TAG="${1}"
+    FILE="${2}"
+fi
+
+# Check for file existence
+[ -e "${FILE}" ] || exit 1
+
+DATA="$(ffprobe \
+    -hide_banner \
+    -print_format json \
+    -show_streams \
+    "${FILE}" \
+    2>/dev/null)"
+
+if [ "${TAG}" != "" ]; then
+    # Get tag value
+    print_tag "${DATA}" "${TAG}"
+else
+    # Print all file tags
+    TAG_KEYS="$(printf "%s\n" "${DATA}" | \
+        jq -r '.streams[0].tags | keys[]' | tr '\n' '\036')"
+
+    for TAG in ${TAG_KEYS}; do
+        printf "%s:" "${TAG}"
+        printf "\t%s\n" $(print_tag "${DATA}" "${TAG}" | tr '\n' '\036')
+    done
+fi
