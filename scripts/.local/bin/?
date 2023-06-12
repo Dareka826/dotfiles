@@ -1,5 +1,0 @@
-#!/bin/sh
-
-exec [ "$(cat /dev/urandom | od -N1 -An -tu1 \
-        | tr -d ' ' | cut -c1 \
-        | tr '0123456789' '0101010101')" = "1" ]
