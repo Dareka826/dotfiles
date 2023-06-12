@@ -8,23 +8,13 @@ MAX_H=2160
 MAX_S="${MAX_W}"
 [ "${MAX_H}" -gt "${MAX_S}" ] && MAX_S="${MAX_H}" || :
 
-#for f in "${@}"; do
-#    # Check orientation
-#    IMG_SIZE="$(convert "${f}" -ping -format "%w %h" info:)"
-#    IMG_W="${IMG_SIZE% *}"
-#    IMG_H="${IMG_SIZE#* }"
-#
-#    # Check if portrait
-#    if [ "${IMG_H}" -gt "${IMG_W}" ]; then
-#        __TMP="${MAX_W}"
-#        MAX_W="${MAX_H}"
-#        MAX_H="${__TMP}"
-#    fi
-#
-#    printf "%s %s -> %s %s\n" "${IMG_W}" "${IMG_H}" "${MAX_W}" "${MAX_H}"
-#
-#    convert "${f}" -resize "${MAX_W}x${MAX_H}>" "${f}_shrink.jpg"
-#done
+TMP_OUT=""
+cleanup() {
+    { [ -n "${TMP_OUT}" ] && [ -e "${TMP_OUT}" ]; } \
+        && rm "${TMP_OUT}" \
+        || :
+}
+trap cleanup TERM INT HUP EXIT
 
 for f in "${@}"; do
     [ -e "${f}" ] || continue
