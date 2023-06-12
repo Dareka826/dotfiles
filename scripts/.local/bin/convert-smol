@@ -1,18 +1,18 @@
 #!/bin/sh
+set -eu
 
-alias ffmpeg="ffmpeg -hide_banner"
-
-# For every supplied file
 for f in "$@"; do
-    NEW_FNAME="$(echo "$f" | sed 's/\.[^.]*$/._smol.mkv/')" # Replace extension
+    NEW_F="${f%.*}.smol.mkv"
 
-    ffmpeg -i "$f" \
-        -c:v libx264 -crf 23 \
+    # Convert
+    ffmpeg \
+        -hide_banner \
+        -i "${f}" \
+        -c:v libx264 -crf 22 \
         -c:a libopus -b:a 128k \
         -preset medium \
-            "$NEW_FNAME" || exit 3 # Convert
-    #ffmpeg -i "$f" -c:v libx264 -crf 23 -c:a libopus -b:a 128k -preset veryfast "$NEW_FNAME" || exit 3
-    #ffmpeg -i "$f" -c:v libx265 -crf 26 -c:a libopus -b:a 128k "$NEW_FNAME" || exit 3
+        "${NEW_F}"
 
-    touch -r "$f" "$NEW_FNAME" # Copy over timestamp
+    # Copy timestamp
+    touch -r "${f}" "${NEW_F}"
 done
