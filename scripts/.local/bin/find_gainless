@@ -13,4 +13,3 @@ fd -t f '\.(opus|flac|wav|mp3)$' -j 1 | while IFS= read -r FILE; do
             jq -r '.streams[0].tags | keys[]' 2>/dev/null | \
             grep R128 >/dev/null || printf "No gain?: %s\n" "${FILE}"
 done
-

@@ -1,4 +1,3 @@
 #!/bin/sh
 
 xdotool windowactivate $(for wid in $(xdotool search "" 2>/dev/null | tr "\n" " "); do printf "$wid "; xdotool getwindowname $wid; done | sed '/^[0-9]* $/d;/^$/d' | sort -n | dmenu -i | cut -d' ' -f1)
-

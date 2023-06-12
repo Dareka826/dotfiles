@@ -2,4 +2,3 @@
 
 kill $(cat ~/Wallpapers/.anipid)
 rm ~/Wallpapers/.anipid
-

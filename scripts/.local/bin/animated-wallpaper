@@ -2,4 +2,3 @@
 
 xwinwrap -ov -ni -fs -- mpv -wid WID -keepaspect=yes --loop --quiet --no-audio $1 &
 echo $! > ~/Wallpapers/.anipid
-
