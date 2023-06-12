@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+fd -t f '\.(opus|flac|wav|mp3)$' -j 1 | while IFS= read -r FILE; do
+    [ -s "${FILE}" ] || continue
+
+    ffprobe \
+        -hide_banner \
+        -print_format json \
+        -show_streams \
+        "${FILE}" \
+        2>/dev/null | \
+            jq -r '.streams[0].tags | keys[]' 2>/dev/null | \
+            grep R128 >/dev/null || printf "No gain?: %s\n" "${FILE}"
+done
+
