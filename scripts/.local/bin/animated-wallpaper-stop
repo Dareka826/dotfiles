@@ -1,4 +1,7 @@
 #!/bin/sh
+set -eu
 
-kill $(cat ~/Wallpapers/.anipid)
-rm ~/Wallpapers/.anipid
+[ -e ~/.aniwalpid ] || exit 0
+
+kill "$(cat ~/.aniwalpid)"
+rm ~/.aniwalpid

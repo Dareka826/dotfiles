@@ -1,4 +1,7 @@
 #!/bin/sh
+set -eu
 
-xwinwrap -ov -ni -fs -- mpv -wid WID -keepaspect=yes --loop --quiet --no-audio $1 &
-echo $! > ~/Wallpapers/.anipid
+[ -e ~/.aniwalpid ] && exit 1 || :
+
+xwinwrap -ov -ni -fs -- mpv -wid WID -keepaspect=yes --loop --quiet --no-audio "${1}" &
+printf "%s\n" "${!}" > ~/.aniwalpid
