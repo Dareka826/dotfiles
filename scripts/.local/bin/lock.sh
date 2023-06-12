@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#{ printf "%s\n" "lock" | nc -q0 DPC 32454 || :; } &
-
 exec env \
     XSECURELOCK_AUTH_BACKGROUND_COLOR='#111111' \
     XSECURELOCK_AUTH_FOREGROUND_COLOR='#FFFFFF' \
