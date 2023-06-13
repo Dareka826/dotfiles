@@ -1,21 +1,28 @@
 # Rin's .zshrc
 
-########## History ##########
+## Env {{{
 
-[ -z "${XDG_STATE_HOME}" ] && XDG_STATE_HOME="${HOME}/.local/state"
-export HISTFILE="${XDG_STATE_HOME}/zsh/history" # History file
+#unset LD_LIBRARY_PATH
+
+# Use nvim as the pager for man
+export MANPAGER='nvim +Man!'
+
+## }}}
+
+## History {{{
+
+export HISTFILE="${HOME}/.zsh_history" # History file
 export HISTSIZE=10000000        # Max lines in history file
-export SAVEHIST=$HISTSIZE       # Max history lines appended by a single shell
+export SAVEHIST="${HISTSIZE}"   # Max history lines appended by a single shell
 setopt INC_APPEND_HISTORY       # Don't wait for exit to write history
 setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicates
 setopt HIST_IGNORE_SPACE        # Remove lines that start with a space
 setopt HIST_VERIFY              # Confirm after history substitution
 setopt INTERACTIVE_COMMENTS     # Allow comments in interactive mode
 
-# Create folder containing history file, if nonexistent
-[ -d "${HISTFILE%/*}" ] || mkdir -p "${HISTFILE%/*}"
+## }}}
 
-########## Prompt ##########
+## Prompt {{{
 
 setopt PROMPT_SUBST # Enable substitution in prompt
 
@@ -40,7 +47,7 @@ _short_pwd() {
 
 # Don't display username and hostname if not over ssh
 _prompt_user_host() {
-    [[ -n "${SSH_CLIENT}" ]] && printf "%n@%m " || :
+    [[ -n "${SSH_CLIENT}" ]] && printf "%s" "%n@%m " || :
 }
 
 # Git status in prompt
@@ -81,12 +88,9 @@ _prompt_git() {
 local path_color="green"; [[ $UID -eq 0 ]] && path_color="red" # Path color based on priviledges
 PROMPT='$(_prompt_user_host)%F{$path_color}$(_short_pwd)%f$(_prompt_git)%f%(0?.. %F{red}%?%f)%(!.#.>) '
 
-########## Env ##########
+## }}}
 
-# Use nvim as the pager for man
-export MANPAGER='nvim +Man!'
-
-########## Keybindings ##########
+## Keybindings {{{
 
 # Vim keys
 bindkey -v
@@ -109,7 +113,9 @@ bindkey '^[[6~' end-of-buffer-or-history                    # PageDown
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^v' edit-command-line
 
-########## Cursor shape ##########
+## }}}
+
+## Cursor shape {{{
 
 # Only if not running in a tty
 tty | grep pts >/dev/null && {
@@ -128,7 +134,13 @@ tty | grep pts >/dev/null && {
     zle -N zle-line-init # Set widget
 }
 
-########## Aliases & Functions ##########
+## }}}
+
+## Aliases & Functions {{{
+
+# doas, sudo alias expansion
+alias doas="doas "
+alias sudo="sudo "
 
 # ls -> exa
 LSOPTS="-F --color=auto"
@@ -186,10 +198,8 @@ gloagu() { gloag $(gfu 2>/dev/null | cut -d' ' -f3) }
 
 # Command aliases
 alias clo="curl -LO"
-alias r="ranger"
-alias f="~/.config/vifm/scripts/vifm_ueberzug"
-[ "$DISPLAY" ] || alias f="vifm"
-alias f3="VIFM_USE_W3M=yes vifm"
+alias fu="~/.config/vifm/scripts/vifm_ueberzug_start"
+alias f="vifm"
 
 # Program aliases
 [ -f $ZDOTDIR/program_aliases.zsh ] && \
@@ -237,7 +247,9 @@ nstime() {
     echo "$0 $TIME_AVG ns ~= $((TIME_AVG / 1000000)) ms"
 }
 
-########## Plugins ##########
+## }}}
+
+## Plugins {{{
 
 # Install zinit if not found
 [ -d ~/.zinit ] || {
@@ -262,7 +274,9 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice lucid wait'1'
 zinit light MichaelAquilina/zsh-you-should-use
 
-########## FZF ##########
+## }}}
+
+## FZF {{{
 
 [ -f "/usr/share/fzf/completion.zsh" ] && \
     . "/usr/share/fzf/completion.zsh"
@@ -274,7 +288,9 @@ zinit light MichaelAquilina/zsh-you-should-use
 bindkey -M vicmd '^N' fzf-cd-widget
 bindkey -M viins '^N' fzf-cd-widget
 
-########## Dynamic window title ##########
+## }}}
+
+## Dynamic window title {{{
 
 _change_title_to_pwd() {
     printf "\033]0;%s\a" "zsh: ${PWD/#$HOME/~}"
@@ -287,7 +303,9 @@ _change_title_to_program() {
 precmd_functions+=(_change_title_to_pwd)
 preexec_functions+=(_change_title_to_program)
 
-########## Completion ##########
+## }}}
+
+## Completion {{{
 
 autoload -U compinit
 zmodload zsh/complist
@@ -300,33 +318,7 @@ zstyle ':completion:*' matcher-list \
 unsetopt COMPLETE_ALIASES                   # Expand aliases before attempting completion
 compinit                                    # Initialize completion
 
-# Prevent using yay for full system upgrades (no useful pacman logs in /var/log)
-yay() {
-    local IS_SYNC="n"
-    local IS_SYSUPGRADE="n"
-    local IS_AUR_LIMITED="n"
+## }}}
 
-    # Parse options
-    for word in "$@"; do
-        if [ "${word:0:1}" = "-" ]; then
-            if [ "${word:1:1}" != "-" ]; then
-                # Single dash option(s)
-                printf "%s" "$word" | grep 'S' >/dev/null && IS_SYNC="y"
-                printf "%s" "$word" | grep 'u' >/dev/null && IS_SYSUPGRADE="y"
-                printf "%s" "$word" | grep 'a' >/dev/null && IS_AUR_LIMITED="y"
-            else
-                # Double dash option
-                [ "$word" = "--sync" ] && IS_SYNC="y"
-                [ "$word" = "--sysupgrade" ] && IS_SYSUPGRADE="y"
-                [ "$word" = "--aur" ] && IS_AUR_LIMITED="y"
-            fi
-        fi
-    done
-
-    # Decide whether to allow
-    if [ "$IS_SYNC" = "y" ] && [ "$IS_SYSUPGRADE" = "y" ] && [ "$IS_AUR_LIMITED" = "n" ]; then
-        printf " \033[31;1m*\033[0;1m DO NOT USE \`yay\` FOR SYSTEM UPGRADES\033[0m\n"
-    else
-        command yay "$@"
-    fi
-}
+# Check mail
+mail -e && printf "You have new mail!\n"
