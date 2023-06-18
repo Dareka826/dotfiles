@@ -94,10 +94,8 @@ in
   # }}}
 
   # Make theme and icon files available for user {{{
-  home.file = {
-    ".local/share/themes/${gtk_theme.name}".source   = "${gtk_theme.package}/share/themes/${gtk_theme.name}";
-    ".local/share/icons/${cursor_theme.name}".source = "${cursor_theme.package}/share/icons/${cursor_theme.name}";
-    ".local/share/icons/${icon_theme.name}".source   = "${icon_theme.package}/share/icons/${icon_theme.name}";
-  };
+  home.file.".local/share/themes/${gtk_theme.name}".source   = "${gtk_theme.package}/share/themes/${gtk_theme.name}";
+  home.file.".local/share/icons/${cursor_theme.name}".source = "${cursor_theme.package}/share/icons/${cursor_theme.name}";
+  home.file.".local/share/icons/${icon_theme.name}".source   = "${icon_theme.package}/share/icons/${icon_theme.name}";
   # }}}
 }
