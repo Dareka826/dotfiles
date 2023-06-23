@@ -22,6 +22,16 @@ for f in "${@}"; do
     EXT="${f##*.}"
     [ "${EXT}" != "${f}" ] || continue # No extension!
 
+    # Check if already desired size
+    IMG_MAX_S="$(\
+        convert "${f}" -ping -format "%w\n%h\n" info: | \
+            sort -n | tail -1)"
+
+    if [ "${IMG_MAX_S}" -le "${MAX_S}" ]; then
+        printf "skip 4k: %s\n" "${f}"
+        continue
+    fi
+
     TMP_OUT="$(mktemp --suffix=".${EXT}")"
 
     if ! convert "${f}" -resize "${MAX_S}x${MAX_S}>" "${TMP_OUT}"; then
