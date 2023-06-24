@@ -1,0 +1,49 @@
+#!/bin/sh
+set -eu
+IFS=$'\n'
+
+# Check for argument
+[ "${#}" -ge 1 ] || exit 1
+
+QUALITY="${1}"
+shift 1
+# Check range
+[ "${QUALITY}" -ge  60 ] || exit 1
+[ "${QUALITY}" -le 100 ] || exit 1
+
+# Trap if the program doesn't exit cleanly
+CLEANUP_PATHS=""
+cleanup() {
+    for _PATH in ${CLEANUP_PATHS}; do
+        [ -n "${_PATH}" ] || continue
+        [ -e "${_PATH}" ] || continue
+        rm "${_PATH}" || :
+    done
+}
+trap cleanup TERM INT HUP EXIT
+
+
+for FNAME in "$@"; do
+    [ "${FNAME}" ] || continue                 # Check if filename if non-empty
+    [ -e "${FNAME}" ] || continue              # Check if filename exists
+    convert "${FNAME}" null:- 2>&1 || continue # Check if image contains any fatal errors
+
+    TMP_OUT="$(mktemp --suffix=".jpg")"
+    CLEANUP_PATHS="${CLEANUP_PATHS}${TMP_OUT}\n"
+
+    if ! convert "${FNAME}" -quality "${QUALITY}" "${TMP_OUT}"; then
+        printf "Error: convert failed: %s\n" "${FNAME}"
+        rm "${TMP_OUT}"
+        continue
+    fi
+
+    if [ "$(stat -c "%s" "${TMP_OUT}")" -gt "$(stat -c "%s" "${FNAME}")" ]; then
+        printf "Skip: new file larger than original: %s\n" "${FNAME}"
+        rm "${TMP_OUT}"
+        continue
+    fi
+
+    touch -r "${FNAME}" "${TMP_OUT}"
+    mv "${TMP_OUT}" "${FNAME}.conv.jpg" && rm "${FNAME}"
+    printf "Conv: %s\n" "${FNAME}"
+done
