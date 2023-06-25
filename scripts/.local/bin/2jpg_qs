@@ -44,6 +44,8 @@ for FNAME in "$@"; do
     fi
 
     touch -r "${FNAME}" "${TMP_OUT}"
-    mv "${TMP_OUT}" "${FNAME}.conv.jpg" && rm "${FNAME}"
+    mv "${TMP_OUT}" "${FNAME%.*}.conv.jpg"
+    rm "${FNAME}"
+    mv "${FNAME%.*}.conv.jpg" "${FNAME%.*}.jpg"
     printf "Conv: %s\n" "${FNAME}"
 done
