@@ -24,8 +24,9 @@ trap cleanup TERM INT HUP EXIT
 
 
 for FNAME in "$@"; do
-    [ "${FNAME}" ] || continue                 # Check if filename if non-empty
-    [ -e "${FNAME}" ] || continue              # Check if filename exists
+    [ "${FNAME}" ] || continue                   # Check if filename if non-empty
+    [ -e "${FNAME}" ] || continue                # Check if filename exists
+    [ "${FNAME##*.}" != "${FNAME}" ] || continue # Check if filename has an extension
     convert "${FNAME}" null:- 2>&1 || continue # Check if image contains any fatal errors
 
     TMP_OUT="$(mktemp --suffix=".jpg")"
