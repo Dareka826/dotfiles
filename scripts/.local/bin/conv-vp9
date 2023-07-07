@@ -31,6 +31,9 @@ _conv_crf() {
     fi
 }
 
+_CRF="30"
+[ -e "${1}" ] || { _CRF="${1}"; shift 1; }
+
 for _FILE in "$@"; do
-    _conv_crf "${_FILE}" 30
+    _conv_crf "${_FILE}" "${_CRF}"
 done
