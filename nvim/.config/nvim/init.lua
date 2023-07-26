@@ -1,6 +1,3 @@
--- Shut up lsp
-vim = vim or nil
-
 -- Leader key
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -44,7 +41,7 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim' },
+      'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
 
       -- Status updates for LSP
@@ -511,9 +508,8 @@ vim.g.c_syntax_for_h = 1
 
 -- [[ Basic Keymaps ]]
 
--- Clear highlights
+-- Clear
 vim.keymap.set('n', '<leader><space>', vim.cmd.nohlsearch, { desc = '[ ] Clear search highlight' })
--- Clear cmdline
 vim.keymap.set('n', '<leader>c', ':<BS>', { desc = '[C]lear cmdline', silent = true })
 
 -- Make space a no-op
@@ -720,7 +716,14 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({
+  override = function(root_dir, library)
+    if root_dir:find("/.config/nvim", 1, true) ~= nil then
+      library.enabled = true
+      library.plugins = true
+    end
+  end,
+})
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
