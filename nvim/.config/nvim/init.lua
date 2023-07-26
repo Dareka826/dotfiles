@@ -21,113 +21,8 @@ do -- {{{
 end -- }}}
 
 require('lazy').setup({
-  -- Git
-  {
-    'tpope/vim-fugitive',
-    config = function()
-      vim.keymap.set('n', '<leader>gs', '<cmd>Git<CR>', { desc = '[G]it [S]tatus' })
-      vim.keymap.set('n', '<leader>gh', '<cmd>diffget //2<CR>', { desc = '[G]it diff get from left' })
-      vim.keymap.set('n', '<leader>gl', '<cmd>diffget //3<CR>', { desc = '[G]it diff get from right' })
-    end,
-  },
-  { 'junegunn/gv.vim', cmd = 'GV' },
-
-  -- Detect tabstop and shiftwidth
-  'tpope/vim-sleuth',
-
-  -- LSP plugins
+  -- Colorscheme
   { -- {{{
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-
-      -- Status updates for LSP
-      {
-        'j-hui/fidget.nvim',
-        tag = 'legacy',
-        event = 'LspAttach',
-        opts = {
-          align = {
-            bottom = true,
-            right = true,
-          },
-        },
-      },
-
-      -- Additional lua configuration
-      'folke/neodev.nvim',
-    },
-  }, -- }}}
-
-  -- Autocompletion
-  { -- {{{
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      -- Snippet engine
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-
-      -- Adds LSP completion capabilities
-      'hrsh7th/cmp-nvim-lsp',
-
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      --'hrsh7th/cmp-nvim-lua',
-      --'hrsh7th/cmp-cmdline',
-
-      -- Adds a number of user-friendly snippets
-      'rafamadriz/friendly-snippets',
-    },
-  }, -- }}}
-
-  -- Show pending keybinds
-  { -- {{{
-    'folke/which-key.nvim',
-    init =function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 500
-    end,
-    opts = {},
-  }, -- }}}
-
-  -- Git signs
-  { -- {{{
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-      on_attach = function(bufnr)
-        local gs = require('gitsigns')
-
-        vim.keymap.set('n', '<leader>gp',  gs.prev_hunk,     { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-        vim.keymap.set('n', '<leader>gn',  gs.next_hunk,     { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-        vim.keymap.set('n', '<leader>ph',  gs.preview_hunk,  { buffer = bufnr, desc = '[P]review [H]unk' })
-        vim.keymap.set('n', '<leader>tgl', gs.toggle_linehl, { buffer = bufnr, desc = '[T]oggle [G]it [L]ine highlight' })
-      end,
-    },
-    config = function(_, opts)
-      require('gitsigns').setup(opts)
-
-      -- Custom colors
-      vim.cmd('highlight GitSignsAdd    guifg=#22AA66 ctermfg=41')
-      vim.cmd('highlight GitSignsChange guifg=#FF6600 ctermfg=202')
-      vim.cmd('highlight GitSignsDelete guifg=#FF2255 ctermfg=197')
-    end,
-  }, -- }}}
-
-  -- Colorscheme {{{
-  -- 'axvr/photon.vim',
-  -- 'Luxed/ayu-vim',
-  -- 'arzg/vim-colors-xcode',
-  {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
@@ -148,20 +43,10 @@ require('lazy').setup({
       vim.o.background = 'dark'
     end,
   },
+  'axvr/photon.vim',
+  'Luxed/ayu-vim',
+  'arzg/vim-colors-xcode',
   -- }}}
-
-  -- Dim code not in scope
-  { -- {{{
-    'folke/twilight.nvim',
-    opts = {
-      dimming = {
-        alpha = 0.25,
-      },
-      context = 20,
-      treesitter = true,
-      exclude = {},
-    },
-  }, -- }}}
 
   -- Statusline
   { -- {{{
@@ -208,46 +93,49 @@ require('lazy').setup({
     end
   }, -- }}}
 
-  -- Visual line indents
+  -- LSP
   { -- {{{
-    'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      char = '│',
-      show_trailing_blankline_indent = false,
-      show_current_context = true,
-      show_first_indent_level = false,
-      use_treesitter = true,
-    },
-    config = function(_, opts)
-      require('indent_blankline').setup(opts)
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
 
-      vim.cmd('highlight IndentBlanklineChar               gui=nocombine guifg=#3b4261')
-      vim.cmd('highlight IndentBlanklineSpaceChar          gui=nocombine guifg=#3b4261')
-      vim.cmd('highlight IndentBlanklineSpaceCharBlankline gui=nocombine guifg=#3b4261')
-    end
+      {
+        'j-hui/fidget.nvim',
+        tag = 'legacy',
+        event = 'LspAttach',
+        opts = {
+          align = {
+            bottom = true,
+            right = true,
+          },
+        },
+      },
+
+      'folke/neodev.nvim',
+    },
   }, -- }}}
 
-  -- "gc" to comment visual regions/lines
-  {
-    'numToStr/Comment.nvim',
-    opts = {},
-  },
+  -- Autocompletion
+  { -- {{{
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      -- Snippet engine
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
 
-  -- Telescope
-  -- {{{
-  {
-    'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
-  {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make',
-    cond = function()
-      return vim.fn.executable('make') == 1
-    end,
-  },
-  -- }}}
+      -- Adds LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',
+
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      --'hrsh7th/cmp-nvim-lua',
+      --'hrsh7th/cmp-cmdline',
+
+      -- Adds a number of user-friendly snippets
+      'rafamadriz/friendly-snippets',
+    },
+  }, -- }}}
 
   -- Treesitter
   -- {{{
@@ -268,8 +156,104 @@ require('lazy').setup({
   },
   -- }}}
 
-  -- Show colors
+  -- Telescope
+  -- {{{
   {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    build = 'make',
+    cond = function()
+      return vim.fn.executable('make') == 1
+    end,
+  },
+  -- }}}
+
+  -- Detect tabstop and shiftwidth
+  'tpope/vim-sleuth',
+
+  -- Git
+  { -- {{{
+    'tpope/vim-fugitive',
+    config = function()
+      vim.keymap.set('n', '<leader>gs', '<cmd>Git<CR>', { desc = '[G]it [S]tatus' })
+      vim.keymap.set('n', '<leader>gh', '<cmd>diffget //2<CR>', { desc = '[G]it diff get from left' })
+      vim.keymap.set('n', '<leader>gl', '<cmd>diffget //3<CR>', { desc = '[G]it diff get from right' })
+    end,
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+      },
+      on_attach = function(bufnr)
+        local gs = require('gitsigns')
+
+        vim.keymap.set('n', '<leader>gp',  gs.prev_hunk,     { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gn',  gs.next_hunk,     { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+        vim.keymap.set('n', '<leader>ph',  gs.preview_hunk,  { buffer = bufnr, desc = '[P]review [H]unk' })
+        vim.keymap.set('n', '<leader>tgl', gs.toggle_linehl, { buffer = bufnr, desc = '[T]oggle [G]it [L]ine highlight' })
+      end,
+    },
+    config = function(_, opts)
+      require('gitsigns').setup(opts)
+
+      -- Custom colors
+      vim.cmd('highlight GitSignsAdd    guifg=#22AA66 ctermfg=41')
+      vim.cmd('highlight GitSignsChange guifg=#FF6600 ctermfg=202')
+      vim.cmd('highlight GitSignsDelete guifg=#FF2255 ctermfg=197')
+    end,
+  },
+  {
+    'junegunn/gv.vim',
+    cmd = 'GV'
+  }, -- }}}
+
+  -- Show pending keybinds
+  { -- {{{
+    'folke/which-key.nvim',
+    init =function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 500
+    end,
+    opts = {},
+  }, -- }}}
+
+  -- Visual line indents
+  { -- {{{
+    'lukas-reineke/indent-blankline.nvim',
+    opts = {
+      char = '│',
+      show_trailing_blankline_indent = false,
+      show_current_context = true,
+      show_first_indent_level = false,
+      use_treesitter = true,
+    },
+    config = function(_, opts)
+      require('indent_blankline').setup(opts)
+
+      vim.cmd('highlight IndentBlanklineChar               gui=nocombine guifg=#3b4261')
+      vim.cmd('highlight IndentBlanklineSpaceChar          gui=nocombine guifg=#3b4261')
+      vim.cmd('highlight IndentBlanklineSpaceCharBlankline gui=nocombine guifg=#3b4261')
+    end
+  }, -- }}}
+
+  -- "gc" to comment visual regions/lines
+  { -- {{{
+    'numToStr/Comment.nvim',
+    opts = {},
+  }, -- }}}
+
+  -- Show colors
+  { -- {{{
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup({
@@ -277,7 +261,20 @@ require('lazy').setup({
         '!sixel',
       })
     end,
-  },
+  }, -- }}}
+
+  -- Dim code not in scope
+  { -- {{{
+    'folke/twilight.nvim',
+    opts = {
+      dimming = {
+        alpha = 0.25,
+      },
+      context = 20,
+      treesitter = true,
+      exclude = {},
+    },
+  }, -- }}}
 
   -- Terminals
   {
@@ -298,10 +295,6 @@ require('lazy').setup({
     },
   },
 
-  -- lazygit
-  -- gitui
-  -- tig
-
   {
     'mbbill/undotree',
     config = function()
@@ -309,7 +302,8 @@ require('lazy').setup({
     end
   },
 
-  {
+  -- VimWiki
+  { -- {{{
     'vimwiki/vimwiki',
     cmd = {
       'VimwikiIndex',
@@ -336,7 +330,7 @@ require('lazy').setup({
       vim.keymap.del('n', '<leader>w<leader>m')
       vim.keymap.del('n', '<leader>w<leader>i')
     end
-  },
+  }, -- }}}
 
   'djpohly/vim-execline',
 
