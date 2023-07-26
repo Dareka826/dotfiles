@@ -917,7 +917,6 @@ vim.keymap.set({'n','v'}, '<leader>yy', '"+y', { desc = 'Yank to system clipboar
 -- Terminals
 vim.keymap.set({'n','t','i'}, [[<c-\>t]], '<Cmd>exe v:count1 . "ToggleTerm"<CR>', { desc = 'Toggle Terminal' })
 vim.keymap.set({'n','t','i'}, [[<c-s>]], [[<c-\>t]], { remap = true, desc = 'Toggle Terminal' })
-vim.keymap.set({'n','t','i'}, [[<c-s>]], [[<c-\>t]], { remap = true, desc = 'Toggle Terminal' })
 
 vim.keymap.set('t', [[<c-\>n]], [[<c-\><c-n>]], { desc = 'Escape Terminal' })
 
