@@ -280,7 +280,12 @@ require('lazy').setup({
   {
     'akinsho/toggleterm.nvim',
     opts = {
-      open_mapping = [[<c-\><c-t>]],
+      autochdir = true,
+      float_opts = {
+        border = 'single',
+        winblend = 0,
+      },
+      size = 20,
     },
   },
 
@@ -295,12 +300,13 @@ require('lazy').setup({
     },
   },
 
-  {
+  -- Undotree
+  { -- {{{
     'mbbill/undotree',
     config = function()
       vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = '[U]ndoTree' })
     end
-  },
+  }, -- }}}
 
   -- VimWiki
   { -- {{{
@@ -343,16 +349,17 @@ require('lazy').setup({
   --'rcarriga/nvim-dap-ui',
   --'theHamsta/nvim-dap-virtual-text',
 
-  {
+  -- Emmet
+  { -- {{{
     'mattn/emmet-vim',
     init = function()
       vim.g.user_emmet_mode = 'i'
       vim.g.user_emmet_leader_key = '<c-h>'
     end,
-  },
+  }, -- }}}
 
   -- F#
-  {
+  { -- {{{
     'ionide/Ionide-vim',
     ft = {
       'fs',
@@ -364,7 +371,7 @@ require('lazy').setup({
       vim.g['fsharp#fsi_keymap_send']   = '<C-e>'
       vim.g['fsharp#fsi_keymap_toggle'] = '<C-@>'
     end
-  },
+  }, -- }}}
 
   {
     'folke/todo-comments.nvim',
@@ -374,7 +381,8 @@ require('lazy').setup({
     },
   },
 
-  {
+  -- Pretty list for diagnostics, quickfix and location lists
+  { -- {{{
     'folke/trouble.nvim',
     opts = {
       icons = false,
@@ -389,9 +397,10 @@ require('lazy').setup({
       },
       use_diagnostic_signs = false,
     },
-  },
+  }, -- }}}
 
-  {
+  -- Highlight stuff with rules
+  { -- {{{
     'folke/paint.nvim',
     opts = {
       -- @type PaintHighlight[]
@@ -403,7 +412,8 @@ require('lazy').setup({
         },
       },
     },
-  },
+  }, -- }}}
+
 }, {
   concurrency = 2,
   pills = true,
@@ -903,6 +913,13 @@ vim.keymap.set('n', 'N', 'Nzzzv', { noremap = true })
 -- System clipboard
 vim.keymap.set({'n','v'}, '<leader>pp', '"+p', { desc = 'Paste from system clipboard' })
 vim.keymap.set({'n','v'}, '<leader>yy', '"+y', { desc = 'Yank to system clipboard' })
+
+-- Terminals
+vim.keymap.set({'n','t','i'}, [[<c-\>t]], '<Cmd>exe v:count1 . "ToggleTerm"<CR>', { desc = 'Toggle Terminal' })
+vim.keymap.set({'n','t','i'}, [[<c-s>]], [[<c-\>t]], { remap = true, desc = 'Toggle Terminal' })
+vim.keymap.set({'n','t','i'}, [[<c-s>]], [[<c-\>t]], { remap = true, desc = 'Toggle Terminal' })
+
+vim.keymap.set('t', [[<c-\>n]], [[<c-\><c-n>]], { desc = 'Escape Terminal' })
 
 -- Syntax for non-standard file extensions
 vim.api.nvim_create_augroup('rinbrk_syntax', { clear = true })
