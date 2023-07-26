@@ -351,7 +351,7 @@ require('lazy').setup({
 
   {
     'mattn/emmet-vim',
-    config = function()
+    init = function()
       vim.g.user_emmet_mode = 'i'
       vim.g.user_emmet_leader_key = '<c-h>'
     end,
