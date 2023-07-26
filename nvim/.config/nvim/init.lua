@@ -741,20 +741,27 @@ require('mason').setup({
   }
 })
 
-local mason_lspconfig = require('mason-lspconfig')
-
-mason_lspconfig.setup({
-  ensure_installed = {
-    -- 'clangd',
-    -- 'lua_ls',
-    -- 'omnisharp_mono',
-  },
-})
-
 do
+  local mason_lspconfig = require('mason-lspconfig')
+
+  local ensure_installed = {}
+  local is_termux = (os.getenv("TERMUX_VERSION") ~= nil)
+
+  if not is_termux then
+    ensure_installed = {
+      'clangd',
+      'lua_ls',
+      'omnisharp_mono',
+    }
+  end
+
+  mason_lspconfig.setup({
+    ensure_installed = ensure_installed,
+  })
+
   local lspconfig = require('lspconfig')
 
-  mason_lspconfig.setup_handlers({
+  local handlers_setup = {
     function(server_name)
       lspconfig[server_name].setup({
         capabilities = capabilities,
@@ -762,22 +769,28 @@ do
         settings = servers[server_name],
       })
     end,
-    --['clangd'] = function()
-    --  lspconfig['clangd'].setup({
-    --    capabilities = capabilities,
-    --    on_attach = on_attach,
-    --    cmd = { '/data/data/com.termux/files/usr/bin/clangd' },
-    --  })
-    --end,
-    --['lua_ls'] = function()
-    --  lspconfig['lua_ls'].setup({
-    --    capabilities = capabilities,
-    --    on_attach = on_attach,
-    --    cmd = { '/data/data/com.termux/files/usr/bin/lua-language-server' },
-    --    settings = servers['lua_ls'],
-    --  })
-    --end,
-  })
+  }
+
+  if is_termux then
+    handlers_setup['clangd'] = function()
+      lspconfig['clangd'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { '/data/data/com.termux/files/usr/bin/clangd' },
+      })
+    end
+
+    handlers_setup['lua_ls'] = function()
+      lspconfig['lua_ls'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { '/data/data/com.termux/files/usr/bin/lua-language-server' },
+        settings = servers['lua_ls'],
+      })
+    end
+  end
+
+  mason_lspconfig.setup_handlers(handlers_setup)
 end
 -- }}}
 
