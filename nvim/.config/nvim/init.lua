@@ -130,8 +130,9 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
-      --'hrsh7th/cmp-nvim-lua',
       --'hrsh7th/cmp-cmdline',
+      --'hrsh7th/cmp-calc',
+      --'hrsh7th/cmp-emoji',
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
