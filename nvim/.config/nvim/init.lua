@@ -786,6 +786,13 @@ do
         settings = servers['lua_ls'],
       })
     end
+
+    lspconfig['omnisharp'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = { 'omnisharp' },
+      settings = servers['omnisharp'],
+    })
   end
 
   mason_lspconfig.setup_handlers(handlers_setup)
