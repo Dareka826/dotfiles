@@ -1,0 +1,76 @@
+#!/bin/sh
+set -eu
+
+get_metadata() {
+    local URL="${1}"
+    shift 1
+
+    yt-dlp "$@" -o "[%(webpage_url_domain)s]_[%(id)s].%(ext)s" -j "${URL}"
+}
+
+get_en_metadata() {
+    local URL="${1}"
+    shift 1
+
+    get_metadata "${URL}" --extractor-args 'youtube:lang=en'
+}
+
+download_song() {
+    local URL="${1}"
+    shift 1
+
+    yt-dlp \
+        --no-mtime \
+        -x \
+        -o "[%(webpage_url_domain)s]_[%(id)s].%(ext)s" \
+        -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best' \
+        --write-thumbnail \
+        "${URL}"
+}
+
+convert_thumbnail() {
+    local INFO_JSON="${1}"
+    shift 1
+
+    # Extract only the needed info
+    INFO_JSON="$(printf "%s" "${INFO_JSON}" | jq '{thumbnails, filename}')"
+
+    local THUMB_URL
+    THUMB_URL="$(printf "%s" "${INFO_JSON}" | jq -r '.thumbnails | sort_by(.preference) | .[ (. | length) - 1 ] | .url')"
+    local THUMB_EXT="${THUMB_URL##*.}"
+
+    local FILENAME_BASE
+    FILENAME_BASE="$(printf "%s" "${INFO_JSON}" | jq -r '.filename | sub("\\.[^.]+$"; "")')"
+
+    [ -e "${FILENAME_BASE}.${THUMB_EXT}" ] || exit 101
+
+    convert "${FILENAME_BASE}.${THUMB_EXT}" -quality 95 cover.jpg
+    rm "${FILENAME_BASE}.${THUMB_EXT}"
+}
+
+[ -n "${1}" ] || exit 1
+
+_ORG_DIR_="$(pwd)"
+
+_TMP_DIR_=""
+cleanup() {
+    [ -n "${_TMP_DIR_}" ] \
+        && [ -e "${_TMP_DIR_}" ] \
+        && rm -rf "${_TMP_DIR_}" || :
+}
+trap cleanup TERM INT HUP EXIT
+_TMP_DIR_="$(mktemp -d)"
+
+cd "${_TMP_DIR_}"
+
+get_metadata    "${1}" | jq >info.json
+get_en_metadata "${1}" | jq >info_en.json
+
+download_song     "${1}"
+convert_thumbnail "$(cat info.json)"
+
+DIR_NAME="$(cat info.json | jq -r '"[" + ([ .uploader_id, .upload_date, .id ] | join("]_[")) + "]"')"
+mkdir "${_ORG_DIR_}/${DIR_NAME}"
+cd "${_ORG_DIR_}/${DIR_NAME}"
+
+mv "${_TMP_DIR_}"/* ./
