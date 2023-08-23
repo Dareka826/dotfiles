@@ -12,6 +12,10 @@
 # Qt style
 #export QT_QPA_PLATFORMTHEME="qt5ct"
 
+# Nix
+[ -e "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && \
+    . "${HOME}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
 # Path
 export PATH="${PATH}:${HOME}/.local/bin"
 
