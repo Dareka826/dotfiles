@@ -97,6 +97,7 @@ bind 'set vi-cmd-mode-string "[N]"'
 
 # Completion {{{
 bind 'set completion-ignore-case on'
+bind 'set show-all-if-ambiguous off'
 bind 'set show-all-if-unmodified on'
 bind 'set skip-completed-text on'
 bind 'set completion-query-items 0'
