@@ -109,8 +109,11 @@ bind -m vi-insert '"\C-x": glob-expand-word'
 # }}}
 
 # FZF {{{
-[ -f /usr/share/fzf/key-bindings.bash ] && {
-    . /usr/share/fzf/key-bindings.bash
+FZF_SCRIPTS="/usr/share/fzf"
+[ -e "${FZF_SCRIPTS}" ] || FZF_SCRIPTS="/usr/share/doc/fzf/examples"
+
+[ -f "${FZF_SCRIPTS}/key-bindings.bash" ] && {
+    . "${FZF_SCRIPTS}/key-bindings.bash"
     bind -m vi-command '"\C-n": "\C-z\ec\C-z"'
     bind -m vi-insert  '"\C-n": "\C-z\ec\C-z"'
 }
