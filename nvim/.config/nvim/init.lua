@@ -717,6 +717,29 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  pylsp = {
+    pylsp = {
+      plugins = {
+        pyls_mypy = {
+          enabled = true,
+          live_mode = false,
+        },
+        pycodestyle = {
+          ignore = {
+            'E501',
+            'E302',
+            'E305',
+            'E261',
+            'E251',
+            'E221',
+            'E241',
+            'E201',
+            'E202',
+          },
+        },
+      },
+    },
+  },
 }
 
 -- Setup neovim lua configuration
@@ -756,6 +779,7 @@ do
       'clangd',
       'lua_ls',
       'omnisharp_mono',
+      'pylsp',
     }
   end
 
@@ -799,6 +823,17 @@ do
       cmd = { 'omnisharp' },
       settings = servers['omnisharp'],
     })
+  end
+
+  if os.getenv('VIRTUAL_ENV') ~= nil then
+    handlers_setup['pylsp'] = function()
+      lspconfig['pylsp'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { os.getenv('VIRTUAL_ENV') .. '/bin/pylsp' },
+        settings = servers['pylsp'],
+      })
+    end
   end
 
   mason_lspconfig.setup_handlers(handlers_setup)
