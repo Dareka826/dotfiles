@@ -118,16 +118,16 @@ bind -m vi-insert '"\C-x": glob-expand-word'
 
 # ls -> exa {{{
 LSPROG="ls"
-LSOPTS="-F"
+LSOPTS="--color=auto"
 command -v exa >/dev/null && {
     LSPROG="exa"
-    LSOPTS="-bgF"
+    LSOPTS="-gb"
 }
 
 alias ls="$LSPROG $LSOPTS"
-alias la="$LSPROG $LSOPTS -a"
-alias ll="$LSPROG $LSOPTS -l"
-alias  l="$LSPROG $LSOPTS -hal"
+alias  l="$LSPROG $LSOPTS -hl"
+alias ll="$LSPROG $LSOPTS -hla"
+alias lf="$LSPROG $LSOPTS -hlaF"
 # }}}
 
 # Aliases / functions
