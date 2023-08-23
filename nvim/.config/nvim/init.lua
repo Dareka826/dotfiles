@@ -175,7 +175,11 @@ require('lazy').setup({
   -- }}}
 
   -- Detect tabstop and shiftwidth
-  'tpope/vim-sleuth',
+  { 'tpope/vim-sleuth', enabled = false },
+  {
+    'NMAC427/guess-indent.nvim',
+    config = true,
+  },
 
   -- Git
   { -- {{{
@@ -450,9 +454,6 @@ vim.o.compatible = false
 
 -- Indentation
 vim.o.tabstop = 4
--- vim.o.shiftwidth = 4
--- vim.o.softtabstop = -1
-vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
 
