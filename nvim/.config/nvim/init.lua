@@ -403,6 +403,11 @@ require('lazy').setup({
       },
       use_diagnostic_signs = false,
     },
+    config = function(_, opts)
+      require('trouble').setup(opts)
+
+      vim.keymap.set('n', '<leader>td', vim.cmd["Trouble document_diagnostics"], { desc = '[T]rouble [D]iagnostics' })
+    end,
   }, -- }}}
 
   -- Highlight stuff with rules
