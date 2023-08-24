@@ -99,7 +99,7 @@ tags_to_ffopts() {
     FF_TAGS=""
     IFS="${_FS}"
     for tag in $TAGS; do
-        FF_TAGS="${FF_TAGS}-metadata ${tag}${_FS}"
+        FF_TAGS="${FF_TAGS}-metadata${_FS}${tag}${_FS}"
     done
     unset IFS
 }
