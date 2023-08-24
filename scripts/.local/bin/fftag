@@ -1,6 +1,20 @@
 #!/bin/sh
 set -eu
 
+get_file_tags() {
+    local FILE="${1}"
+
+    ffprobe \
+        -hide_banner \
+        -print_format default=nw=1 \
+        -show_entries 'stream_tags:format_tags' \
+        "${FILE}" 2>/dev/null | \
+            sed 's/^TAG://' | sed '/=/! s/^/#/'
+}
+
+get_file_tags "$@"
+exit 0
+
 # ASCII record separator
 SEP="$(printf "\036")"
 IFS="${SEP}"
