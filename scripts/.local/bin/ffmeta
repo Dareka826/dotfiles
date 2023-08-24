@@ -1,51 +1,139 @@
 #!/bin/sh
 set -eu
 
-# ASCII record separator
-SEP="$(printf "\036")"
-IFS="${SEP}"
+SCRIPTS_PATH="$(realpath "$0")"
+SCRIPTS_PATH="${SCRIPTS_PATH%/*}/../.."
+SCRIPTS_PATH="$(realpath "${SCRIPTS_PATH}")"
+. "${SCRIPTS_PATH}/xparse/xparse.sh"
 
-# xorriso-style multiple options
-DELIM="--"
+xparse_add_option "tag"   1  do_tag
+xparse_add_option "tags" '*' do_tags
 
-# Remove files after exit / if cancelled
+xparse_add_option "file"   1  do_file
+xparse_add_option "files" '*' do_files
+
+xparse_add_option "print"       0 do_print
+xparse_add_option "print_tags"  0 do_print_tags
+xparse_add_option "print_files" 0 do_print_files
+
+xparse_add_option "simulate" 0 do_simulate
+
+_FS="$(printf "\034")"
+TAGS=""
+FILES=""
+
+# args: TAG
+do_tag() { # {{{
+    local TAG="${1}"
+    TAGS="${TAGS}${TAG}${_FS}"
+} # }}}
+
+# args: TAG...
+do_tags() { # {{{
+    for tag in "$@"; do
+        do_tag "${tag}"
+    done
+} # }}}
+
+# args: FILE
+do_file() { # {{{
+    local FILE="${1}"
+    FILES="${FILES}${FILE}${_FS}"
+} # }}}
+
+# args: FILE...
+do_files() { # {{{
+    for file in "$@"; do
+        do_file "${file}"
+    done
+} # }}}
+
+# args:
+do_print_tags() { # {{{
+    IFS="${_FS}"
+    printf "Tags to set:\n"
+    printf "  %s\n" ${TAGS}
+    printf "\n"
+    unset IFS
+} # }}}
+
+# args:
+do_print_files() { # {{{
+    IFS="${_FS}"
+    printf "Files to modify:\n"
+    printf "  %s\n" ${FILES}
+    printf "\n"
+    unset IFS
+} # }}}
+
+# args:
+do_print() { # {{{
+    do_print_tags
+    do_print_files
+} # }}}
+
+SIMULATE="0"
+# args:
+do_simulate() {
+    SIMULATE="1"
+}
+
+exec_sim() {
+    if [ "${SIMULATE}" = "1" ]; then
+        printf "[I]: Exec:"
+        printf " %s" "$@"
+        printf "\n"
+    else
+        "$@"
+    fi
+}
+
+xparse_execute_args "$@"
+
+# Tag the files
+[ -n "${FILES}" ] || { printf "[E]: No files provided!\n"; exit 1; }
+[ -n "${TAGS}"  ] || { printf "[E]: No tags provided!\n"; exit 1; }
+
+FF_TAGS=""
+tags_to_ffopts() {
+    FF_TAGS=""
+    IFS="${_FS}"
+    for tag in $TAGS; do
+        FF_TAGS="${FF_TAGS}-metadata ${tag}${_FS}"
+    done
+    unset IFS
+}
+tags_to_ffopts
+
 cleanup() { [ -z "${_TMPDIR}" ] || rm -rf "${_TMPDIR}"; }
 trap cleanup TERM INT HUP EXIT
 
 _TMPDIR="$(mktemp -d)"
 
-# Turn tags into ffmpeg arguments
-TAGS=""
-while true; do
-    [ "${#}" -ge 1 ] || exit 1
-    [ -n "${1}" ]    || exit 1
+tag_files() {
+    IFS="${_FS}"
+    for FILE in ${FILES}; do
+        local FILE_EXT="${FILE##*.}"
+        local TMP_FILE="${_TMPDIR}/out.${FILE_EXT}"
 
-    [ "${1}" != "${DELIM}" ] || { shift 1; break; }
+        IFS="${_FS}"
+        local SUCCESS="1"
+        exec_sim ffmpeg \
+            -hide_banner \
+            -i "${FILE}" \
+            -map_metadata 0:s:0 \
+            ${FF_TAGS} \
+            -c copy \
+            "${TMP_FILE}" || SUCCESS="0"
 
-    TAGS="${TAGS}-metadata${SEP}${1}${SEP}"
-    shift 1
-done
-TAGS="${TAGS%${SEP}}"
-
-# Tag files
-while [ "${#}" -ge 1 ] && [ -n "${1}" ]; do
-    FILE="${1}"
-    shift 1
-
-    F_EXT="${FILE##*.}"
-    TMP_FILE="${_TMPDIR}/out.${F_EXT}"
-
-    ffmpeg \
-        -hide_banner \
-        -i "${FILE}" \
-        -map_metadata 0:s:0 \
-        ${TAGS} \
-        -c copy \
-        "${TMP_FILE}"
-
-    if [ "${?}" = "0" ]; then
-        mv "${TMP_FILE}" "${FILE}"
-    else
-        rm -f "${TMP_FILE}"
-    fi
-done
+        if [ "${SIMULATE}" != "1" ]; then
+            if [ "${SUCCESS}" = "1" ]; then
+                mv "${TMP_FILE}" "${FILE}"
+            else
+                rm -f "${TMP_FILE}"
+            fi
+        fi
+    done
+    unset IFS
+}
+tag_files
