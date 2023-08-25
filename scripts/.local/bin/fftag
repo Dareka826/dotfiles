@@ -38,30 +38,30 @@ get_tags_keys() { # {{{
                     sort | uniq
 } # }}}
 
-get_tag_value() {
+# args:   TAGS_OBJ KEY_NAME
+# return: KEY_VALUE
+get_tag_value() { # {{{
     local TAGS="${1}"
     local  KEY="${2}"
 
     # Get format key or stream key if null
     printf "%s\n" "${TAGS}" | \
         jq "[ (.format[\"${KEY}\"]), (.stream[\"${KEY}\"]) ] | (if (.[0] != null) then .[0] else .[1] end)"
-}
+} # }}}
 
 FILE=""
-do_file() {
+do_file() { # {{{
     FILE="${1}"
     [ -e "${FILE}" ] || { printf "[E]: File \"%s\" doesn't exist!\n" "${FILE}" >&2; exit 1; }
-}
+} # }}}
 
-do_tags_keys() {
+do_tags_keys() { # {{{
     [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
     get_tags_keys "$(get_file_tags "${FILE}")"
     exit 0
-}
+} # }}}
 
-do_tags() {
-    # Print tags with values
-
+do_tags() { # {{{
     [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
     local TAGS="$(get_file_tags "${FILE}")"
 
@@ -75,11 +75,9 @@ do_tags() {
 
     unset IFS
     exit 0
-}
+} # }}}
 
-do_tags_esc() {
-    # Print tags with values
-
+do_tags_esc() { # {{{
     [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
     local TAGS="$(get_file_tags "${FILE}")"
 
@@ -93,9 +91,9 @@ do_tags_esc() {
 
     unset IFS
     exit 0
-}
+} # }}}
 
-do_tag() {
+do_tag() { # {{{
     [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
     local TAGS="$(get_file_tags "${FILE}")"
 
@@ -112,9 +110,9 @@ do_tag() {
 
     unset IFS
     exit 1
-}
+} # }}}
 
-do_tag_esc() {
+do_tag_esc() { # {{{
     [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
     local TAGS="$(get_file_tags "${FILE}")"
 
@@ -131,7 +129,7 @@ do_tag_esc() {
 
     unset IFS
     exit 1
-}
+} # }}}
 
 xparse_add_option "file"      1 do_file
 
@@ -145,5 +143,4 @@ xparse_add_option "tag_esc" 1 do_tag_esc
 xparse_execute_args "$@"
 
 [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
-get_file_tags "${FILE}"
 do_tags
