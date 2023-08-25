@@ -74,11 +74,10 @@ do_print() { # {{{
 
 SIMULATE="0"
 # args:
-do_simulate() {
-    SIMULATE="1"
-}
+do_simulate() { SIMULATE="1"; }
 
-exec_sim() {
+# Print command if SIMULATE == 1, else execute it
+exec_sim() { # {{{
     if [ "${SIMULATE}" = "1" ]; then
         printf "[I]: Exec:" >&2
         printf " %s" "$@" >&2
@@ -86,7 +85,7 @@ exec_sim() {
     else
         "$@"
     fi
-}
+} # }}}
 
 xparse_execute_args "$@"
 
