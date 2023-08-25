@@ -32,15 +32,10 @@ get_file_tags() { # {{{
 get_tags_keys() { # {{{
     local TAGS="${1}"
 
-    local FORMAT_TAGS
-    local STREAM_TAGS
-
-    FORMAT_TAGS="$(printf "%s\n" "${TAGS}" | \
-        jq -re '( if (.format != null) then (.format | keys)[] else null end )')" || FORMAT_TAGS=""
-    STREAM_TAGS="$(printf "%s\n" "${TAGS}" | \
-        jq -re '( if (.stream != null) then (.stream | keys)[] else null end )')" || STREAM_TAGS=""
-
-    printf "%s%s\n" "${FORMAT_TAGS}" "${STREAM_TAGS}" | sort | uniq
+    printf "%s" "${TAGS}" | \
+        jq -r '(if .format == null then empty else (.format | keys)[] end),
+               (if .stream == null then empty else (.stream | keys)[] end)' | 
+                    sort | uniq
 } # }}}
 
 get_tag_value() {
