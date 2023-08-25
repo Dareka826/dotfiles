@@ -80,9 +80,9 @@ do_simulate() {
 
 exec_sim() {
     if [ "${SIMULATE}" = "1" ]; then
-        printf "[I]: Exec:"
-        printf " %s" "$@"
-        printf "\n"
+        printf "[I]: Exec:" >&2
+        printf " %s" "$@" >&2
+        printf "\n" >&2
     else
         "$@"
     fi
@@ -91,8 +91,8 @@ exec_sim() {
 xparse_execute_args "$@"
 
 # Tag the files
-[ -n "${FILES}" ] || { printf "[E]: No files provided!\n"; exit 1; }
-[ -n "${TAGS}"  ] || { printf "[E]: No tags provided!\n"; exit 1; }
+[ -n "${FILES}" ] || { printf "[E]: No files provided!\n" >&2; exit 1; }
+[ -n "${TAGS}"  ] || { printf "[E]: No tags provided!\n" >&2; exit 1; }
 
 FF_TAGS=""
 tags_to_ffopts() {
