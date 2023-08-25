@@ -1,83 +1,154 @@
 #!/bin/sh
 set -eu
 
-get_file_tags() {
+SCRIPTS_PATH="$(realpath "$0")"
+SCRIPTS_PATH="${SCRIPTS_PATH%/*}/../.."
+SCRIPTS_PATH="$(realpath "${SCRIPTS_PATH}")"
+. "${SCRIPTS_PATH}/xparse/xparse.sh"
+
+_FS="$(printf "\034")"
+
+# args:   FILE
+# return: TAGS_OBJ
+get_file_tags() { # {{{
     local FILE="${1}"
 
-    ffprobe \
+    local DATA
+    DATA="$(ffprobe \
         -hide_banner \
-        -print_format default=nw=1 \
+        -print_format json \
         -show_entries 'stream_tags:format_tags' \
-        "${FILE}" 2>/dev/null | \
-            sed 's/^TAG://' | sed '/=/! s/^/#/'
+        "${FILE}" 2>/dev/null)" || {
+            printf "[E]: ffprobe failed!\n" >&2
+            exit 1
+        }
+
+    printf "%s\n" "${DATA}" | \
+        jq '{ stream: (.streams[0].tags), format: (.format.tags) }'
+} # }}}
+
+# args:   TAGS_OBJ
+# return: KEYS
+get_tags_keys() { # {{{
+    local TAGS="${1}"
+
+    local FORMAT_TAGS
+    local STREAM_TAGS
+
+    FORMAT_TAGS="$(printf "%s\n" "${TAGS}" | \
+        jq -re '( if (.format != null) then (.format | keys)[] else null end )')" || FORMAT_TAGS=""
+    STREAM_TAGS="$(printf "%s\n" "${TAGS}" | \
+        jq -re '( if (.stream != null) then (.stream | keys)[] else null end )')" || STREAM_TAGS=""
+
+    printf "%s%s\n" "${FORMAT_TAGS}" "${STREAM_TAGS}" | sort | uniq
+} # }}}
+
+get_tag_value() {
+    local TAGS="${1}"
+    local  KEY="${2}"
+
+    # Get format key or stream key if null
+    printf "%s\n" "${TAGS}" | \
+        jq "[ (.format[\"${KEY}\"]), (.stream[\"${KEY}\"]) ] | (if (.[0] != null) then .[0] else .[1] end)"
 }
 
-get_file_tags "$@"
-exit 0
-
-# ASCII record separator
-SEP="$(printf "\036")"
-IFS="${SEP}"
-
-# List all tag names
-get_tag_keys() {
-    local DATA="${1}"
-    printf "%s\n" "${DATA}" | jq -r 'keys[]'
-}
-
-# Print tag value
-print_tag() {
-    local DATA="${1}"
-    local  TAG="${2}"
-
-    local VALUE
-    VALUE="$(printf "%s\n" "${DATA}" | jq -e -r ".[\"${TAG}\"]")"
-    [ "${?}" = "0" ] && printf "%s\n" "${VALUE}"
-}
-
-# Print tag with same name, but case-insensitive
-find_tag() {
-    local DATA="${1}"
-    local  TAG="${2}"
-
-    local NEW_TAG
-    NEW_TAG="$(get_tag_keys "${DATA}" | grep -Fxi "${TAG}")"
-    [ "${?}" = "0" ] && print_tag "${DATA}" "${NEW_TAG}"
-}
-
-# Check if enough arguments
-[ "${#}" -ge 1 ] || exit 1
-
-# Determine mode of operation
-if [ "${#}" = "1" ]; then
-    TAG=""
+FILE=""
+do_file() {
     FILE="${1}"
-else
-    TAG="${1}"
-    FILE="${2}"
-fi
+    [ -e "${FILE}" ] || { printf "[E]: File \"%s\" doesn't exist!\n" "${FILE}" >&2; exit 1; }
+}
 
-# Check for file existence
-[ -e "${FILE}" ] || exit 1
+do_tags_keys() {
+    [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+    get_tags_keys "$(get_file_tags "${FILE}")"
+    exit 0
+}
 
-# Get tag data from stream 0
-DATA="$(ffprobe \
-    -hide_banner \
-    -print_format json \
-    -show_streams \
-    "${FILE}" \
-    2>/dev/null | jq '.streams[0].tags')"
+do_tags() {
+    # Print tags with values
 
-if [ "${TAG}" != "" ]; then
-    # Get tag value
-    print_tag "${DATA}" "${TAG}" || \
-        find_tag "${DATA}" "${TAG}"
-else
-    # Print all file tags
-    TAG_KEYS="$(get_tag_keys "${DATA}" | tr '\n' '\036')"
+    [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+    local TAGS="$(get_file_tags "${FILE}")"
 
-    for TAG in ${TAG_KEYS}; do
-        printf "%s:" "${TAG}"
-        printf "\t%s\n" $(print_tag "${DATA}" "${TAG}" | tr '\n' '\036')
+    IFS="$(printf "\nx")"
+    IFS="${IFS%x}"
+
+    local TAG_NAME
+    for TAG_NAME in $(get_tags_keys "${TAGS}"); do
+        printf "%s=%s\n" "${TAG_NAME}" "$(get_tag_value "${TAGS}" "${TAG_NAME}" | jq -r)"
     done
-fi
+
+    unset IFS
+    exit 0
+}
+
+do_tags_esc() {
+    # Print tags with values
+
+    [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+    local TAGS="$(get_file_tags "${FILE}")"
+
+    IFS="$(printf "\nx")"
+    IFS="${IFS%x}"
+
+    local TAG_NAME
+    for TAG_NAME in $(get_tags_keys "${TAGS}"); do
+        printf "%s=%s\n" "${TAG_NAME}" "$(get_tag_value "${TAGS}" "${TAG_NAME}")"
+    done
+
+    unset IFS
+    exit 0
+}
+
+do_tag() {
+    [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+    local TAGS="$(get_file_tags "${FILE}")"
+
+    IFS="$(printf "\nx")"
+    IFS="${IFS%x}"
+
+    local TAG_NAME
+    for TAG_NAME in $(get_tags_keys "${TAGS}"); do
+        { printf "%s" "${TAG_NAME}" | grep -Fx -i "${1}" >/dev/null; } && {
+            get_tag_value "${TAGS}" "${TAG_NAME}" | jq -r
+            exit 0
+        }
+    done
+
+    unset IFS
+    exit 1
+}
+
+do_tag_esc() {
+    [ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+    local TAGS="$(get_file_tags "${FILE}")"
+
+    IFS="$(printf "\nx")"
+    IFS="${IFS%x}"
+
+    local TAG_NAME
+    for TAG_NAME in $(get_tags_keys "${TAGS}"); do
+        { printf "%s" "${TAG_NAME}" | grep -Fx -i "${1}" >/dev/null; } && {
+            get_tag_value "${TAGS}" "${TAG_NAME}"
+            exit 0
+        }
+    done
+
+    unset IFS
+    exit 1
+}
+
+xparse_add_option "file"      1 do_file
+
+xparse_add_option "tags_keys" 0 do_tags_keys
+xparse_add_option "tags"      0 do_tags
+xparse_add_option "tags_esc"  0 do_tags_esc
+
+xparse_add_option "tag"     1 do_tag
+xparse_add_option "tag_esc" 1 do_tag_esc
+
+xparse_execute_args "$@"
+
+[ -n "${FILE}" ] || { printf "[E]: No file provided!\n" >&2; exit 1; }
+get_file_tags "${FILE}"
+do_tags
