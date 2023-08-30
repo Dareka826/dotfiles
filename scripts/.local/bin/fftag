@@ -7,46 +7,68 @@ SCRIPTS_PATH="$(realpath "${SCRIPTS_PATH}")"
 . "${SCRIPTS_PATH}/xparse/xparse.sh"
 
 _FS="$(printf "\034")"
+CSV_SEP="|"
 
-# args:   FILE
-# return: TAGS_OBJ
+# args: FILE
+# output: TAGS
 get_file_tags() { # {{{
     local FILE="${1}"
 
-    local DATA
-    DATA="$(ffprobe \
-        -hide_banner \
-        -print_format json \
-        -show_entries 'stream_tags:format_tags' \
-        "${FILE}" 2>/dev/null)" || {
-            printf "[E]: ffprobe failed!\n" >&2
-            exit 1
-        }
-
-    printf "%s\n" "${DATA}" | \
-        jq '{ stream: (.streams[0].tags), format: (.format.tags) }'
+    ffprobe -hide_banner -of 'compact=s='"${CSV_SEP}"':nk=0:e=c:p=0' "$1" -show_streams -show_format 2>/dev/null \
+        | sed 's/\([^\\]\)'"${CSV_SEP}"'/\1\n/g' \
+        | sed -e 's/\\\(.\)/\x00\1/g' \
+              -e 's/\x00'"${CSV_SEP}/${CSV_SEP}/g" \
+              -e 's/\x00/\\/g' \
+              -e '/^tag:/!d' \
+              -e 's/^tag://'
 } # }}}
 
-# args:   TAGS_OBJ
-# return: KEYS
+# args: STR
+# output: UNESCAPED_STR
+unescape_csv() { # {{{
+    local DATA="${1}"
+
+    # c   Perform C-like escaping. Strings containing a newline (\n),
+    #     carriage return (\r), a tab (\t), a form feed (\f), the
+    #     escaping character (\) or the item separator character SEP are
+    #     escaped using C-like fashioned escaping, so that a newline is
+    #     converted to the sequence \n, a carriage return to \r, \ to \\
+    #     and the separator SEP is converted to \SEP.
+    printf "%s\n" "${DATA}" | \
+        sed -e 's/\\\(.\)/\x00\1/g' \
+            -e 's/\x00n/\n/g' \
+            -e 's/\x00r/\r/g' \
+            -e 's/\x00t/\t/g' \
+            -e 's/\x00f/\f/g' \
+            -e 's/\x00\\/\\/g'
+} # }}}
+
+# args: TAGS
+# output: KEYS_LIST
 get_tags_keys() { # {{{
     local TAGS="${1}"
 
-    printf "%s" "${TAGS}" | \
-        jq -r '(if .format == null then empty else (.format | keys)[] end),
-               (if .stream == null then empty else (.stream | keys)[] end)' | 
-                    sort | uniq
+    printf "%s\n" "${TAGS}" | \
+        sed 's/=.*//' | sort
 } # }}}
 
-# args:   TAGS_OBJ KEY_NAME
-# return: KEY_VALUE
+# args: TAGS KEY
+# output: KEY_VALUE
 get_tag_value() { # {{{
     local TAGS="${1}"
-    local  KEY="${2}"
+    local KEY="${2}"
 
-    # Get format key or stream key if null
+    # Escape KEY (BRE Special Characters)
+    KEY="$(printf "%s" "${KEY}" | \
+        sed -e 's/\\/\\\\/g' \
+            -e 's/\./\\./g' \
+            -e 's/\[/\\[/g' \
+            -e 's/\*/\\*/g' \
+            -e 's/\^/\\^/g' \
+            -e 's/\$/\\$/g')"
+
     printf "%s\n" "${TAGS}" | \
-        jq "[ (.format[\"${KEY}\"]), (.stream[\"${KEY}\"]) ] | (if (.[0] != null) then .[0] else .[1] end)"
+        grep -E "^${KEY}=" | sed "s/^[^=]\+=//"
 } # }}}
 
 FILE=""
@@ -70,7 +92,9 @@ do_tags() { # {{{
 
     local TAG_NAME
     for TAG_NAME in $(get_tags_keys "${TAGS}"); do
-        printf "%s=%s\n" "${TAG_NAME}" "$(get_tag_value "${TAGS}" "${TAG_NAME}" | jq -r)"
+        printf "%s=%s\n" \
+            "${TAG_NAME}" \
+            "$(unescape_csv "$(get_tag_value "${TAGS}" "${TAG_NAME}")")"
     done
 
     unset IFS
@@ -86,7 +110,9 @@ do_tags_esc() { # {{{
 
     local TAG_NAME
     for TAG_NAME in $(get_tags_keys "${TAGS}"); do
-        printf "%s=%s\n" "${TAG_NAME}" "$(get_tag_value "${TAGS}" "${TAG_NAME}")"
+        printf "%s=%s\n" \
+            "${TAG_NAME}" \
+            "$(get_tag_value "${TAGS}" "${TAG_NAME}")"
     done
 
     unset IFS
@@ -103,7 +129,7 @@ do_tag() { # {{{
     local TAG_NAME
     for TAG_NAME in $(get_tags_keys "${TAGS}"); do
         { printf "%s" "${TAG_NAME}" | grep -Fx -i "${1}" >/dev/null; } && {
-            get_tag_value "${TAGS}" "${TAG_NAME}" | jq -r
+            unescape_csv "$(get_tag_value "${TAGS}" "${TAG_NAME}")"
             exit 0
         }
     done
