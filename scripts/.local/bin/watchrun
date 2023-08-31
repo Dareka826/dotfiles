@@ -1,47 +1,106 @@
 #!/bin/sh
 set -eu
 
-usage() {
-    printf "%s [watch_seconds] dir command...\n" "${0}"
-    exit 0
+# watchrun -time 10 -path ./abc -command printf "%s\n" "1" --
+# watchrun -time 10 -paths ./abc ./def -- -command true --
+
+SCRIPTS_PATH="$(realpath "$0")"
+SCRIPTS_PATH="${SCRIPTS_PATH%/*}/../.."
+SCRIPTS_PATH="$(realpath "${SCRIPTS_PATH}")"
+. "${SCRIPTS_PATH}/xparse/xparse.sh"
+
+_FS="$(printf "\034")"
+NL="$(printf "\nx")"
+NL="${NL%x}"
+
+COMMAND=""
+PATHS=""
+TIME="5"
+
+do_path() { # {{{
+    local PATH="${1}"
+    PATHS="${PATHS}${PATH}${_FS}"
+} # }}}
+
+do_paths() { # {{{
+    for path in "$@"; do
+        PATHS="${PATHS}${path}${_FS}"
+    done
+} # }}}
+
+do_time() { # {{{
+    local NEW_TIME="${1}"
+
+    if [ "$(printf "%s" "${NEW_TIME}" | tr -cd '0-9')" != "${NEW_TIME}" ]; then
+        printf "[E]: Time is not a whole positive number!\n" >&2
+        exit 1
+    fi
+
+    TIME="${NEW_TIME}"
+} # }}}
+
+do_command() { # {{{
+    for cmd_part in "$@"; do
+        COMMAND="${COMMAND}${cmd_part}${_FS}"
+    done
+} # }}}
+
+xparse_add_option "path"   1  do_path
+xparse_add_option "paths" '*' do_paths
+
+xparse_add_option "time"   1  do_time
+
+xparse_add_option "command" '*' do_command
+
+xparse_execute_args "$@"
+
+HASH_PROG="xxhsum"
+command -v "xxhsum" >/dev/null 2>&1 || HASH_PROG="md5sum"
+command -v "md5sum" >/dev/null 2>&1 || {
+    printf "[E]: Neither xxhsum nor md5sum found!\n" >&2
+    exit 1
 }
 
-praw()  { printf "%s" "${1}"; }
-isnum() { [ "$(praw "${1}" | tr -cd '0-9')" = "${1}" ]; }
-isdir() { [ -d "${1}" ]; }
-iscmd() { command -v "${1}" >/dev/null 2>&1; }
+# [FILE|DIR]...
+calc_hash() {
+    local ARGS=""
 
-qhash()   { iscmd xxhsum && xxhsum - || md5sum -; }
-hashdir() { tar cf - --sort=name -C "${1}" . | qhash; }
+    IFS="${_FS}"
+    for path in "$@"; do
+        [ -e "${path}" ] || { printf "no\n"; continue; }
 
-# At least 2 args
-[ -n "${1}" ] || usage
-[ -n "${2}" ] || usage
+        # Dir
+        if [ -d "${path}" ]; then
+            local FILES="$(find "${path}" -type f)"
+            ARGS="${ARGS}${FILES}${_FS}"
+            continue
+        fi
 
-WAIT_SEC="5"
-DIR=""
-CMD=""
+        # File
+        ARGS="${ARGS}${path}${_FS}"
+    done
 
-# Check if seconds supplied
-if isnum "${1}"; then
-    WAIT_SEC="${1}"
-    shift 1
-fi
+    printf "%s\n" ${ARGS} | sort | uniq | \
+        xargs -d'\n' bsdtar cf - | "${HASH_PROG}"
 
-DIR="${1}"
-isdir "${DIR}" || usage
-shift 1
+    unset IFS
+}
 
-CMD="$@"
-[ -n "${CMD}" ] || usage
+IFS="${_FS}"
+LAST_HASH="$(calc_hash ${PATHS})"
+unset IFS
 
-LAST_HASH="$(hashdir "${DIR}")"
 while true; do
-    sleep "${WAIT_SEC}"
-    CURR_HASH="$(hashdir "${DIR}")"
+    IFS="${_FS}"
+    HASH="$(calc_hash ${PATHS})"
+    unset IFS
 
-    if [ "${CURR_HASH}" != "${LAST_HASH}" ]; then
-        "${CMD}"
-        LAST_HASH="${CURR_HASH}"
+    if [ "${LAST_HASH}" != "${HASH}" ]; then
+        IFS="${_FS}"
+        ${COMMAND}
+        unset IFS
     fi
+
+    LAST_HASH="${HASH}"
+    sleep "${TIME}"
 done
