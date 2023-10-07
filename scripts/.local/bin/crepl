@@ -3,58 +3,50 @@
 
 -- iscmd(cmd: string) -> bool
 local function iscmd(cmd)
+    -- {{{
     local ret = os.execute("command -v \"" .. cmd .. "\" >/dev/null 2>&1")
     return (ret == 0)
-end
+end -- }}}
 
-CC = "cc"
-CFLAGS = "-Wall -Wextra -Wno-unused-parameter"
+-- reset() -> nil
+local function reset()
+    -- {{{
+    PROG = {
+        headers     = {
+            "#include <stdlib.h>",
+            "#include <stdio.h>",
+        },
+        definitions = {},
+        main        = {},
+    }
 
-if iscmd("clang") then
-    CC = "clang"
-elseif iscmd("gcc") then
-    CC = "gcc"
-elseif iscmd("cc") then
-    CC = "cc"
-else
-    print("[E]: No C compiler found!")
-    os.exit(1)
-end
+    TARGET = "main"
+end -- }}}
 
-local stdout = io.output()
-local stdin  = io.input()
-
-local prog = {
-    headers     = {
-        "#include <stdlib.h>",
-        "#include <stdio.h>",
-    },
-    definitions = {},
-    main        = {},
-}
-local target = "main"
-
-
--- generate(p: table) -> table
-local function generate(p)
+-- generate() -> table
+local function generate()
     -- {{{
     local ret = {}
 
-    for _, line in ipairs(p.headers)     do table.insert(ret, line) end
+    for _, line in ipairs(PROG.headers)     do table.insert(ret, line) end
     table.insert(ret, "")
-    for _, line in ipairs(p.definitions) do table.insert(ret, line) end
+    for _, line in ipairs(PROG.definitions) do table.insert(ret, line) end
     table.insert(ret, "")
 
     table.insert(ret, "int main(int argc, char *argv[]) {")
-    for _, line in ipairs(p.main) do table.insert(ret, line) end
+    for _, line in ipairs(PROG.main) do table.insert(ret, line) end
     table.insert(ret, "return 0;")
     table.insert(ret, "}")
 
     return ret
 end -- }}}
 
--- run(lines: table) -> nil
-local function run(lines)
+-- run() -> nil
+local function run()
+    -- {{{
+    assert(CC ~= nil)
+    local lines = generate()
+
     local name = os.tmpname()
     local f = io.open(name, "w")
     assert(f ~= nil)
@@ -75,10 +67,11 @@ local function run(lines)
     end
 
     os.remove(name)
-end
+end -- }}}
 
--- pprint(p: table) -> nil
-local function pprint(p)
+-- pprint() -> nil
+local function pprint()
+    -- {{{
     local prog_src_name = os.tmpname()
 
     -- Try format
@@ -86,7 +79,7 @@ local function pprint(p)
         local clang_fmt = io.popen("clang-format --style=\"file:${HOME}/clang-format.yaml\" >\"" .. prog_src_name .. "\"", "w")
         assert(clang_fmt ~= nil)
 
-        for _, l in ipairs(generate(p)) do
+        for _, l in ipairs(generate()) do
             clang_fmt:write(l .. "\n")
         end
 
@@ -95,7 +88,7 @@ local function pprint(p)
         local prog_src = io.open(prog_src_name, "w")
         assert(prog_src ~= nil)
 
-        for _, l in ipairs(generate(p)) do
+        for _, l in ipairs(generate()) do
             prog_src:write(l .. "\n")
         end
 
@@ -110,12 +103,32 @@ local function pprint(p)
     end
 
     os.remove(prog_src_name)
+end -- }}}
+
+
+CC = nil
+CFLAGS = "-Wall -Wextra -Wno-unused-parameter"
+
+if     iscmd("clang") then CC = "clang"
+elseif iscmd("gcc")   then CC = "gcc"
+elseif iscmd("cc")    then CC = "cc"
+else
+    print("[E]: No C compiler found!")
+    os.exit(1)
 end
+
+PROG   = nil
+TARGET = nil
+reset()
+
+local stdout = io.output()
+local stdin  = io.input()
 
 
 while true do
     local continue = true
 
+    -- Prompt
     stdout:write("> ")
     stdout:flush()
     local line = stdin:read()
@@ -124,32 +137,37 @@ while true do
         break
     end
 
-    -- Check for commands
+    -- Handle commands
     if line == ".print" or line == ".p" then
-        pprint(prog)
+        pprint()
         continue = false
 
     elseif line == ".run" or line == ".r" then
-        run(generate(prog))
+        run()
+        continue = false
+
+    elseif line == ".reset" or line == ".r" then
+        reset()
         continue = false
 
     elseif line == ".head" or line == ".headers" or line == ".h" then
-        target = "headers"
+        TARGET = "headers"
         continue = false
 
     elseif line == ".main" or line == ".m" then
-        target = "main"
+        TARGET = "main"
         continue = false
 
     elseif line == ".def" or line == ".definitions" or line == ".d" then
-        target = "definitions"
+        TARGET = "definitions"
         continue = false
 
     elseif line == ".quit" or line == ".q" then
         break
+
     end
 
     if continue == true then
-        table.insert(prog[target], line)
+        table.insert(PROG[TARGET], line)
     end
 end
