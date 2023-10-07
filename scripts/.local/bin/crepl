@@ -246,7 +246,11 @@ COMMANDS["h"] = COMMANDS["help"]
 
 DESCRIPTIONS["bprint"] = "Print buffers' contents"
 COMMANDS["bprint"] = print_bufs
+COMMANDS["bufprint"] = COMMANDS["bprint"]
 COMMANDS["bp"] = COMMANDS["bprint"]
+COMMANDS["printbuf"] = COMMANDS["bprint"]
+COMMANDS["printb"] = COMMANDS["bprint"]
+COMMANDS["pb"] = COMMANDS["bprint"]
 
 DESCRIPTIONS["selected"] = "Print selected buffer"
 COMMANDS["selected"] = function() print(TARGET) end
