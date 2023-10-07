@@ -163,8 +163,7 @@ while true do
         continue = false
 
     elseif line == ".quit" or line == ".q" then
-        break
-
+        os.exit(0)
     end
 
     if continue == true then
