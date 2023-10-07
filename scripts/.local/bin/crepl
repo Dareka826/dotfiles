@@ -1,8 +1,25 @@
-#!luajit
--- vim: sw=4 ts=4 et
+#!/usr/bin/luajit
+-- vim: ft=lua sw=4 ts=4 et
 
-CC = "gcc"
+-- iscmd(cmd: string) -> bool
+local function iscmd(cmd)
+    local ret = os.execute("command -v \"" .. cmd .. "\" >/dev/null 2>&1")
+    return (ret == 0)
+end
+
+CC = "cc"
 CFLAGS = "-Wall -Wextra -Wno-unused-parameter"
+
+if iscmd("clang") then
+    CC = "clang"
+elseif iscmd("gcc") then
+    CC = "gcc"
+elseif iscmd("cc") then
+    CC = "cc"
+else
+    print("[E]: No C compiler found!")
+    os.exit(1)
+end
 
 local stdout = io.output()
 local stdin  = io.input()
@@ -17,12 +34,6 @@ local prog = {
 }
 local target = "main"
 
-
--- iscmd(cmd: string) -> bool
-local function iscmd(cmd)
-    local ret = os.execute("command -v \"" .. cmd .. "\" >/dev/null 2>&1")
-    return (ret == 0)
-end
 
 -- generate(p: table) -> table
 local function generate(p)
