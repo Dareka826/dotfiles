@@ -209,6 +209,11 @@ DESCRIPTIONS["bprint"] = "Print buffers' contents"
 COMMANDS["bprint"] = print_bufs
 COMMANDS["bp"] = COMMANDS["bprint"]
 
+DESCRIPTIONS["selected"] = "Print selected buffer"
+COMMANDS["selected"] = function() print(TARGET) end
+COMMANDS["sel"] = COMMANDS["selected"]
+COMMANDS["s"] = COMMANDS["sel"]
+
 
 while true do
     -- Prompt
