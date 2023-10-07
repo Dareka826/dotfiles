@@ -2,7 +2,9 @@
 -- vim: ft=lua sw=4 ts=4 et
 
 local stdout = io.output()
+local stderr = io.open("/proc/self/fd/2", "w")
 local stdin  = io.input()
+assert(stderr ~= nil)
 
 PROG   = nil
 TARGET = nil
@@ -81,7 +83,7 @@ local function run()
     local ret = os.execute(CC .. " " .. CFLAGS .. " -xc " .. name .. " -o " .. os.getenv("HOME") .. "/.crepl")
 
     if ret ~= 0 then
-        print("[E]: Compilation error!")
+        stderr:write("[E]: Compilation error!\n")
     else
         os.execute(os.getenv("HOME") .. "/.crepl")
         os.remove(os.getenv("HOME") .. "/.crepl")
@@ -186,7 +188,7 @@ local function sed_edit()
     if status == "0" then
         PROG[TARGET] = new_buf
     else
-        print("[I]: Buffer not modified")
+        stderr:write("[I]: Buffer not modified\n")
     end
 end -- }}}
 
@@ -205,7 +207,7 @@ if     iscmd("clang") then CC = "clang"
 elseif iscmd("gcc")   then CC = "gcc"
 elseif iscmd("cc")    then CC = "cc"
 else
-    print("[E]: No C compiler found!")
+    stderr:write("[E]: No C compiler found!\n")
     os.exit(1)
 end
 
@@ -278,9 +280,12 @@ while true do
             COMMANDS[cmd]()
 
         else
-            print("[E]: Unknown command: " .. cmd)
+            stderr:write("[E]: Unknown command: " .. cmd .. "\n")
         end
     else
         table.insert(PROG[TARGET], line)
     end
+
+    stdout:flush()
+    stderr:flush()
 end
