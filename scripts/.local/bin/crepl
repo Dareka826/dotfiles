@@ -1,10 +1,9 @@
 #!/usr/bin/luajit
 -- vim: ft=lua sw=4 ts=4 et
 
-local stdout = io.output()
-local stderr = io.open("/proc/self/fd/2", "w")
-local stdin  = io.input()
-assert(stderr ~= nil)
+local stdout = io.stdout
+local stderr = io.stderr
+local stdin  = io.stdin
 
 PROG   = nil
 TARGET = nil
