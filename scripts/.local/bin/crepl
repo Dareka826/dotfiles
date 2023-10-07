@@ -1,0 +1,144 @@
+#!luajit
+-- vim: sw=4 ts=4 et
+
+CC = "gcc"
+CFLAGS = "-Wall -Wextra -Wno-unused-parameter"
+
+local stdout = io.output()
+local stdin  = io.input()
+
+local prog = {
+    headers     = {
+        "#include <stdlib.h>",
+        "#include <stdio.h>",
+    },
+    definitions = {},
+    main        = {},
+}
+local target = "main"
+
+
+-- iscmd(cmd: string) -> bool
+local function iscmd(cmd)
+    local ret = os.execute("command -v \"" .. cmd .. "\" >/dev/null 2>&1")
+    return (ret == 0)
+end
+
+-- generate(p: table) -> table
+local function generate(p)
+    -- {{{
+    local ret = {}
+
+    for _, line in ipairs(p.headers)     do table.insert(ret, line) end
+    table.insert(ret, "")
+    for _, line in ipairs(p.definitions) do table.insert(ret, line) end
+    table.insert(ret, "")
+
+    table.insert(ret, "int main(int argc, char *argv[]) {")
+    for _, line in ipairs(p.main) do table.insert(ret, line) end
+    table.insert(ret, "return 0;")
+    table.insert(ret, "}")
+
+    return ret
+end -- }}}
+
+-- run(lines: table) -> nil
+local function run(lines)
+    local name = os.tmpname()
+    local f = io.open(name, "w")
+    assert(f ~= nil)
+
+    for _, line in ipairs(lines) do
+        f:write(line .. "\n")
+    end
+    f:close()
+
+    -- Compile
+    local ret = os.execute(CC .. " " .. CFLAGS .. " -xc " .. name .. " -o " .. os.getenv("HOME") .. "/.crepl")
+
+    if ret ~= 0 then
+        print("[E]: Compilation error!")
+    else
+        os.execute(os.getenv("HOME") .. "/.crepl")
+        os.remove(os.getenv("HOME") .. "/.crepl")
+    end
+
+    os.remove(name)
+end
+
+-- pprint(p: table) -> nil
+local function pprint(p)
+    local prog_src_name = os.tmpname()
+
+    -- Try format
+    if iscmd("clang-format") then
+        local clang_fmt = io.popen("clang-format --style=\"file:${HOME}/clang-format.yaml\" >\"" .. prog_src_name .. "\"", "w")
+        assert(clang_fmt ~= nil)
+
+        for _, l in ipairs(generate(p)) do
+            clang_fmt:write(l .. "\n")
+        end
+
+        clang_fmt:close()
+    else
+        local prog_src = io.open(prog_src_name, "w")
+        assert(prog_src ~= nil)
+
+        for _, l in ipairs(generate(p)) do
+            prog_src:write(l .. "\n")
+        end
+
+        prog_src:close()
+    end
+
+    -- Try bat, else just cat
+    if iscmd("bat") then
+        os.execute("bat -lc --style=plain <\"" .. prog_src_name .. "\"")
+    else
+        os.execute("cat <\"" .. prog_src_name .. "\"")
+    end
+
+    os.remove(prog_src_name)
+end
+
+
+while true do
+    local continue = true
+
+    stdout:write("> ")
+    stdout:flush()
+    local line = stdin:read()
+    if line == nil then
+        print()
+        break
+    end
+
+    -- Check for commands
+    if line == ".print" or line == ".p" then
+        pprint(prog)
+        continue = false
+
+    elseif line == ".run" or line == ".r" then
+        run(generate(prog))
+        continue = false
+
+    elseif line == ".head" or line == ".headers" or line == ".h" then
+        target = "headers"
+        continue = false
+
+    elseif line == ".main" or line == ".m" then
+        target = "main"
+        continue = false
+
+    elseif line == ".def" or line == ".definitions" or line == ".d" then
+        target = "definitions"
+        continue = false
+
+    elseif line == ".quit" or line == ".q" then
+        break
+    end
+
+    if continue == true then
+        table.insert(prog[target], line)
+    end
+end
