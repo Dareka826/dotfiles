@@ -8,6 +8,18 @@ local function iscmd(cmd)
     return (ret == 0)
 end -- }}}
 
+-- has_key(t: table, k: string) -> bool
+local function has_key(t, key)
+    -- {{{
+    for k, v in pairs(t) do
+        if k == key then
+            return true
+        end
+    end
+
+    return false
+end -- }}}
+
 -- reset() -> nil
 local function reset()
     -- {{{
@@ -107,7 +119,7 @@ end -- }}}
 
 
 CC = nil
-CFLAGS = "-Wall -Wextra -Wno-unused-parameter"
+CFLAGS = "-Wall -Wextra -Wno-unused-parameter -std=c99"
 
 if     iscmd("clang") then CC = "clang"
 elseif iscmd("gcc")   then CC = "gcc"
@@ -117,17 +129,38 @@ else
     os.exit(1)
 end
 
+local stdout = io.output()
+local stdin  = io.input()
+
 PROG   = nil
 TARGET = nil
 reset()
 
-local stdout = io.output()
-local stdin  = io.input()
+COMMANDS = {}
+
+COMMANDS["quit"] = function() os.exit(0) end
+COMMANDS["q"] = COMMANDS["quit"]
+
+COMMANDS["headers"]     = function() TARGET = "headers" end
+COMMANDS["definitions"] = function() TARGET = "definitions" end
+COMMANDS["main"]        = function() TARGET = "main" end
+COMMANDS["head"] = COMMANDS["headers"]
+COMMANDS["def"]  = COMMANDS["definitions"]
+COMMANDS["h"] = COMMANDS["headers"]
+COMMANDS["d"] = COMMANDS["definitions"]
+COMMANDS["m"] = COMMANDS["main"]
+
+COMMANDS["reset"] = reset
+COMMANDS["c"] = COMMANDS["reset"] -- clear
+
+COMMANDS["run"] = run
+COMMANDS["r"] = COMMANDS["run"]
+
+COMMANDS["print"] = pprint
+COMMANDS["p"] = COMMANDS["print"]
 
 
 while true do
-    local continue = true
-
     -- Prompt
     stdout:write("> ")
     stdout:flush()
@@ -138,35 +171,19 @@ while true do
     end
 
     -- Handle commands
-    if line == ".print" or line == ".p" then
-        pprint()
-        continue = false
+    if string.sub(line, 1, 1) == "." then
+        local cmd = string.sub(line, 2)
 
-    elseif line == ".run" or line == ".r" then
-        run()
-        continue = false
+        if string.sub(line, 1, 2) == ".." then
+            table.insert(PROG[TARGET], string.sub(line, 2))
 
-    elseif line == ".reset" or line == ".r" then
-        reset()
-        continue = false
+        elseif has_key(COMMANDS, cmd) then
+            COMMANDS[cmd]()
 
-    elseif line == ".head" or line == ".headers" or line == ".h" then
-        TARGET = "headers"
-        continue = false
-
-    elseif line == ".main" or line == ".m" then
-        TARGET = "main"
-        continue = false
-
-    elseif line == ".def" or line == ".definitions" or line == ".d" then
-        TARGET = "definitions"
-        continue = false
-
-    elseif line == ".quit" or line == ".q" then
-        os.exit(0)
-    end
-
-    if continue == true then
+        else
+            print("[E]: Unknown command: " .. cmd)
+        end
+    else
         table.insert(PROG[TARGET], line)
     end
 end
