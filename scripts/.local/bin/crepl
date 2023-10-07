@@ -117,6 +117,31 @@ local function pprint()
     os.remove(prog_src_name)
 end -- }}}
 
+-- print_bufs() -> nil
+local function print_bufs()
+    -- {{{
+    local function print_buf(buf)
+        -- {{{
+        local cat_n = io.popen("cat -n", "w")
+        assert(cat_n ~= nil)
+
+        for _, l in ipairs(buf) do
+            cat_n:write(l .. "\n")
+        end
+
+        cat_n:close()
+    end -- }}}
+
+    print("// Headers")
+    print_buf(PROG.headers)
+
+    print("// Definitions")
+    print_buf(PROG.definitions)
+
+    print("// Main")
+    print_buf(PROG.main)
+end -- }}}
+
 -- help() -> nil
 local function help()
     -- {{{
@@ -179,6 +204,10 @@ COMMANDS["p"] = COMMANDS["print"]
 DESCRIPTIONS["help"] = "Print this help"
 COMMANDS["help"] = help
 COMMANDS["h"] = COMMANDS["help"]
+
+DESCRIPTIONS["bprint"] = "Print buffers' contents"
+COMMANDS["bprint"] = print_bufs
+COMMANDS["bp"] = COMMANDS["bprint"]
 
 
 while true do
