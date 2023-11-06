@@ -975,6 +975,12 @@ vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
   command = 'set ft=execline',
 })
 
+vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
+  group   = 'rinbrk_syntax',
+  pattern = {'*.janet'},
+  command = 'set ft=janet',
+})
+
 -- Neovide
 vim.o.guifont = 'Source Code Pro'
 vim.g.neovide_cursor_vfx_mode = 'pixiedust'
