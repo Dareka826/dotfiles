@@ -528,10 +528,8 @@ vim.keymap.set('n', '<leader>c', ':<BS>', { desc = '[C]lear cmdline', silent = t
 vim.keymap.set({'n','v'}, '<Space>', '<Nop>', { silent = true })
 
 -- Remaps for dealing with word wrap
-vim.keymap.set('n', 'k',  "v:count == 0 ? 'gk' : 'k'", { expr = true, noremap = true, silent = true })
-vim.keymap.set('n', 'j',  "v:count == 0 ? 'gj' : 'j'", { expr = true, noremap = true, silent = true })
-vim.keymap.set('n', 'gk', "v:count == 0 ? 'k' : 'gk'", { expr = true, noremap = true, silent = true })
-vim.keymap.set('n', 'gj', "v:count == 0 ? 'j' : 'gj'", { expr = true, noremap = true, silent = true })
+vim.keymap.set('n', '<c-k>', 'gk', { noremap = true })
+vim.keymap.set('n', '<c-j>', 'gj', { noremap = true })
 
 -- Configure Telescope
 do -- {{{
@@ -693,7 +691,7 @@ local on_attach = function(client, bufnr)
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
