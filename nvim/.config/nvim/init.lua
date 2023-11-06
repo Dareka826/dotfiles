@@ -981,4 +981,7 @@ vim.g.neovide_cursor_vfx_mode = 'pixiedust'
 vim.g.neovide_cursor_vfx_particle_density = 100.0
 vim.g.neovide_cursor_vfx_particle_lifetime = 1
 
+-- :W -> :w
+vim.cmd("cnoreabbrev W w")
+
 -- vim: ts=2 sts=2 sw=2 et
