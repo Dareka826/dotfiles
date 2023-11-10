@@ -2,8 +2,9 @@
 # restart using tcl \
 command -v tclsh 2>&1 >/dev/null && exec tclsh "${0}" "${@}" || exec jimsh "${0}" "${@}"
 
-try { exec pv </dev/null >/dev/null } \
-on error {} { puts "\[E]: No pv!"; exit 1 }
+if {[catch { exec pv </dev/null >/dev/null }] != 0} {
+    puts "\[E]: No pv!"; exit 1
+}
 
 
 proc basename {path} {
