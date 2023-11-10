@@ -1,0 +1,66 @@
+#!/bin/sh
+# restart using tcl \
+command -v tclsh 2>&1 >/dev/null && exec tclsh "${0}" "${@}" || exec jimsh "${0}" "${@}"
+
+try { exec pv </dev/null >/dev/null } \
+on error {} { puts "\[E]: No pv!"; exit 1 }
+
+
+proc basename {path} {
+    string range $path \
+        [expr {[string last / $path] + 1}] \
+        end
+}
+
+proc safepath {path} {
+    if {[string index $path 0] ne "/"} {
+        return ./$path
+    } else {
+        return $path
+    }
+}
+
+proc pvcopy {src dest} {
+    exec pv -pterab <$src >$dest 2>@stderr
+}
+
+
+set argc [llength $argv]
+
+if {$argc < 2} {
+    puts "Usage: pvc file file"
+    puts "       pvc file... dir"
+    exit 0
+
+} elseif {$argc == 2} {
+    set src  [safepath [lindex $argv 0]]
+    set dest [safepath [lindex $argv 1]]
+
+    if {[file isdirectory $dest] != 1} {
+        pvcopy $src $dest
+    } else {
+        pvcopy $src $dest/[basename $src]
+    }
+
+} else {
+    set dest [safepath [lindex $argv end]]
+    if {[file isdirectory $dest] != 1} {
+        puts "\[E]: $dest is not a directory!"
+        exit 1
+    }
+
+    set srcs [lreplace $argv end end]
+    set srcs_count [llength $srcs]
+    set idx 1
+
+    foreach src $srcs {
+        puts "\[I]: $idx/$srcs_count: $src"
+
+        set src [safepath $src]
+        pvcopy $src $dest/[basename $src]
+
+        incr idx
+    }
+}
+
+# vim: ft=tcl
