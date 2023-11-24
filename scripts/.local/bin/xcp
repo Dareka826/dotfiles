@@ -1,49 +1,68 @@
 #!/bin/sh
 set -eu
 
-ACTIVE_X_SERVERS="$(\
-    netstat --unix --listening | \
-    grep X11 | awk '{ print $9 }' | \
-    sed 's/.*\/X//' | sort -n | uniq)"
-
-ACTIVE_W_SERVERS="$(\
-    find "/run/user/$(id -u)" -iname "wayland-*" | \
-    sed -e '/\.lock$/d' -e 's/.*\/wayland-/wayland-/' | \
-    sort -n | uniq)"
-
 _NL="$(printf "\nx")"
 _NL="${_NL%x}"
 
-FROM_TYPE="$(printf "X11\nWayland\n" | dmenu -p "From:")"
+# $1 - Prompt
+# $2 - Data
+prompt() { eval "dmenu -p '${1}' <<'EOF'${_NL}${2}${_NL}EOF${_NL}" || exit 0; }
 
-if [ "${FROM_TYPE}" = "Wayland" ]; then
-    FROM_SEL="$(eval "dmenu -p \"Copy from:\" <<EOF${_NL}${ACTIVE_W_SERVERS}${_NL}EOF${_NL}")"
+if command -v xclip >/dev/null 2>&1; then
+    ACTIVE_X_SERVERS="$(\
+        netstat --unix --listening | \
+        grep -F 'X11-unix/X' | awk '{ print $9 }' | \
+        sed -e 's/.*\/X//' -e 's/^/X11: /' | sort -n | uniq)"
 else
-    FROM_SEL="$(eval "dmenu -p \"Copy from:\" <<EOF${_NL}${ACTIVE_X_SERVERS}${_NL}EOF${_NL}")"
+    ACTIVE_X_SERVERS=""
 fi
 
-TO_TYPE="$(printf "X11\nWayland\n" | dmenu -p "From:")"
-
-if [ "${TO_TYPE}" = "Wayland" ]; then
-    TO_SEL="$(eval "dmenu -p \"Copy to:\" <<EOF${_NL}${ACTIVE_W_SERVERS}${_NL}EOF${_NL}")"
+if command -v wl-copy >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
+    ACTIVE_W_SERVERS="$(\
+        netstat --unix --listening | \
+        grep -F '/wayland-' | awk '{ print $9 }' | \
+        sed -e '/\.lock$/d' -e 's/.*\/wayland-/Wayland: /' | \
+        sort -n | uniq)"
 else
-    TO_SEL="$(eval "dmenu -p \"Copy to:\" <<EOF${_NL}${ACTIVE_X_SERVERS}${_NL}EOF${_NL}")"
+    ACTIVE_W_SERVERS=""
 fi
 
-unset WAYLAND_DISPLAY DISPLAY
+ACTIVE_SERVERS="$(\
+    eval "sort -n <<'EOF'${_NL}${ACTIVE_X_SERVERS}${_NL}${ACTIVE_W_SERVERS}${_NL}EOF${_NL}" | \
+    sed '/^\s*$/d')"
+
+[ "${ACTIVE_SERVERS}" != "" ] || exit 0
+
+FROM_SEL="$(prompt "Copy from:" "${ACTIVE_SERVERS}")"
+
+ACTIVE_SERVERS="$(\
+    eval "grep -Fv '${FROM_SEL}' <<'EOF'${_NL}${ACTIVE_SERVERS}${_NL}EOF${_NL}")"
+
+TO_SEL="$(prompt "Copy to:" "${ACTIVE_SERVERS}")"
 
 [ "${FROM_SEL}" != "${TO_SEL}" ] || exit 0
+unset WAYLAND_DISPLAY DISPLAY
 
-if [ "${FROM_TYPE}" = "X11" ] && [ "${TO_TYPE}" = "X11" ]; then
-    DISPLAY=":${FROM_SEL}" xclip -o -selection clipboard | \
-        DISPLAY=":${TO_SEL}" xclip -i -selection clipboard
-elif [ "${FROM_TYPE}" = "Wayland" ] && [ "${TO_TYPE}" = "Wayland" ]; then
-    WAYLAND_DISPLAY="${FROM_SEL}" wl-paste -n | \
-        WAYLAND_DISPLAY="${TO_SEL}" wl-copy
-elif [ "${FROM_TYPE}" = "X11" ] && [ "${TO_TYPE}" = "Wayland" ]; then
-    DISPLAY=":${FROM_SEL}" xclip -o -selection clipboard | \
-        WAYLAND_DISPLAY="${TO_SEL}" wl-copy
-elif [ "${FROM_TYPE}" = "Wayland" ] && [ "${TO_TYPE}" = "X11" ]; then
-    WAYLAND_DISPLAY="${FROM_SEL}" wl-paste -n | \
-        DISPLAY=":${TO_SEL}" xclip -i -selection clipboard
-fi
+# $1 - Server name
+clipboard_get() {
+    if eval "grep -F 'X11: ' <<'EOF'${_NL}${1}${_NL}EOF${_NL}" >/dev/null 2>&1; then
+        DISPLAY="$(eval "sed 's/X11: /:/' <<'EOF'${_NL}${1}${_NL}EOF${_NL}")" \
+            xclip -o -selection clipboard
+    else
+        WAYLAND_DISPLAY="$(eval "sed 's/Wayland: /wayland-/' <<'EOF'${_NL}${1}${_NL}EOF${_NL}")" \
+            wl-paste -n
+    fi
+}
+
+# $1 - Server name
+clipboard_set() {
+    if eval "grep -F 'X11: ' <<'EOF'${_NL}${1}${_NL}EOF${_NL}" >/dev/null 2>&1; then
+        DISPLAY="$(eval "sed 's/X11: /:/' <<'EOF'${_NL}${1}${_NL}EOF${_NL}")" \
+            xclip -i -selection clipboard
+    else
+        WAYLAND_DISPLAY="$(eval "sed 's/Wayland: /wayland-/' <<'EOF'${_NL}${1}${_NL}EOF${_NL}")" \
+            wl-copy
+    fi
+}
+
+clipboard_get "${FROM_SEL}" | clipboard_set "${TO_SEL}"
