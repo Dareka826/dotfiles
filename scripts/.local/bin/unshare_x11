@@ -1,0 +1,89 @@
+#!/bin/sh
+
+[ "${#}" -ge 1 ] || exit 1
+_DISPLAY="${1}"
+_DISPLAY="${_DISPLAY#:}"
+
+netstat --unix --listening | grep X11 | \
+    awk '{ print $9 }' | sed 's/.*\/X//' | sort | uniq \
+    | grep "${_DISPLAY}" >/dev/null 2>&1 || exit 1
+
+_UID="$(id -u)"
+_GID="$(id -g)"
+
+TMPDIR="${TMPDIR:-/tmp}"
+_HOME="${HOME:-/home/$(id -un)}"
+
+# Generate resolv.conf for slirp4netns
+_RESOLV="$(mktemp "${TMPDIR}/x11_jail.XXXXXX")"
+chmod 0600 "${_RESOLV}"
+
+cat >"${_RESOLV}" <<'EOF'
+nameserver 10.0.2.3
+EOF
+
+# Generate passwd (change default shell to bash)
+_PASSWD="$(mktemp "${TMPDIR}/x11_jail.XXXXXX")"
+chmod 0600 "${_PASSWD}"
+
+cat >"${_PASSWD}" <<EOF
+root:x:0:0::/root:/bin/bash
+rin:x:${_UID}:${_GID}::/home/rin:/bin/bash
+EOF
+
+_FLAG="$(mktemp "${TMPDIR}/x11_jail.XXXXXX")"
+
+PROG="$(cat <<EOF
+cat >"${_FLAG}" <<EOFEOF
+\${\$}
+EOFEOF
+
+bwrap \
+    --ro-bind / / \
+    --dev /dev \
+    --proc /proc \
+    --tmpfs /tmp \
+    --bind "/tmp/.X11-unix/X${_DISPLAY}"  "/tmp/.X11-unix/X${_DISPLAY}" \
+    --tmpfs /run \
+    --bind "/run/user/${_UID}/pipewire-0" "/run/user/${_UID}/pipewire-0" \
+    --bind "/run/user/${_UID}/pulse"      "/run/user/${_UID}/pulse" \
+    --tmpfs /run \
+    --tmpfs /var/run \
+    --tmpfs /home/rin \
+    --ro-bind "${_HOME}/.bashrc"  "${_HOME}/.bashrc" \
+    --ro-bind "${_HOME}/.inputrc" "${_HOME}/.inputrc" \
+    --ro-bind "${_HOME}"          "${_HOME}/.home" \
+    --ro-bind "${_PASSWD}"        /etc/passwd \
+    --ro-bind "${_RESOLV}"        /etc/resolv.conf \
+        bash
+
+rm "${_FLAG}"
+EOF
+)"
+
+{
+    while [ "$(stat -c"%s" "${_FLAG}")" = "0" ]; do sleep 0.1; done
+    UNSHARE_PID="$(cat "${_FLAG}")"
+
+    SLIRP_LOG="$(mktemp "${TMPDIR}/x11_jail.slirp4netns_log.XXXXXX")"
+    slirp4netns \
+        --configure \
+        --mtu=65520 \
+        "${UNSHARE_PID}" \
+        tap0 >"${SLIRP_LOG}" 2>&1 &
+    SLIRP_PID="${!}"
+
+    while [ -e "${_FLAG}" ]; do sleep 10; done
+    kill "${SLIRP_PID}"
+
+    /bin/sh -c "{ sleep 600; rm '${SLIRP_LOG}'; } &" &
+} &
+
+unshare \
+    --user \
+    -c \
+    --net \
+    /bin/sh -c "${PROG}"
+
+rm "${_PASSWD}"
+rm "${_RESOLV}"
