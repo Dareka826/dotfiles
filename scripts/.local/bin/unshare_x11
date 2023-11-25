@@ -42,7 +42,7 @@ bwrap \
     --dev-bind /dev /dev \
     --tmpfs /tmp \
     --bind '/tmp/.X11-unix/X${DISPLAY#:}'  '/tmp/.X11-unix/X${DISPLAY#:}' \
-    --tmpfs /run \
+    --tmpfs /run/user \
     --bind '/run/user/${_UID}/pipewire-0' '/run/user/${_UID}/pipewire-0' \
     --bind '/run/user/${_UID}/pulse'      '/run/user/${_UID}/pulse' \
     --ro-bind '${_RESOLV}' /etc/resolv.conf \
