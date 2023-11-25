@@ -1,0 +1,51 @@
+#!/bin/sh
+set -eu
+
+[ "${#}" -ge 1 ] || { printf "[E]: No command!\n"; exit 1; }
+
+SWAYGE_CONF_FILE="${HOME}/.cache/swayge"
+
+SWAY_CONFIG="$(cat <<'EOF'
+exec printf "%s\n" "$${WAYLAND_DISPLAY}" "$${SWAYSOCK}" >"$${SWAYGE_TMP:-/dev/null}"
+
+font pango:monospace 0
+titlebar_border_thickness 0
+titlebar_padding 0
+
+default_border pixel 0
+default_floating_border normal 2
+
+exec swaymsg layout tabbed
+EOF
+)"
+
+cat >"${SWAYGE_CONF_FILE}" <<EOF
+${SWAY_CONFIG}
+EOF
+
+export TMPDIR="${TMPDIR:-/tmp}"
+export SWAYGE_TMP="$(mktemp "${TMPDIR}/swayge.XXXXXX")"
+
+( {
+    # Wait for data (max 10 seconds)
+    for i in $(seq 100); do
+        [ "$(stat -c'%s' "${SWAYGE_TMP}")" -gt 0 ] \
+            && break || :
+        sleep 0.1
+    done
+
+    [ "$(stat -c'%s' "${SWAYGE_TMP}")" -gt 0 ] || exit 0
+
+    unset I3SOCK XDG_SESSION_TYPE SWAYSOCK WAYLAND_DISPLAY DISPLAY
+    export WAYLAND_DISPLAY="$(cat "${SWAYGE_TMP}" | head -1)"
+    SWAY_PID="$(cat "${SWAYGE_TMP}" | head -2 | tail -1 | sed 's/^.*sway-ipc.[0-9]\+.\([0-9]\+\).sock$/\1/')"
+    rm "${SWAYGE_TMP}"
+
+    "${@}"
+
+    cat "/proc/${SWAY_PID}/comm" 2>/dev/null | \
+        grep "^sway" >/dev/null 2>&1 && \
+        kill "${SWAY_PID}" >/dev/null 2>&1 || :
+} & ) &
+
+exec sway -c "${SWAYGE_CONF_FILE}"
