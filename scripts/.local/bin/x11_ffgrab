@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+
+if [ "${1:-}" = "" ]; then
+    [ "${DISPLAY:-}" != "" ] || exit 1
+else
+    DISPLAY="${1}"
+fi
+export DISPLAY
+
+DISPLAY_SIZE="$(\
+    xwininfo -root -stats | \
+        grep -- '-geometry' | \
+        grep -Eo '[0-9]+x[0-9]+'
+)"
+
+ffmpeg \
+    -f x11grab \
+    -framerate 60 \
+    -s "${DISPLAY_SIZE}" \
+    -i "${DISPLAY}" \
+    -threads 0 \
+    -an \
+    -c:v libx264rgb \
+    -g 10 \
+    -crf 0 \
+    -preset ultrafast \
+    -tune zerolatency \
+    -f mpegts \
+    pipe:1 | \
+        socat - UNIX-LISTEN:"/tmp/x11grab_${DISPLAY#:}.socket",fork

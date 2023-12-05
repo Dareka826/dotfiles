@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+exec ffplay \
+    -fflags nobuffer \
+    -flags low_delay \
+    -probesize 32 \
+    -sync ext \
+    -vf setpts=0 \
+    unix:"/tmp/x11grab_${1#:}.socket"
