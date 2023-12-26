@@ -121,6 +121,7 @@ tag_files() {
             -hide_banner \
             -i "${FILE}" \
             -map_metadata:s:0 0 \
+            -map_metadata:g 0 \
             ${FF_TAGS} \
             -c copy \
             "${TMP_FILE}" || SUCCESS="0"
