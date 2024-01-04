@@ -1,0 +1,139 @@
+#!/bin/sh
+set -eu
+
+TMPDIR="${TMPDIR:-/tmp}"
+[ -d "${TMPDIR}" ] || exit 1
+
+# BadBlocks using dd and xxd
+BLOCK_FILE="$(mktemp "${TMPDIR}/block_XXX.bin")"
+
+hex_strip() { printf "%s" "${1}" | sed 's/^0x//'; }
+ishex() { [ "$(printf "%s" "${1}" | tr -d '0-9A-Fa-f')" = "" ]; }
+len() { printf "%s" "${1}" | wc -c; }
+isint() { [ "$(printf "%s" "${1}" | tr -d '0-9')" = "" ]; }
+
+make_pattern_block() {
+    if ! ishex "${1}"; then exit 1; fi
+
+    yes "${1}" | head -n 512 | tr -d '\n' | \
+        xxd -r -p -c0 >"${BLOCK_FILE}"
+}
+
+do_stuff() {
+    if ! [ "${#}" = "4" ]; then
+        printf "%s\n" \
+            "Usage:" \
+            "  $0  pattern  device  first_block  last_block"
+        exit 0
+    fi
+
+    PATTERN="$(hex_strip "${1}")"
+    DEVICE="${2}"
+    BLOCK_START="${3}"
+    BLOCK_END="${4}"
+
+    OK="1"
+
+    if ! ishex "${PATTERN}"; then printf "%s\n" "[E]: Pattern not a hex number! (\"${PATTERN}\")"; OK="0"; fi
+    if [ "$(len "${PATTERN}")" != 2 ]; then printf "%s\n" "[E]: Pattern not one byte long! (\"${PATTERN}\")"; OK="0"; fi
+
+    if ! [ -e "${DEVICE}" ]; then printf "%s\n" "[E]: No such file! (\"${DEVICE}\")"; OK="0"; fi
+
+    if ! isint "${BLOCK_START}"; then printf "%s\n" "[E]: first_block not an integer! (\"${BLOCK_START}\")"; OK="0"; fi
+    if ! isint "${BLOCK_END}";   then printf "%s\n" "[E]: last_block not an integer! (\"${BLOCK_END}\")"; OK="0"; fi
+
+    if [ "${BLOCK_START}" -gt "${BLOCK_END}" ]; then printf "%s\n" "[E]: first_block larger than last_block!"; OK="0"; fi
+
+    if [ "${OK}" != "1" ]; then return; fi
+
+    make_pattern_block "${PATTERN}"
+
+    # Write
+    printf "%s\n" "Writing..."
+
+    BLOCK_NUM="${BLOCK_START}"
+    KICKSTART="1"
+    while true; do
+        if [ "${KICKSTART}" != "1" ]; then
+            BLOCK_NUM="$((BLOCK_NUM + 1))"
+        else
+            KICKSTART="0"
+        fi
+
+        if ! [ "${BLOCK_NUM}" -le "${BLOCK_END}" ]; then
+            break
+        fi
+
+        printf "\r%s" "Writing blocks (${BLOCK_NUM}/${BLOCK_END})"
+
+        DD_OK="1"
+        dd  bs=512 \
+            conv=nocreat,notrunc \
+            if="${BLOCK_FILE}" \
+            of="${DEVICE}" \
+            oflag=direct \
+            count=1 \
+            oseek="${BLOCK_NUM}" 2>/dev/null || DD_OK="0"
+
+        if [ "${DD_OK}" != "1" ]; then
+            printf "\n%s\n" "[W]: dd error writing block ${BLOCK_NUM}"
+        fi
+    done
+    printf "\n"
+
+    # Read and check
+    READ_ERRORS="0"
+    CHECK_ERRORS="0"
+    printf "%s\n" "Checking..."
+
+    BLOCK_NUM="${BLOCK_START}"
+    KICKSTART="1"
+    while true; do
+        if [ "${KICKSTART}" != "1" ]; then
+            BLOCK_NUM="$((BLOCK_NUM + 1))"
+        else
+            KICKSTART="0"
+        fi
+
+        if ! [ "${BLOCK_NUM}" -le "${BLOCK_END}" ]; then
+            break
+        fi
+
+        printf "\r%s" "Checking blocks (${BLOCK_NUM}/${BLOCK_END})  Errors: (R:${READ_ERRORS} C:${CHECK_ERRORS})"
+
+        DD_OK="1"
+        BLOCK_DATA="$({ \
+            dd bs=512 \
+                if="${DEVICE}" \
+                iflag=direct \
+                count=1 \
+                iseek="${BLOCK_NUM}" 2>/dev/null || DD_OK="0"; } | \
+                    xxd -p -c0)"
+
+        if [ "${DD_OK}" != "1" ] || [ "${BLOCK_DATA}" = "" ]; then
+            printf "\n%s\n" "[W]: dd error reading block ${BLOCK_NUM}"
+            READ_ERRORS="$((READ_ERRORS + 1))"
+            continue
+        fi
+
+        if [ "${BLOCK_DATA}" != "$(xxd -p -c0 "${BLOCK_FILE}")" ]; then
+            printf "\n%s\n" "[W]: bad block ${BLOCK_NUM}"
+            CHECK_ERRORS="$((CHECK_ERRORS + 1))"
+            continue
+        fi
+    done
+    printf "\n"
+
+    if [ "${READ_ERRORS}" != "0" ] || [ "${CHECK_ERRORS}" != "0" ]; then
+        printf "%s\n" \
+            "[W]: Errors occured during verification!" \
+            "[W]: ${READ_ERRORS} read errors" \
+            "[W]: ${CHECK_ERRORS} check errors"
+    fi
+}
+
+SUCCESS="1"
+do_stuff "${@}" || SUCCESS="0"
+
+rm -f "${BLOCK_FILE}"
+[ "${SUCCESS}" = "1" ]
