@@ -19,6 +19,8 @@ make_pattern_block() {
         xxd -r -p -c0 >"${BLOCK_FILE}"
 }
 
+bcs() { printf "%s\n" "${@}" | bc; }
+
 do_stuff() {
     if ! [ "${#}" = "4" ]; then
         printf "%s\n" \
@@ -64,7 +66,7 @@ do_stuff() {
             break
         fi
 
-        printf "\r%s" "Writing blocks (${BLOCK_NUM}/${BLOCK_END})"
+        printf "\r%s" "Writing blocks ($(bcs "${BLOCK_NUM} - ${BLOCK_START}")/$(bcs "${BLOCK_END} - ${BLOCK_START}")  $(printf "%.4f%%\n" "$(bcs "scale=4" "(${BLOCK_NUM} - ${BLOCK_START}) * 100 / (${BLOCK_END} - ${BLOCK_START})")"))"
 
         DD_OK="1"
         dd  bs=512 \
@@ -99,7 +101,7 @@ do_stuff() {
             break
         fi
 
-        printf "\r%s" "Checking blocks (${BLOCK_NUM}/${BLOCK_END})  Errors: (R:${READ_ERRORS} C:${CHECK_ERRORS})"
+        printf "\r%s" "Checking blocks ($(bcs "${BLOCK_NUM} - ${BLOCK_START}")/$(bcs "${BLOCK_END} - ${BLOCK_START}")  $(printf "%.4f%%\n" "$(bcs "scale=4" "(${BLOCK_NUM} - ${BLOCK_START}) * 100 / (${BLOCK_END} - ${BLOCK_START})")"))  Errors: (R:${READ_ERRORS} C:${CHECK_ERRORS})"
 
         DD_OK="1"
         BLOCK_DATA="$({ \
