@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+_conv() {
+    printf "[I]: Conv (%s)\n" "${1}"
+
+    ffmpeg -i "${1}" -map 0 -c copy -c:a libopus -b:a 128k "${1}.opus128.mkv"
+    touch "${1}.opus128.done"
+
+    printf "[I]: Done (%s)\n\n" "${1}"
+}
+
+# Wrap conv to catch fails
+conv() {
+    _conv "${1}" || printf "[E]: Fail on %s\n" "${1}"
+}
+
+# Run conv on files
+for FILE in "${@}"; do
+    [ -e "${FILE}" ] || continue
+    conv "${FILE}"
+done
