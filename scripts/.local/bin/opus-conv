@@ -4,7 +4,7 @@ set -eu
 _conv() {
     printf "[I]: Conv (%s)\n" "${1}"
 
-    ffmpeg -i "${1}" -map 0 -c copy -c:a libopus -b:a 128k "${1}.opus128.mkv"
+    ffmpeg -i "${1}" -map 0 -map_metadata 0:g -c copy -c:a libopus -b:a 128k "${1}.opus128.mkv"
     touch "${1}.opus128.done"
 
     printf "[I]: Done (%s)\n\n" "${1}"
