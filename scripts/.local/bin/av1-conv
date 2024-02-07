@@ -1,0 +1,97 @@
+#!/bin/sh
+set -eu
+
+CRF="23"
+CPU_USED="4"
+THREADS="0"
+
+[ "${#}" -gt 0 ] || exit 1
+
+print_help() {
+    printf "%s\n" \
+        "-crf" \
+        "  23 - visually lossless" \
+        "" \
+        "-speed" \
+        "  2 - lowest recommended (best q)" \
+        "  3 - medium (keeps most good features on)" \
+        "  4 - fast (faster than 3 while not losing much)" \
+        "  5 - faster (more severe feature disabling)"
+}
+
+_conv() {
+    local SIZE="$(ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | wc -c)"
+
+    printf "[I]: Pass 1 [CRF %s  CPU-USED %s] (%s)\n" "${CRF}" "${CPU_USED}" "${1}"
+    ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
+        ffmpeg -loglevel fatal -i - \
+            -c:v libaom-av1 \
+            -crf "${CRF}" -b:v 0 \
+            -cpu-used "${CPU_USED}" \
+            -row-mt 1 -threads "${THREADS}" -tile-columns 1 \
+            -pass 1 -f null /dev/null
+
+    printf "[I]: Pass 2 [CRF %s  CPU-USED %s] (%s)\n" "${CRF}" "${CPU_USED}" "${1}"
+    ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
+        ffmpeg -loglevel fatal -i - -i "${1}" -map 0:v -map 1 -map -1:v -c copy \
+            -c:v libaom-av1 \
+            -crf "${CRF}" -b:v 0 \
+            -cpu-used "${CPU_USED}" \
+            -row-mt 1 -threads "${THREADS}" -tile-columns 1 \
+            -pass 2 "${1}.crf${CRF}.x${CPU_USED}.mkv"
+
+    rm -f ./ffmpeg2pass-0.log || :
+    touch "${1}.crf${CRF}.x${CPU_USED}.mkv.done"
+    printf "[I]: Done (%s)\n" "${1}"
+    printf "\n"
+}
+
+# Wrap conv to catch fails
+conv() {
+    _conv "${1}" || printf "[E]: Fail on %s\n" "${1}" >&2
+}
+
+# Read options
+while [ "${#}" -gt 0 ] && [ "$(printf "%s" "${1}" | cut -c 1)" = "-" ]; do
+    case "${1}" in
+        "-crf")
+            CRF="${2}"
+            shift 2
+            ;;
+        "-speed")
+            CPU_USED="${2}"
+            shift 2
+            ;;
+        "-help")
+            print_help
+            exit 0
+            ;;
+        *)
+            printf "[E]: Unknown option %s\n" "${1}" >&2
+            exit 1
+            ;;
+    esac
+done
+
+# Verify CRF is a number
+if [ "$(printf "%s" "${CRF}" | tr -cd '0-9')" != "${CRF}" ]; then
+    printf "[E]: CRF is not an integer: %s\n" "${CRF}" >&2
+    exit 1
+fi
+
+# Verify CPU_USED is a number and in range
+if [ "$(printf "%s" "${CPU_USED}" | tr -cd '0-9')" != "${CPU_USED}" ]; then
+    printf "[E]: SPEED is not an integer: %s\n" "${CPU_USED}" >&2
+    exit 1
+fi
+
+if [ "${CPU_USED}" -lt 2 ] || [ "${CPU_USED}" -gt 6 ]; then
+    printf "[E]: SPEED outside of allowed range [2-6]: %s\n" "${CPU_USED}" >&2
+    exit 1
+fi
+
+# Run conv on files
+for FILE in "${@}"; do
+    [ -e "${FILE}" ] || continue
+    conv "${FILE}"
+done
