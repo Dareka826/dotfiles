@@ -20,20 +20,21 @@ print_help() {
 }
 
 _conv() {
-    local SIZE="$(ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | wc -c)"
+    local SIZE="$(ffmpeg -loglevel fatal -i "${1}" -map 0 -c copy -f matroska - | wc -c)"
 
-    printf "[I]: Pass 1 [CRF %s  CPU-USED %s] (%s)\n" "${CRF}" "${CPU_USED}" "${1}"
-    ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
+    printf "[I]: Pass 1 [CRF %s CPU-USED %s] (%s)\n" "${CRF}" "${CPU_USED}" "${1}"
+    ffmpeg -loglevel fatal -i "${1}" -map 0 -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
         ffmpeg -loglevel fatal -i - \
+            -map 0:v \
             -c:v libaom-av1 \
             -crf "${CRF}" -b:v 0 \
             -cpu-used "${CPU_USED}" \
             -row-mt 1 -threads "${THREADS}" -tile-columns 1 \
-            -pass 1 -f null /dev/null
+            -pass 1 -an -f null /dev/null
 
     printf "[I]: Pass 2 [CRF %s  CPU-USED %s] (%s)\n" "${CRF}" "${CPU_USED}" "${1}"
-    ffmpeg -loglevel fatal -i "${1}" -map 0:v -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
-        ffmpeg -loglevel fatal -i - -i "${1}" -map 0:v -map 1 -map -1:v -c copy \
+    ffmpeg -loglevel fatal -i "${1}" -map 0 -c copy -f matroska - | pv -pterab -s "${SIZE}" | \
+        ffmpeg -loglevel fatal -i - -map 0 -c copy \
             -c:v libaom-av1 \
             -crf "${CRF}" -b:v 0 \
             -cpu-used "${CPU_USED}" \
