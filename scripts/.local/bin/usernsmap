@@ -1,0 +1,102 @@
+#!/bin/sh
+set -eu
+
+stringify_args() {
+    for ARG in "$@"; do
+        ARG="$(printf "%s" "${ARG}" | sed "s/'/'\\\\''/g")"
+        printf "'%s' " "${ARG}"
+    done
+}
+
+# Check for number of arguments
+if [ "${#}" -lt 2 ]; then
+    printf "%s\n" \
+        "Usage:" \
+        "  $0 [options]... cmd..." \
+        "" \
+        "  options:" \
+        "  -u inner outer range    add uid mapping" \
+        "  -g inner outer range    add gid mapping" \
+        "  --                      stop processing options" \
+        ""
+    exit 0
+fi
+
+# Parse arguments
+UID_MAP=""
+GID_MAP=""
+DO_MAP_UID="0"
+DO_MAP_GID="0"
+
+while [ "${#}" -gt 0 ]; do
+    case "${1}" in
+        "-u")
+            shift 1
+            # uid mapping
+            [ "${#}" -ge 3 ] || exit 1
+            UID_MAP="${UID_MAP} ${1} ${2} ${3} "
+            DO_MAP_UID="1"
+            shift 3
+            ;;
+
+        "-g")
+            shift 1
+            # gid mapping
+            [ "${#}" -ge 3 ] || exit 1
+            GID_MAP="${GID_MAP} ${1} ${2} ${3} "
+            DO_MAP_GID="1"
+            shift 3
+            ;;
+
+        "--")
+            shift 1
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Main stuff
+TMP_PID="$(mktemp "${TMPDIR:-/tmp}/tmp.XXXX")"
+TMP_OK="$(mktemp "${TMPDIR:-/tmp}/tmp.XXXX")"
+
+{
+    while [ "$(stat -c'%s' "${TMP_PID}")" = "0" ]; do
+        sleep 0.1
+    done
+
+    NS_PID="$(cat "${TMP_PID}")"
+    rm -f "${TMP_PID}"
+
+    MAP_OK="1"
+
+    if [ "${DO_MAP_UID}" = "1" ]; then
+        newuidmap "${NS_PID}" ${UID_MAP} || MAP_OK="0"
+    fi
+    if [ "${DO_MAP_GID}" = "1" ]; then
+        newgidmap "${NS_PID}" ${GID_MAP} || MAP_OK="0"
+    fi
+
+    printf "%s" "${MAP_OK}" >"${TMP_OK}"
+} &
+
+NS_PROG="$(cat <<EOF
+printf "\$\$" >"${TMP_PID}"
+
+while [ "\$(stat -c '%s' "${TMP_OK}")" = "0" ]; do
+    sleep 0.1
+done
+
+if [ "\$(cat "${TMP_OK}"; rm -f "${TMP_OK}" || :)" != "1" ]; then
+    # Fail
+    printf "[E]: Failed to setup userns mappings\n"
+    exit 1
+else
+    exec $(stringify_args "$@")
+fi
+EOF
+)"
+
+exec unshare --user /bin/sh -c "${NS_PROG}"
