@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+unset I3SOCK XDG_SESSION_TYPE SWAYSOCK
+
+if [ "$#" -ge 1 ]; then
+    DISPLAY="${1}"
+else
+    DISPLAY="$(dmenu -p "Display: " </dev/null)"
+    DISPLAY="${DISPLAY#:}"
+    DISPLAY=":${DISPLAY}"
+fi
+
+Xwayland -nolisten tcp -nolisten local -nolisten abstract -listen unix "${DISPLAY}" &
+unset WAYLAND_DISPLAY
+
+sleep 0.2
+
+openbox &
+mlterm &
