@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+if [ -z "${1:-}" ]; then
+    [ -n "${DISPLAY:-}" ] || exit 1
+else
+    DISPLAY="${1}"
+fi
+
+SHM_PATH="/tmp/x11_gstgrab_${DISPLAY#:}_shm"
+rm -f "${SHM_PATH}"
+
+gst-launch-1.0 -e -q \
+    ximagesrc display-name=:20 use-damage=0 ! \
+    'video/x-raw,framerate=60/1,format=BGRx' ! \
+    videoscale method=bilinear dither=none ! \
+    'video/x-raw,width=[1,1920],height=[1,1080],pixel-aspect-ratio=1/1' ! \
+    compositor sink_0::operator=source ! \
+    'video/x-raw,width=1920,height=1080' ! \
+    shmsink socket-path="${SHM_PATH}" sync=true wait-for-connection=false shm-size=497664000 # 1920 * 1080 * 4 * 60 = 497664000

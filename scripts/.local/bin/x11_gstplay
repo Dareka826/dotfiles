@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+[ -n "${1:-}" ] || exit 1
+SRC_DISPLAY="${1}"
+
+SHM_PATH="/tmp/x11_gstgrab_${SRC_DISPLAY#:}_shm"
+
+gst-launch-1.0 -e \
+    shmsrc socket-path="${SHM_PATH}" ! \
+    rawvideoparse width=1920 height=1080 format=bgrx framerate=60 ! \
+    videoconvert ! \
+    ximagesink
