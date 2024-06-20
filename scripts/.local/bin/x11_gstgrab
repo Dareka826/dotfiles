@@ -11,7 +11,7 @@ SHM_PATH="/tmp/x11_gstgrab_${DISPLAY#:}_shm"
 rm -f "${SHM_PATH}"
 
 gst-launch-1.0 -e -q \
-    ximagesrc display-name=:20 use-damage=0 ! \
+    ximagesrc "display-name=${DISPLAY}" use-damage=0 ! \
     'video/x-raw,framerate=60/1,format=BGRx' ! \
     videoscale method=bilinear dither=none ! \
     'video/x-raw,width=[1,1920],height=[1,1080],pixel-aspect-ratio=1/1' ! \
