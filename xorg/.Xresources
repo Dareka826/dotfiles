@@ -1,3 +1,4 @@
+! Colors {{{
 ! special
 *.foreground:   #FFFFFF
 *.background:   #111111
@@ -34,19 +35,50 @@
 ! white
 *.color7:       #888888
 *.color15:      #FFFFFF
+! }}}
 
 Xft.dpi: 96
-
-! nsxiv
-Nsxiv.window.background: #111111
-Nsxiv.window.foreground: #ffffff
-Nsxiv.bar.background: #222222
-Nsxiv.bar.foreground: #ffffff
+Xft.rgba: none
+Xft.hintstyle: full
 
 ! XTerm
-XTerm*decTerminalID: vt340
-XTerm*numColorRegisters: 256
-XTerm*utf8: 1
-XTerm*ScrollBar: false
-XTerm*visualBell: false
-xterm*faceName: Source Code Pro:style=Regular:size=11
+xterm*decTerminalID: vt340
+xterm*numColorRegisters: 256
+xterm*font: xft:DejaVu Sans Mono:style=Book:size=11
+xterm*utf8: true
+xterm*visualBell: false
+xterm*renderFont: true
+xterm*termName: xterm-256color
+xterm*metaSendsEscape: true
+xterm*backarrowKey: false
+xterm*ttyModes: erase ^?
+xterm*saveLines: 8192
+xterm*scrollBar: true
+xterm*rightScrollBar: true
+xterm*scrollBarBorder: 0
+xterm*scrollbar.width: 5
+xterm*fullscreen: never
+xterm*internalBorder: 10
+xterm*translations: #override \n\
+    Ctrl <Key> minus: smaller-vt-font() \n\
+    Ctrl <Key> plus:  larger-vt-font()  \n\
+    Ctrl <Key> 0:     set-vt-font(d) \n\
+    Shift Ctrl <KeyPress> v: insert-selection(CLIPBOARD) \n\
+    Shift Ctrl <KeyPress> c: copy-selection(CLIPBOARD)
+
+xterm*scrollKey: true
+xterm*scrollTtyOutput: true
+
+xterm*highlightSelection: true
+xterm*trimSelection: false
+
+xterm*scrollbar.foreground: #3366ff
+xterm*scrollbar.background:   #222222
+*bitmapFilePath: /home/rin/.local/share/bitmaps
+xterm*scrollbar*thumb: solid
+
+! nsxiv
+nsxiv.window.background: #111111
+nsxiv.window.foreground: #ffffff
+nsxiv.bar.background: #222222
+nsxiv.bar.foreground: #ffffff
