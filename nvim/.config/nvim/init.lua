@@ -774,9 +774,7 @@ do
 
   if not is_termux then
     ensure_installed = {
-      'clangd',
       'lua_ls',
-      'omnisharp_mono',
       'pylsp',
     }
   end
