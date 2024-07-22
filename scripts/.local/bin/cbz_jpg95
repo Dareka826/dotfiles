@@ -10,7 +10,7 @@ for FNAME in "$@"; do
     TMP_DIR="$(mktemp -d)" 
 
     # Extract cbz
-    unzip "${FNAME}" -d "${TMP_DIR}" >/dev/null
+    7z e "${FNAME}" -o"${TMP_DIR}" >/dev/null
 
     # Quality compress jpg and png
     png2jpg95 "${TMP_DIR}"/*.png || :
