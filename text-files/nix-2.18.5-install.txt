@@ -1,0 +1,58 @@
+1. build group
+    groupadd -g 30000 --system nixbld
+
+2. build users
+    for i in 1..32
+        useradd \
+            --home-dir /var/empty \
+            --comment "Nix build user $i" \
+            --gid 30000 \
+            --groups nixbld \
+            --no-user-group \
+            --system \
+            --shell /sbin/nologin \
+            --uid $(( 30000 + i )) \
+            --password "!" \
+            "nixbld$i"
+
+3. directories
+    install -dv -m 0755 \
+        /nix \
+        /nix/var \
+        /nix/var/log \
+        /nix/var/log/nix \
+        /nix/var/log/nix/drvs \
+        /nix/var/nix \
+        /nix/var/nix/{db,gcroots,profiles,temproots,userpool,daemon-socket} \
+        /nix/var/nix/{gcroots,profiles}/per-user
+    install -dv -g nixbld -m 1775 /nix/store
+    install -dv -m 0555 /etc/nix
+
+4. channel config
+    printf "%s\n" 'https://nixos.org/channels/nixos-unstable nixpkgs' > /root/.nix-channels
+    chmod 0664 /root/.nix-channels
+
+5. install from extracted nix
+    # from the extracted dir:
+    cp -RPp ./store/* /nix/store/
+    chmod -R ugo-w /nix/store
+    HOME=/root /nix/store/xiw8a4jbnw18svgdb04hyqzg5bsjspqf-nix-2.18.5/bin/nix-store --load-db < ./.reginfo
+
+6. setup shell profile
+    mkdir -p /etc/profile.d
+    cat >/etc/profile.d/nix.sh <<EOF
+if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+EOF
+
+7. setup default profile
+    HOME=/root /nix/store/xiw8a4jbnw18svgdb04hyqzg5bsjspqf-nix-2.18.5/bin/nix-env -i /nix/store/xiw8a4jbnw18svgdb04hyqzg5bsjspqf-nix-2.18.5
+    HOME=/root /nix/store/xiw8a4jbnw18svgdb04hyqzg5bsjspqf-nix-2.18.5/bin/nix-env -i /nix/store/inl43cr3rbf7s67h3ay5cb0dr0n4mack-nss-cacert-3.92
+    HOME=/root NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /nix/store/xiw8a4jbnw18svgdb04hyqzg5bsjspqf-nix-2.18.5/bin/nix-channel --update nixpkgs
+
+8. place nix config
+    cat >/etc/nix/nix.conf <<EOF
+build-users-group = nixbld
+EOF
+    chmod 0664 /etc/nix/nix.conf
