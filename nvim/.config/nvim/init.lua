@@ -980,6 +980,9 @@ vim.keymap.set({'n','t','i'}, [[<c-s>]], [[<c-\>t]], { remap = true, desc = 'Tog
 
 vim.keymap.set('t', [[<c-\>n]], [[<c-\><c-n>]], { desc = 'Escape Terminal' })
 
+-- Oil
+vim.keymap.set('n', '+', '<cmd>Oil<cr>', { desc = "Open parent directory" })
+
 -- Syntax for non-standard file extensions
 vim.api.nvim_create_augroup('rinbrk_syntax', { clear = true })
 
