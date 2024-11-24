@@ -817,13 +817,11 @@ do
   }
 
   if is_termux then
-    handlers_setup['clangd'] = function()
-      lspconfig['clangd'].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = { '/data/data/com.termux/files/usr/bin/clangd' },
-      })
-    end
+    lspconfig['clangd'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = { '/data/data/com.termux/files/usr/bin/clangd' },
+    })
 
     handlers_setup['lua_ls'] = function()
       lspconfig['lua_ls'].setup({
