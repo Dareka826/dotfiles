@@ -237,18 +237,23 @@ require('lazy').setup({
   { -- {{{
     'lukas-reineke/indent-blankline.nvim',
     opts = {
-      char = '│',
-      show_trailing_blankline_indent = false,
-      show_current_context = true,
-      show_first_indent_level = false,
-      use_treesitter = true,
+      enabled = true,
+      indent = {
+        char = '│',
+        smart_indent_cap = true,
+      },
+      whitespace = {
+        remove_blankline_trail = false,
+      },
+      scope = {
+        enabled = true,
+        char = '┊',
+        show_start = false,
+        show_end = false,
+      },
     },
     config = function(_, opts)
-      require('indent_blankline').setup(opts)
-
-      vim.cmd('highlight IndentBlanklineChar               gui=nocombine guifg=#3b4261')
-      vim.cmd('highlight IndentBlanklineSpaceChar          gui=nocombine guifg=#3b4261')
-      vim.cmd('highlight IndentBlanklineSpaceCharBlankline gui=nocombine guifg=#3b4261')
+      require('ibl').setup(opts)
     end
   }, -- }}}
 
