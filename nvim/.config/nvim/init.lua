@@ -430,6 +430,18 @@ require('lazy').setup({
     },
   }, -- }}}
 
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      default_file_explorer = false,
+      columns = {},
+      view_options = {
+        show_hidden = true,
+        natural_order = false,
+      },
+    },
+  },
+
 }, {
   concurrency = 2,
   pills = true,
