@@ -1015,4 +1015,6 @@ vim.g.neovide_cursor_vfx_particle_lifetime = 1
 -- :W -> :w
 vim.cmd("cnoreabbrev W w")
 
+vim.cmd('set fileencodings=utf-8,default')
+
 -- vim: ts=2 sts=2 sw=2 et
