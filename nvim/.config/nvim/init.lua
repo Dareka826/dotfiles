@@ -930,6 +930,7 @@ vim.keymap.set('n', '<leader>pv', vim.cmd.Explore, { desc = '[P]roject [V]iew' }
 -- Mouse
 vim.keymap.set('n', '<leader>me', function() vim.o.mouse = 'a' end, { desc = '[M]ouse [E]nable' })
 vim.keymap.set('n', '<leader>md', function() vim.o.mouse = ''  end, { desc = '[M]ouse [D]isable' })
+vim.o.mouse = ''
 
 -- Git in terminal
 do -- {{{
