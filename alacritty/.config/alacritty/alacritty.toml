@@ -1,0 +1,85 @@
+live_config_reload = true
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#444444"
+blue = "#006FFF"
+cyan = "#33EFCF"
+green = "#00FF66"
+magenta = "#7422FF"
+red = "#FF0066"
+white = "#FFFFFF"
+yellow = "#FF6600"
+
+[colors.normal]
+black = "#111111"
+blue = "#006FFF"
+cyan = "#33EFCF"
+green = "#00FF66"
+magenta = "#7422FF"
+red = "#FF0066"
+white = "#888888"
+yellow = "#FF6600"
+
+[colors.primary]
+background = "#111111"
+foreground = "#FFFFFF"
+
+[cursor]
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Block"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 12.0
+offset.x = -1
+
+[font.bold]
+style = "Regular"
+
+[font.normal]
+family = "Source Code Pro"
+style = "Regular"
+
+[[hints.enabled]]
+command = "xdg-open"
+post_processing = true
+regex = "(mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.mouse]
+enabled = false
+mods = "None"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+save_to_clipboard = true
+
+[shell]
+program = "/usr/bin/zsh"
+
+[window]
+decorations = "full"
+dynamic_padding = true
+dynamic_title = true
+opacity = 0.9
+startup_mode = "Windowed"
+
+[window.class]
+general = "Alacritty"
+
+[window.dimensions]
+columns = 80
+lines = 24
+
+[window.padding]
+x = 10
+y = 10
