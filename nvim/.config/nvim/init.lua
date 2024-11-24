@@ -1004,6 +1004,8 @@ vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
   command = 'set ft=janet',
 })
 
+vim.cmd([[ autocmd FileType man set signcolumn=no ]])
+
 -- Neovide
 vim.o.guifont = 'Source Code Pro'
 vim.g.neovide_cursor_vfx_mode = 'pixiedust'
