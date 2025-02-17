@@ -5,25 +5,39 @@ set $MOD Mod1
 set $TERM foot
 set $WOBSOCK ${XDG_RUNTIME_DIR}/wob.sock
 
-### Gtk theming {{{
-exec gsettings set org.gnome.desktop.interface gtk-theme    "Materia-dark-compact"
+## Gtk theming {{{
+exec gsettings set org.gnome.desktop.interface gtk-theme    "Mint-Y-Dark-Purple"
 exec gsettings set org.gnome.desktop.interface icon-theme   "Papirus-Dark"
-exec gsettings set org.gnome.desktop.interface cursor-theme "Suwako"
-exec gsettings set org.gnome.desktop.interface font-name    "Source Code Pro 10"
+exec gsettings set org.gnome.desktop.interface cursor-theme "catppuccin-mocha-mauve-cursors"
+exec gsettings set org.gnome.desktop.interface cursor-size  "32"
+exec gsettings set org.gnome.desktop.interface font-name    "DejaVu Sans 10"
 exec gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-### }}}
+
+exec gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+exec gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first true
+## }}}
 
 # Wallpaper
-output * bg ~/Wallpapers/83517721_p0.png fill
+#output * bg ~/Wallpapers/83517721_p0.png fill
+#output * bg ~/Wallpapers/71123408_p0_waifu2x_4x.png fill
+#exec swww init
+exec swaybg -i ~/Wallpapers/comf/gelbooru_5475406_ea32ffd55337ad9f9e2446b40c356d74.jpg -m fill
+
+# Xcursor
+seat * xcursor_theme "catppuccin-mocha-mauve-cursors" 32
 
 ### Start programs {{{
+bar swaybar_command waybar
+
 exec mako
 exec xrdb ~/.Xresources
-exec unclutter --timeout 1 -b
 exec kmonad ~/kmonad-laptop-kbd.kbd
-exec tail -f $WOBSOCK | wob
+exec "touch "$WOBSOCK"; tail -f "$WOBSOCK" | wob"
+exec blueman-applet
 
-bar swaybar_command waybar
+exec "pactl list short modules | grep -E \"$(printf \"\t\")module-null-sink$(printf \"\t\").*sink_name=Dummy\" || { pactl load-module module-null-sink sink_name=System_Dummy && pactl set-default-sink System_Dummy; }"
+exec "calfjackhost -t compressor:System\ Audio -t stereo:LR\ Mono\ Sum -c System_Compressor"
+exec "pgrep qpwgraph || qpwgraph -m -a ~/.qpwgraph/global_compressor.qpwgraph"
 ### }}}
 
 ### Keybinds {{{
@@ -34,6 +48,8 @@ bindsym $MOD+Return exec $TERM
 bindsym $MOD+Shift+q exec swaymsg exit
 # Start your launcher
 bindsym $MOD+d exec ~/.local/bin/dmenu_hisfreq
+# xcp
+bindsym $MOD+x exec ~/.local/bin/xcp
 
 # Lock
 bindsym $MOD+l exec ~/.local/bin/wlock.sh
@@ -61,6 +77,9 @@ bindsym $MOD+Shift+l move right
 # Move focus to parent/child container
 bindsym $MOD+a focus parent
 bindsym $MOD+i focus child
+
+# Center window
+bindsym $MOD+Ctrl+Shift+m move position center
 
 ## }}}
 
@@ -122,11 +141,13 @@ bindsym $MOD+Tab workspace back_and_forth
 ## }}}
 
 ## Media {{{
-bindsym $MOD+Ctrl+k    exec "pamixer --allow-boost --increase 5 && pamixer --get-volume >>"$WOBSOCK
-bindsym $MOD+Ctrl+j    exec "pamixer --allow-boost --decrease 5 && pamixer --get-volume >>"$WOBSOCK
-bindsym $MOD+Ctrl+Up   exec "pamixer --allow-boost --increase 5 && pamixer --get-volume >>"$WOBSOCK
-bindsym $MOD+Ctrl+Down exec "pamixer --allow-boost --decrease 5 && pamixer --get-volume >>"$WOBSOCK
-bindsym $MOD+Ctrl+m    exec 'pamixer --toggle-mute && { [ "$(pamixer --get-mute)" = "true" ] && echo 0 >>"'$WOBSOCK'"; } || pamixer --get-volume >>'$WOBSOCK
+set $PULSE_SINK "alsa_output.pci-0000_05_00.6.analog-stereo"
+set $PAMIXER "pamixer --allow-boost --sink \""$PULSE_SINK"\""
+bindsym $MOD+Ctrl+k    exec $PAMIXER" --increase 5 && "$PAMIXER" --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+j    exec $PAMIXER" --decrease 5 && "$PAMIXER" --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+Up   exec $PAMIXER" --increase 5 && "$PAMIXER" --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+Down exec $PAMIXER" --decrease 5 && "$PAMIXER" --get-volume >>"$WOBSOCK
+bindsym $MOD+Ctrl+m    exec $PAMIXER" --toggle-mute && { [ \"$("$PAMIXER" --get-mute)\" = \"true\" ] && echo 0 >>\""$WOBSOCK"\"; } || "$PAMIXER" --get-volume >>"$WOBSOCK
 
 bindsym $MOD+c cmus-remote --pause
 
@@ -199,6 +220,85 @@ mode "move" {
 }
 bindsym $MOD+Shift+m mode "move"
 
+mode "moretag" {
+    # Switch to workspace
+    bindsym $MOD+1 workspace number  1
+    bindsym $MOD+2 workspace number  2
+    bindsym $MOD+3 workspace number  3
+    bindsym $MOD+4 workspace number  4
+    bindsym $MOD+5 workspace number  5
+    bindsym $MOD+6 workspace number  6
+    bindsym $MOD+7 workspace number  7
+    bindsym $MOD+8 workspace number  8
+    bindsym $MOD+9 workspace number  9
+    bindsym $MOD+0 workspace number 10
+
+    bindsym $MOD+a workspace number 11
+    bindsym $MOD+b workspace number 12
+    bindsym $MOD+c workspace number 13
+    bindsym $MOD+d workspace number 14
+    bindsym $MOD+e workspace number 15
+    bindsym $MOD+f workspace number 16
+    bindsym $MOD+g workspace number 17
+    bindsym $MOD+h workspace number 18
+    bindsym $MOD+i workspace number 19
+    bindsym $MOD+j workspace number 20
+    bindsym $MOD+k workspace number 21
+    bindsym $MOD+l workspace number 22
+    bindsym $MOD+m workspace number 23
+    bindsym $MOD+n workspace number 24
+    bindsym $MOD+o workspace number 25
+    bindsym $MOD+p workspace number 26
+    bindsym $MOD+q workspace number 27
+    bindsym $MOD+r workspace number 28
+    bindsym $MOD+s workspace number 29
+    bindsym $MOD+t workspace number 30
+    bindsym $MOD+u workspace number 31
+    bindsym $MOD+v workspace number 32
+
+    # Move focused container to workspace
+    bindsym $MOD+Shift+1 move container to workspace number  1
+    bindsym $MOD+Shift+2 move container to workspace number  2
+    bindsym $MOD+Shift+3 move container to workspace number  3
+    bindsym $MOD+Shift+4 move container to workspace number  4
+    bindsym $MOD+Shift+5 move container to workspace number  5
+    bindsym $MOD+Shift+6 move container to workspace number  6
+    bindsym $MOD+Shift+7 move container to workspace number  7
+    bindsym $MOD+Shift+8 move container to workspace number  8
+    bindsym $MOD+Shift+9 move container to workspace number  9
+    bindsym $MOD+Shift+0 move container to workspace number 10
+
+    bindsym $MOD+Shift+a move container to workspace number 11
+    bindsym $MOD+Shift+b move container to workspace number 12
+    bindsym $MOD+Shift+c move container to workspace number 13
+    bindsym $MOD+Shift+d move container to workspace number 14
+    bindsym $MOD+Shift+e move container to workspace number 15
+    bindsym $MOD+Shift+f move container to workspace number 16
+    bindsym $MOD+Shift+g move container to workspace number 17
+    bindsym $MOD+Shift+h move container to workspace number 18
+    bindsym $MOD+Shift+i move container to workspace number 19
+    bindsym $MOD+Shift+j move container to workspace number 20
+    bindsym $MOD+Shift+k move container to workspace number 21
+    bindsym $MOD+Shift+l move container to workspace number 22
+    bindsym $MOD+Shift+m move container to workspace number 23
+    bindsym $MOD+Shift+n move container to workspace number 24
+    bindsym $MOD+Shift+o move container to workspace number 25
+    bindsym $MOD+Shift+p move container to workspace number 26
+    bindsym $MOD+Shift+q move container to workspace number 27
+    bindsym $MOD+Shift+r move container to workspace number 28
+    bindsym $MOD+Shift+s move container to workspace number 29
+    bindsym $MOD+Shift+t move container to workspace number 30
+    bindsym $MOD+Shift+u move container to workspace number 31
+    bindsym $MOD+Shift+v move container to workspace number 32
+
+    # Toggle last workspace
+    bindsym $MOD+Tab workspace back_and_forth
+
+    bindsym Escape       mode "default"
+}
+
+bindsym $MOD+Shift+t mode "moretag"
+
 ### }}}
 
 ### Config {{{
@@ -210,7 +310,7 @@ default_floating_border normal 2
 
 # Border colors
 # class                 border  bground text    indicator child_border
-client.focused          #6633FF #6633FF #FFFFFF #33EFFF   #6633FF
+client.focused          #6644FF #6644FF #FFFFFF #33EFFF   #6644FF
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
 client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
 client.urgent           #FF6600 #FF6600 #FFFFFF #FF6600   #FF6600
@@ -222,6 +322,7 @@ focus_on_window_activation urgent
 
 # Discord opacity
 for_window [class="WebCord"] opacity set 0.9
+for_window [class="XTerm"] opacity set 0.96
 
 ### }}}
 
@@ -237,3 +338,7 @@ for_window [class="WebCord"] opacity set 0.9
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+
+for_window [title="^Android Emulator*"] floating enable
+
+include ~/.config/sway/config.d/*
