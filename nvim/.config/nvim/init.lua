@@ -115,15 +115,28 @@ require('lazy').setup({
       extensions = {}
     },
     config = function(_, opts)
-      -- local custom_theme = require('lualine.themes.nightfly')
-      -- custom_theme.normal.b.bg   = '#3b4059'
-      -- custom_theme.insert.b.bg   = '#3b4059'
-      -- custom_theme.visual.b.bg   = '#3b4059'
-      -- custom_theme.replace.b.bg  = '#3b4059'
-      -- --custom_theme.command.b.bg  = '#3b4059'
-      -- custom_theme.inactive.b.bg = '#3b4059'
+      local custom_theme = require('lualine.themes.oxocarbon')
+      -- main bar bg
+      custom_theme.normal.c.bg   = '#262626'
 
-      -- opts.options.theme = custom_theme
+      -- various mode fixes
+      custom_theme.normal.b.bg   = '#262626'
+      custom_theme.normal.z.bg   = '#78a9ff'
+      custom_theme.normal.z.fg   = '#393939'
+
+      custom_theme.insert.b.bg   = '#262626'
+      custom_theme.insert.z.bg   = '#ff7eb6'
+      custom_theme.insert.z.fg   = '#393939'
+
+      custom_theme.visual.b.bg   = '#262626'
+      custom_theme.visual.y.bg   = '#262626'
+      custom_theme.visual.z.bg   = '#be95ff'
+      custom_theme.visual.z.fg   = '#161616'
+
+      custom_theme.replace.b.bg  = '#262626'
+      custom_theme.replace.b.fg  = '#dde1e6'
+
+      opts.options.theme = custom_theme
       require('lualine').setup(opts)
     end
   }, -- }}}
