@@ -24,6 +24,7 @@ require('lazy').setup({
   -- Colorscheme
   { -- {{{
     'folke/tokyonight.nvim',
+    cond = false,
     lazy = false,
     priority = 1000,
     opts = {
@@ -43,9 +44,42 @@ require('lazy').setup({
       vim.o.background = 'dark'
     end,
   },
-  'axvr/photon.vim',
-  'Luxed/ayu-vim',
-  'arzg/vim-colors-xcode',
+  {
+    'nyoom-engineering/oxocarbon.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.o.background = 'dark'
+      vim.cmd.colorscheme('oxocarbon')
+
+      -- Disable italics
+      vim.api.nvim_set_hl(0, "Comment",           { fg = "#525252", bg = "NONE",              italic = false })
+      vim.api.nvim_set_hl(0, "CmpItemMenu",       { fg = "#d0d0d0", bg = "NONE",              italic = false })
+      vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = "#3ddbd9", bg = "NONE", bold = true, italic = false })
+    end,
+  },
+  {
+    'slugbyte/lackluster.nvim',
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    'axvr/photon.vim',
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    'Luxed/ayu-vim',
+    cond = false,
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    'arzg/vim-colors-xcode',
+    cond = false,
+    lazy = false,
+    priority = 1000,
+  },
   -- }}}
 
   -- Statusline
@@ -54,7 +88,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'nightfly',
+        -- theme = 'nightfly',
+        theme = 'oxocarbon',
         component_separators = '|',
         section_separators = '',
       },
@@ -80,15 +115,15 @@ require('lazy').setup({
       extensions = {}
     },
     config = function(_, opts)
-      local custom_theme = require('lualine.themes.nightfly')
-      custom_theme.normal.b.bg   = '#3b4059'
-      custom_theme.insert.b.bg   = '#3b4059'
-      custom_theme.visual.b.bg   = '#3b4059'
-      custom_theme.replace.b.bg  = '#3b4059'
-      --custom_theme.command.b.bg  = '#3b4059'
-      custom_theme.inactive.b.bg = '#3b4059'
+      -- local custom_theme = require('lualine.themes.nightfly')
+      -- custom_theme.normal.b.bg   = '#3b4059'
+      -- custom_theme.insert.b.bg   = '#3b4059'
+      -- custom_theme.visual.b.bg   = '#3b4059'
+      -- custom_theme.replace.b.bg  = '#3b4059'
+      -- --custom_theme.command.b.bg  = '#3b4059'
+      -- custom_theme.inactive.b.bg = '#3b4059'
 
-      opts.options.theme = custom_theme
+      -- opts.options.theme = custom_theme
       require('lualine').setup(opts)
     end
   }, -- }}}
@@ -175,7 +210,7 @@ require('lazy').setup({
   -- }}}
 
   -- Detect tabstop and shiftwidth
-  { 'tpope/vim-sleuth', enabled = false },
+  { 'tpope/vim-sleuth' },
   {
     'NMAC427/guess-indent.nvim',
     config = true,
@@ -250,6 +285,11 @@ require('lazy').setup({
         char = '┊',
         show_start = false,
         show_end = false,
+      },
+      exclude = {
+        filetypes = {
+          "oil",
+        },
       },
     },
     config = function(_, opts)
@@ -446,7 +486,7 @@ require('lazy').setup({
   concurrency = 2,
   pills = true,
   install = {
-    colorscheme = { 'tokyonight-moon', 'lunaperche' },
+    colorscheme = { 'oxocarbon', 'lunaperche' },
   },
   ui = {
     icons = {
@@ -748,6 +788,7 @@ local servers = {
             'E241',
             'E251',
             'E261',
+            'E265',
             'E266',
             'E302',
             'E305',
