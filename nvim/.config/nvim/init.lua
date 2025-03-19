@@ -134,7 +134,7 @@ require('lazy').setup({
       custom_theme.visual.z.fg   = '#161616'
 
       custom_theme.replace.b.bg  = '#262626'
-      custom_theme.replace.b.fg  = '#dde1e6'
+      custom_theme.replace.b.fg  = '#d0d0d0'
 
       opts.options.theme = custom_theme
       require('lualine').setup(opts)
