@@ -319,6 +319,12 @@ require('lazy').setup({
   -- Show colors
   { -- {{{
     'norcalli/nvim-colorizer.lua',
+    cmd = {
+      'ColorizerToggle',
+      'ColorizerAttachToBuffer',
+      'ColorizerDetachFromBuffer',
+      'ColorizerReloadAllBuffers'
+    },
     config = function()
       require('colorizer').setup({
         '*',
