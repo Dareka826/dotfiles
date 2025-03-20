@@ -4,18 +4,18 @@
 
 printf '\033]P0161616
         \033]P8525252
-        \033]P1ee5396
-        \033]P9ee5396
-        \033]P242be65
-        \033]PA42be65
-        \033]P3ff7eb6
-        \033]PBff7eb6
-        \033]P433b1ff
-        \033]PC33b1ff
-        \033]P5be95ff
-        \033]PDbe95ff
-        \033]P63ddbd9
-        \033]PE3ddbd9
-        \033]P7f2f4f8
+        \033]P142be65
+        \033]P942be65
+        \033]P2be95ff
+        \033]PAbe95ff
+        \033]P333b1ff
+        \033]PB33b1ff
+        \033]P4ff7eb6
+        \033]PCff7eb6
+        \033]P578a9ff
+        \033]PD78a9ff
+        \033]P6ee5396
+        \033]PEee5396
+        \033]P7d0d0d0
         \033]PFffffff
         \033c'
