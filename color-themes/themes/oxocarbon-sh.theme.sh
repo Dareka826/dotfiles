@@ -1,20 +1,40 @@
 #!/bin/sh
 
-printf   '\033]11;#161616\033\\' #BG
-printf   '\033]10;#f2f2f2\033\\' #FG
-printf  '\033]4;0;#161616\033\\' #C0
-printf  '\033]4;8;#525252\033\\' #C8
-printf  '\033]4;1;#ee5396\033\\' #C1
-printf  '\033]4;9;#ee5396\033\\' #C9
-printf  '\033]4;2;#42be65\033\\' #C2
-printf '\033]4;10;#42be65\033\\' #C10
-printf  '\033]4;3;#ff7eb6\033\\' #C3
-printf '\033]4;11;#ff7eb6\033\\' #C11
-printf  '\033]4;4;#33b1ff\033\\' #C4
-printf '\033]4;12;#33b1ff\033\\' #C12
-printf  '\033]4;5;#be95ff\033\\' #C5
-printf '\033]4;13;#be95ff\033\\' #C13
-printf  '\033]4;6;#3ddbd9\033\\' #C6
-printf '\033]4;14;#3ddbd9\033\\' #C14
-printf  '\033]4;7;#d0d0d0\033\\' #C7
-printf '\033]4;15;#ffffff\033\\' #C15
+base00="161616"
+base01="282828"
+base02="404040"
+base03="525252"
+base04="aaaaaa"
+base05="d0d0d0"
+base06="f2f2f2"
+base07="ffffff"
+
+base08="ee5296"
+base09="82cfff"
+base0A="ff7eb6"
+base0B="08bdba"
+base0C="3ddbda"
+base0D="33b0ff"
+base0E="be96ff"
+base0F="78aaff"
+
+printf   '\033]11;#'"${base00}"'\033\\' #BG
+printf   '\033]10;#'"${base07}"'\033\\' #FG
+# NOTE:                ^ is base05 in base16-shell
+
+printf  '\033]4;0;#'"${base00}"'\033\\' #C0
+printf  '\033]4;8;#'"${base03}"'\033\\' #C8
+printf  '\033]4;1;#'"${base08}"'\033\\' #C1
+printf  '\033]4;9;#'"${base08}"'\033\\' #C9
+printf  '\033]4;2;#'"${base0B}"'\033\\' #C2
+printf '\033]4;10;#'"${base0B}"'\033\\' #C10
+printf  '\033]4;3;#'"${base0A}"'\033\\' #C3
+printf '\033]4;11;#'"${base0A}"'\033\\' #C11
+printf  '\033]4;4;#'"${base0D}"'\033\\' #C4
+printf '\033]4;12;#'"${base0D}"'\033\\' #C12
+printf  '\033]4;5;#'"${base0E}"'\033\\' #C5
+printf '\033]4;13;#'"${base0E}"'\033\\' #C13
+printf  '\033]4;6;#'"${base0C}"'\033\\' #C6
+printf '\033]4;14;#'"${base0C}"'\033\\' #C14
+printf  '\033]4;7;#'"${base05}"'\033\\' #C7
+printf '\033]4;15;#'"${base07}"'\033\\' #C15
