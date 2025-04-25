@@ -91,8 +91,8 @@ set -o vi
 bind -m vi-command '"\C-l": clear-screen'
 bind -m vi-insert  '"\C-l": clear-screen'
 bind 'set show-mode-in-prompt on'
-bind 'set vi-ins-mode-string "[I]"'
-bind 'set vi-cmd-mode-string "[N]"'
+bind 'set vi-ins-mode-string "[I] "'
+bind 'set vi-cmd-mode-string "[N] "'
 # }}}
 
 # Completion {{{
@@ -116,6 +116,9 @@ FZF_SCRIPTS="/usr/share/fzf"
     . "${FZF_SCRIPTS}/key-bindings.bash"
     bind -m vi-command '"\C-n": "\C-z\ec\C-z"'
     bind -m vi-insert  '"\C-n": "\C-z\ec\C-z"'
+
+    bind -r '\C-t'
+    bind -r '\ec'
 }
 # }}}
 
@@ -164,6 +167,7 @@ _ytd() {
     }
 
     "${YTD}" --no-mtime \
+             -w \
              --write-info-json \
              -o "[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s" \
              "${@}"
@@ -230,7 +234,17 @@ if [ -d ~/.config/bash.d ] && stat -t ~/.config/bash.d/*.sh >/dev/null 2>&1; the
     done
 fi
 
+. ~/.asdf/asdf.sh
+
 ## PROMPT {{{
+
+__PROMPT_SYMBOL=">"
+__PROMPT_PATH_COLOR="\033[33m"
+[ "$(id -u)" = "0" ] && {
+    __PROMPT_SYMBOL="#"
+    __PROMPT_PATH_COLOR="\033[31m"
+}
+
 # Shorten current path
 _short_pwd() {
     # Make the home display as '~'
@@ -282,21 +296,19 @@ _prompt_git() {
 }
 
 bash_prompt_command() {
+    local EXIT_CODE="${?}"
+    history -a; history -c; history -r
+
     local SHORT_PWD="$(_short_pwd)"
     local PROMPT_USER="$(_prompt_user_host)"
     local PROMPT_GIT="$(_prompt_git)"
 
-    # Privilege symbol + path color
-    local PS_SYMBOL=">"
-    local PATH_COLOR="\033[33m"
-    [ "$(id -u)" = "0" ] && {
-        local PS_SYMBOL="#"
-        local PATH_COLOR="\033[31m"
-    }
+    local PROMPT_EXIT=""
+    [ "${EXIT_CODE}" != "0" ] && PROMPT_EXIT=" \[\033[31m\]${EXIT_CODE}\[\033[0m\]"
 
     # Update the prompt
-    PS1=" ${PROMPT_USER}\[${PATH_COLOR}\]${SHORT_PWD}\[\033[0m\]${PROMPT_GIT}\[\033[0m\]${PS_SYMBOL} "
+    PS1="${PROMPT_USER}\[${__PROMPT_PATH_COLOR}\]${SHORT_PWD}\[\033[0m\]${PROMPT_GIT}\[\033[0m\]${PROMPT_EXIT}${__PROMPT_SYMBOL} "
 }
 
-PROMPT_COMMAND="history -a; history -c; history -r; bash_prompt_command"
+PROMPT_COMMAND="bash_prompt_command"
 # }}}
