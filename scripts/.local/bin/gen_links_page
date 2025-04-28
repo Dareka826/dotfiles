@@ -1,0 +1,44 @@
+#!/bin/sh
+
+HTML="$(cat <<EOF
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+    background: #222;
+    color: #eee;
+    font-size: 48pt;
+    font-family: sans-serif;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  a         { color: #58f; text-decoration: none; }
+  a:visited { color: #85f; }
+</style>
+
+EOF
+)"
+
+add_link() {
+    HTML="${HTML}<span><a href=\"$1\" target=\"_blank\">$2</a></span>"
+}
+
+while [ "$#" -gt 0 ]; do
+    if [ "$#" -gt 1 ]; then
+        add_link "$1" "$2"
+        shift 1
+    else
+        add_link "$1" "$1"
+    fi
+    shift 1
+done
+
+#python -c "import sys, urllib.parse as ul; print(ul.quote(sys.argv[1]))" "${HTML}" | sed -e 's/[+ ]/%20/g' -e '1 s|^|data:text/html,|'
+printf '%s' "${HTML}" | base64 -w0 - | tr -d '\n' | sed -e '1 s|^|data:text/html;base64,|' -e 's|$|\n|'
