@@ -23,9 +23,6 @@ exec gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first true
 #exec swww init
 exec swaybg -i ~/Wallpapers/comf/gelbooru_5475406_ea32ffd55337ad9f9e2446b40c356d74.jpg -m fill
 
-# Xcursor
-seat * xcursor_theme "catppuccin-mocha-mauve-cursors" 32
-
 ### Start programs {{{
 bar swaybar_command waybar
 
