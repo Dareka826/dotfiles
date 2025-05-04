@@ -18,6 +18,7 @@ window#waybar {
     min-width: unset;
     background-color: #222222;
     color: #ffffff;
+    border: 0;
 }
 
 /* Empty tags after the first 6 are not shown */

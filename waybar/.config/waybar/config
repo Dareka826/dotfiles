@@ -11,7 +11,7 @@
     //"modules-right": ["custom/cmus", "tray", "cpu", "custom/memory", "custom/separator", "pulseaudio", "battery", "clock"],
 
     "sway/workspaces": {
-        "persistent_workspaces": {
+        "persistent-workspaces": {
             "1": [],
             "2": [],
             "3": [],
