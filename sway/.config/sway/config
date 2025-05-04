@@ -307,7 +307,7 @@ default_floating_border normal 2
 
 # Border colors
 # class                 border  bground text    indicator child_border
-client.focused          #6644FF #6644FF #FFFFFF #33EFFF   #6644FF
+client.focused          #8855FF #8855FF #FFFFFF #33EFFF   #8855FF
 client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
 client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
 client.urgent           #FF6600 #FF6600 #FFFFFF #FF6600   #FF6600
