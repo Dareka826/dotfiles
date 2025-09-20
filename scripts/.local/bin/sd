@@ -1,0 +1,68 @@
+#!/bin/dash
+set -eu
+
+SD_SCRIPTS_DIR="${SD_SCRIPTS_DIR:-}"
+[ -n "${SD_SCRIPTS_DIR}" ] || SD_SCRIPTS_DIR="${HOME}/.local/share/sd"
+
+# Setup data dir
+if ! [ -d "${SD_SCRIPTS_DIR}" ]; then
+    if [ -e "${SD_SCRIPTS_DIR}" ]; then
+        printf '%s\n' "[E]: SD_SCRIPTS_DIR (${SD_SCRIPTS_DIR}) exists but it's not a dir!" >&2
+        exit 1
+    fi
+
+    mkdir -p "${SD_SCRIPTS_DIR}"
+fi
+
+# Main logic
+if [ "${#}" = 0 ]; then
+    SCRIPT_NAME="$(printf '%s' "$0" | sed 's@^.*/@@')"
+
+    printf '%s\n' \
+        "Usage:" \
+        "  ${SCRIPT_NAME} [args]..." \
+        "" \
+        "Note:" \
+        "  SD_SCRIPTS_DIR: ${SD_SCRIPTS_DIR}" \
+        "  ${SCRIPT_NAME} searches in SD_SCRIPTS_DIR for an executable file by path as specified by" \
+        "  the first N arguments in [args]... and passes the rest to the found script" \
+        "" \
+        "Examples:" \
+        "  ${SCRIPT_NAME} test1 abc def" \
+        "  - If SD_SCRIPTS_DIR/test1 is a file:" \
+        "    - ${SCRIPT_NAME} executes \`SD_SCRIPTS_DIR/test1 abc def\`" \
+        "  - Else, if SD_SCRIPTS_DIR/test1 is a directory:" \
+        "    - If SD_SCRIPTS_DIR/test1/abc is a file:" \
+        "      - ${SCRIPT_NAME} executes \`SD_SCRIPTS_DIR/test1/abc def\`" \
+        "    - Else, if SD_SCRIPTS_DIR/test1/abc is a directory:" \
+        "      - If SD_SCRIPTS_DIR/test1/abc/def is a file:" \
+        "        - ${SCRIPT_NAME} executes \`SD_SCRIPTS_DIR/test1/abc/def\`" \
+        "      - Otherwise exit with an error" \
+        "  If ${SCRIPT_NAME} finds a file, but it's not executable, it exits with an error" \
+        ""
+
+    exit 0
+fi
+
+TARGET_SCRIPT="${SD_SCRIPTS_DIR}"
+while [ "${#}" -gt 0 ]; do
+    TARGET_SCRIPT="${TARGET_SCRIPT}/${1}"
+    shift 1
+
+    if [ -f "${TARGET_SCRIPT}" ]; then
+        if ! [ -x "${TARGET_SCRIPT}" ]; then
+            printf '%s\n' "[E]: Found target script at ${TARGET_SCRIPT} but it's not executable!" >&2
+            exit 1
+        fi
+
+        exec "${TARGET_SCRIPT}" "${@}"
+    fi
+
+    if [ -d "${TARGET_SCRIPT}" ]; then
+        continue
+    fi
+
+    # Failed to find script
+    printf '%s\n' "[E]: Failed to find the script for this commandline!" >&2
+    exit 1
+done
