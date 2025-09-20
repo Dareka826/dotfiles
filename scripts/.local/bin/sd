@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/sh
 set -eu
 
 SD_SCRIPTS_DIR="${SD_SCRIPTS_DIR:-}"
