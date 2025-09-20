@@ -42,7 +42,7 @@ _short_pwd() {
         done
 
     # Join the array back using "/"
-    printf "%s\n" "${(j:/:)pwd}"
+    printf "%s" "${(j:/:)pwd}"
 }
 
 # Don't display username and hostname if not over ssh
@@ -66,19 +66,23 @@ _prompt_git() {
     printf " %s" "${git_branch}"
 
     # Print + if modified/added, print - if deleted
-    local git_status="$(git --no-optional-locks status --porcelain 2>/dev/null)"
-    printf "%s" "${git_status}" | grep -E '^ *\?' >/dev/null && printf "%s" "%F{cyan}?"
-    printf "%s" "${git_status}" | grep -E '^ *D'  >/dev/null && printf "%s" "%F{red}-"
-    printf "%s" "${git_status}" | grep -E '^ *M'  >/dev/null && printf "%s" "%F{green}+"
-    printf "%s" "${git_status}" | grep -E '^ *A'  >/dev/null && printf "%s" "%F{yellow}+"
+    local git_status="$(timeout -s KILL 0.2s git --no-optional-locks status --porcelain 2>/dev/null || printf '%s' "KILLED")"
+    if printf '%s' "${git_status}" | grep -Fx "KILLED" >/dev/null 2>&1; then
+        printf "%s" "%F{magenta}X"
+    else
+        printf "%s" "${git_status}" | grep -E '^ *\?' >/dev/null && printf "%s" "%F{cyan}?"
+        printf "%s" "${git_status}" | grep -E '^ *D'  >/dev/null && printf "%s" "%F{red}-"
+        printf "%s" "${git_status}" | grep -E '^ *M'  >/dev/null && printf "%s" "%F{green}+"
+        printf "%s" "${git_status}" | grep -E '^ *A'  >/dev/null && printf "%s" "%F{yellow}+"
+    fi
 
     # Git bisect
     git bisect log >/dev/null 2>&1 && printf "%s" "%F{yellow}B"
 
-    # git-bug integration
-    command -v git-bug >/dev/null && {
-        [ "$(git-bug ls -s open 2>/dev/null | wc -l)" -gt 0 ] && printf "%s" "%F{yellow}#"
-    }
+    ## git-bug integration
+    #command -v git-bug >/dev/null && {
+    #    [ "$(git-bug ls -s open 2>/dev/null | wc -l)" -gt 0 ] && printf "%s" "%F{yellow}#"
+    #}
 
     # Print * if stash in use
     [[ -n "$(git stash list 2>/dev/null)" ]] && printf "%s" "%F{yellow}*" || :
@@ -143,24 +147,21 @@ alias doas="doas "
 alias sudo="sudo "
 
 # ls -> exa
-LSOPTS="-F --color=auto"
 LSPROG="ls"
-command -v exa >/dev/null && LSPROG="exa" && LSOPTS="-gbF"
+LSOPTS="--color=auto"
+command -v exa >/dev/null && {
+    LSPROG="exa"
+    LSOPTS="-gb"
+}
 
-alias  ls="$LSPROG $LSOPTS"
-alias   l="$LSPROG $LSOPTS -hal"
-alias  ll="$LSPROG $LSOPTS -hl"
-alias  la="$LSPROG $LSOPTS -a"
-alias  li="$LSPROG $LSOPTS -hali"
-alias lli="$LSPROG $LSOPTS -hli"
-alias lsd="$LSPROG $LSOPTS --group-directories-first"
+alias ls="$LSPROG $LSOPTS"
+alias ll="$LSPROG $LSOPTS -hla"
+alias  l="$LSPROG $LSOPTS -hl"
 
 # Mkdir shortcut, rm and mv confirmation
 alias md="mkdir -p"
 alias rm="rm -i"
 alias mv="mv -i"
-# rm without -i
-alias rmnoi="/usr/bin/rm"
 
 # Directory aliases
 [ -f $ZDOTDIR/dir_aliases.zsh ] && \
@@ -176,12 +177,10 @@ alias    gd="git diff"
 alias   gds="git diff --staged"
 alias    gl="git log"
 alias   glo="git log --oneline"
-alias  glog="git log --oneline --graph"
 alias   gla="git log --all"
 alias  gloa="git log --oneline --all"
 alias gloag="git log --oneline --all --graph"
 alias   glp="git log --patch"
-alias  glpg="git log --patch --graph"
 alias   gco="git checkout"
 alias    gb="git branch"
 alias   gsw="git switch"
@@ -194,11 +193,9 @@ alias  gcft="git cat-file -t"
 alias  gcfp="git cat-file -p"
 alias   gfu="git fsck --no-reflogs --unreachable"
 alias   gbg="git-bug"
-gloagu() { gloag $(gfu 2>/dev/null | cut -d' ' -f3) }
 
 # Command aliases
 alias clo="curl -LO"
-alias fu="~/.config/vifm/scripts/vifm_ueberzug_start"
 alias f="vifm"
 
 # Program aliases
@@ -211,8 +208,7 @@ vinfo() { nvim -c "Vinfo $1" -c "silent only" }
 command -v nvim >/dev/null && alias info="vinfo"
 
 # Vim shortcuts
-alias -g v="nvim"
-alias  vim="nvim"
+alias v="nvim"
 
 # GPG entry
 GPG_TTY=$(tty)
@@ -220,32 +216,6 @@ export GPG_TTY
 
 [ -f $ZDOTDIR/functions.zsh ] && \
     source $ZDOTDIR/functions.zsh
-
-# Time in nanoseconds
-# $1 = Command to be run
-# $2 = How many times to take the average from (default: 1000)
-nstime() {
-    [[ -z "$1" ]] && return 1 # Exit if no command
-
-    # Display short help
-    [[ "$1" = "-h" ]] && echo "$0 cmd [repeat_num]" && return
-
-    local AMOUNT=1000
-    [[ -n "$2" ]] && AMOUNT=$2 # Set AMOUNT to $2 if non empty
-
-    echo "$AMOUNT x $1" # Print what is being measured
-    local TIME_AVG=0 TS # Define variables
-
-    repeat $AMOUNT; do
-        TS=$(date +%s%N) # Time start
-        eval "$1" >/dev/null 2>&1 # Run $1 with no output
-        (( TIME_AVG+=($(date +%s%N) - TS) )) # Add measured time to TIME_AVG
-    done
-    (( TIME_AVG/=AMOUNT )) # Calculate the average
-
-    # Display output
-    echo "$0 $TIME_AVG ns ~= $((TIME_AVG / 1000000)) ms"
-}
 
 ## }}}
 
@@ -265,14 +235,6 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice lucid wait'!0a'
 #zinit light zsh-users/zsh-syntax-highlighting
 zinit light zdharma-continuum/fast-syntax-highlighting
-
-zinit ice lucid wait'0b' \
-    atload"bindkey '^[[A' history-substring-search-up" \
-    atload"bindkey '^[[B' history-substring-search-down"
-zinit light zsh-users/zsh-history-substring-search
-
-zinit ice lucid wait'1'
-zinit light MichaelAquilina/zsh-you-should-use
 
 ## }}}
 
@@ -320,5 +282,3 @@ compinit                                    # Initialize completion
 
 ## }}}
 
-# Check mail
-mail -e && printf "You have new mail!\n"
