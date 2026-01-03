@@ -1,0 +1,18 @@
+# or 1739:52781:MSFT0001:00_06CB:CE2D_Mouse
+input "1739:52781:MSFT0001:00_06CB:CE2D_Touchpad" {
+    accel_profile flat
+    pointer_accel 0.6
+    natural_scroll disabled
+    # calibration_matrix 8 0 0 0 5 0
+}
+
+input "1149:8264:Kensington_Eagle_Trackball" {
+    accel_profile flat
+    pointer_accel -0.2
+}
+
+input "11551:965:Wacom_Co.,Ltd._Intuos_BT_S" {
+    tool_mode * absolute
+}
+
+# vim: ft=swayconfig

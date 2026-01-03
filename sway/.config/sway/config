@@ -24,6 +24,8 @@ exec gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first true
 exec swaybg -i ~/Wallpapers/comf/gelbooru_5475406_ea32ffd55337ad9f9e2446b40c356d74.jpg -m fill
 
 ### Start programs {{{
+
+#include ~/.config/sway/config.d/swaybar_colors
 bar swaybar_command waybar
 
 exec mako
@@ -44,7 +46,7 @@ bindsym $MOD+Return exec $TERM
 # Exit sway
 bindsym $MOD+Shift+q exec swaymsg exit
 # Start your launcher
-bindsym $MOD+d exec ~/.local/bin/dmenu_hisfreq
+bindsym $MOD+d exec ~/.local/bin/dmenu_hisfreq >/dev/null 2>&1 </dev/null
 # xcp
 bindsym $MOD+x exec ~/.local/bin/xcp
 
@@ -305,14 +307,7 @@ font Source Code Pro 14px
 default_border pixel 2
 default_floating_border normal 2
 
-# Border colors
-# class                 border  bground text    indicator child_border
-client.focused          #8855FF #8855FF #FFFFFF #33EFFF   #8855FF
-client.focused_inactive #666666 #666666 #FFFFFF #666666   #666666
-client.unfocused        #333333 #333333 #BBBBBB #333333   #333333
-client.urgent           #FF6600 #FF6600 #FFFFFF #FF6600   #FF6600
-client.placeholder      #000000 #000000 #FFFFFF #222222   #222222
-client.background       #222222
+include ~/.config/sway/config.d/win_colors
 
 default_orientation horizontal
 focus_on_window_activation urgent
@@ -338,4 +333,6 @@ for_window [class="XTerm"] opacity set 0.96
 
 for_window [title="^Android Emulator*"] floating enable
 
-include ~/.config/sway/config.d/*
+#include ~/.config/sway/config.d/*
+include ~/.config/sway/config.d/cursor
+include ~/.config/sway/config.d/RLT-input

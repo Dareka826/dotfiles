@@ -1,0 +1,174 @@
+#!/bin/sh
+set -eu
+
+
+[ "$#" -gt 0 ] || exit 1
+
+if [ "$1" = "rin" ]; then
+    . ./rin.sh
+elif [ "$1" = "oxocarbon" ]; then
+    . ./oxocarbon.sh
+else
+    printf '%s\n' "[W]: Unknown color theme, using default."
+    . ./default.sh
+fi
+
+EDIT_WARNING="Generated file, DO NOT EDIT BY HAND!"
+
+# Sway Window Borders {{{
+printf '%s\n' "Writing sway window border colors ..."
+mkdir -p ~/.config/sway/config.d
+cat > ~/.config/sway/config.d/win_colors <<EOF
+# ${EDIT_WARNING}
+
+# Border colors
+# class                 border  bground  text  indicator  child_border
+client.focused          ${WIN_FOCUSED_BORDER} ${WIN_FOCUSED_TEXT_BG} ${WIN_FOCUSED_TEXT_FG} ${WIN_FOCUSED_INDICATOR} ${WIN_FOCUSED_CHILD_BORDER}
+client.focused_inactive ${WIN_INACTIVE_BORDER} ${WIN_INACTIVE_TEXT_BG} ${WIN_INACTIVE_TEXT_FG} ${WIN_INACTIVE_INDICATOR} ${WIN_INACTIVE_CHILD_BORDER}
+client.unfocused        ${WIN_UNFOCUSED_BORDER} ${WIN_UNFOCUSED_TEXT_BG} ${WIN_UNFOCUSED_TEXT_FG} ${WIN_UNFOCUSED_INDICATOR} ${WIN_UNFOCUSED_CHILD_BORDER}
+client.urgent           ${WIN_URGENT_BORDER} ${WIN_URGENT_TEXT_BG} ${WIN_URGENT_TEXT_FG} ${WIN_URGENT_INDICATOR} ${WIN_URGENT_CHILD_BORDER}
+client.placeholder      ${WIN_PLACEHOLDER_BORDER} ${WIN_PLACEHOLDER_TEXT_BG} ${WIN_PLACEHOLDER_TEXT_FG} ${WIN_PLACEHOLDER_INDICATOR} ${WIN_PLACEHOLDER_CHILD_BORDER}
+client.background       ${WIN_DEFAULT_BG}
+
+# vim: ft=swayconfig
+EOF
+# }}}
+
+# SwayBar {{{
+printf '%s\n' "Writing swaybar colors ..."
+mkdir -p ~/.config/sway/config.d
+cat > ~/.config/sway/config.d/swaybar_colors <<EOF
+# ${EDIT_WARNING}
+
+include ~/.config/sway/config.d/swaybar_vars
+
+bar {
+  position top
+
+  status_command ~/.local/bin/sway_status.sh
+  separator_symbol \$bar_separator
+
+  height \$bar_height
+  workspace_min_width \$bar_ws_min_width
+
+  status_edge_padding \$bar_status_edge_padding
+  status_padding \$bar_status_padding
+  tray_padding \$bar_tray_padding
+  icon_theme \$bar_tray_icon_theme
+
+  colors {
+    background ${BAR_BG}
+    statusline ${BAR_FG}
+    separator  ${BAR_SEPARATOR}
+
+    focused_workspace  ${BAR_WS_FOCUSED_BORDER} ${BAR_WS_FOCUSED_TEXT_BG} ${BAR_WS_FOCUSED_TEXT_FG}
+    active_workspace   ${BAR_WS_ACTIVE_BORDER} ${BAR_WS_ACTIVE_TEXT_BG} ${BAR_WS_ACTIVE_TEXT_FG}
+    inactive_workspace ${BAR_WS_INACTIVE_BORDER} ${BAR_WS_INACTIVE_TEXT_BG} ${BAR_WS_INACTIVE_TEXT_FG}
+    urgent_workspace   ${BAR_WS_URGENT_BORDER} ${BAR_WS_URGENT_TEXT_BG} ${BAR_WS_URGENT_TEXT_FG}
+
+    binding_mode       ${BAR_WS_BINDING_BORDER} ${BAR_WS_BINDING_TEXT_BG} ${BAR_WS_BINDING_TEXT_FG}
+  }
+}
+
+# vim: ft=swayconfig
+EOF
+# }}}
+
+# SwayBar Status {{{
+printf '%s\n' "Writing colors for swaybar status program ..."
+mkdir -p ~/.config/env
+cat > ~/.config/env/bar_status_colors <<EOF
+# ${EDIT_WARNING}
+
+BAR_BG="${BAR_BG}"
+BAR_FG="${BAR_FG}"
+
+BAR_ACCENT_BG="${BAR_ACCENT_BG}"
+BAR_ACCENT_FG="${BAR_ACCENT_FG}"
+BAR_BLOCK="${BAR_BLOCK}"
+BAR_BLOCK_ALT="${BAR_BLOCK_ALT}"
+
+BAR_STATUS_GOOD="${BAR_STATUS_GOOD}"
+BAR_STATUS_WARN="${BAR_STATUS_WARN}"
+BAR_STATUS_BAD="${BAR_STATUS_BAD}"
+EOF
+# }}}
+
+# dmenu / bemenu {{{
+printf '%s\n' "Writing bemenu colors ..."
+mkdir -p ~/.config/env
+cat > ~/.config/env/bemenu <<EOF
+# ${EDIT_WARNING}
+
+BEMENU_SWITCHES="\${BEMENU_SWITCHES:--i -l 10 -p 'select:' --scrollbar always}"
+
+# Behavior
+BEMENU_OPTS="\${BEMENU_SWITCHES}"
+
+# Colors
+BEMENU_OPTS="\${BEMENU_OPTS} --nb '${DMENU_NORMAL_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --nf '${DMENU_NORMAL_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --fb '${BEMENU_FILTER_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --ff '${BEMENU_FILTER_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --cb '${BEMENU_CURSOR_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --cf '${BEMENU_CURSOR_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --hb '${DMENU_SELECTED_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --hf '${DMENU_SELECTED_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --tb '${BEMENU_PROMPT_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --tf '${BEMENU_PROMPT_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --ab '${BEMENU_ALTERNATING_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --af '${BEMENU_ALTERNATING_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --sb '${BEMENU_SELECTED_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --sf '${BEMENU_SELECTED_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --scb '${BEMENU_SCROLLBAR_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --scf '${BEMENU_SCROLLBAR_FG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --fbb '${BEMENU_FEEDBACK_BG}'"
+BEMENU_OPTS="\${BEMENU_OPTS} --fbf '${BEMENU_FEEDBACK_FG}'"
+
+export BEMENU_OPTS
+EOF
+# }}}
+
+# Waybar {{{
+if [ -e ~/.config/waybar/style.css.in ]; then
+    printf '%s\n' "Writing waybar colors ..."
+
+    printf '%s\n' \
+        "/* ${EDIT_WARNING} */" \
+        "" > ~/.config/waybar/style.css
+
+    sed -e "s/@BAR_BG@/${BAR_BG}/g" \
+        -e "s/@BAR_FG@/${BAR_FG}/g" \
+        \
+        -e "s/@WS_FOCUSED_BORDER@/${BAR_WS_FOCUSED_BORDER}/g" \
+        -e "s/@WS_FOCUSED_TEXT_BG@/${BAR_WS_FOCUSED_TEXT_BG}/g" \
+        -e "s/@WS_FOCUSED_TEXT_FG@/${BAR_WS_FOCUSED_TEXT_FG}/g" \
+        -e "s/@WS_INACTIVE_BORDER@/${BAR_WS_INACTIVE_BORDER}/g" \
+        -e "s/@WS_INACTIVE_TEXT_BG@/${BAR_WS_INACTIVE_TEXT_BG}/g" \
+        -e "s/@WS_INACTIVE_TEXT_FG@/${BAR_WS_INACTIVE_TEXT_FG}/g" \
+        -e "s/@WS_ACTIVE_BORDER@/${BAR_WS_ACTIVE_BORDER}/g" \
+        -e "s/@WS_ACTIVE_TEXT_BG@/${BAR_WS_ACTIVE_TEXT_BG}/g" \
+        -e "s/@WS_ACTIVE_TEXT_FG@/${BAR_WS_ACTIVE_TEXT_FG}/g" \
+        -e "s/@WS_EMPTY_BORDER@/${BAR_WS_EMPTY_BORDER}/g" \
+        -e "s/@WS_EMPTY_TEXT_BG@/${BAR_WS_EMPTY_TEXT_BG}/g" \
+        -e "s/@WS_EMPTY_TEXT_FG@/${BAR_WS_EMPTY_TEXT_FG}/g" \
+        -e "s/@WS_URGENT_BORDER@/${BAR_WS_URGENT_BORDER}/g" \
+        -e "s/@WS_URGENT_TEXT_BG@/${BAR_WS_URGENT_TEXT_BG}/g" \
+        -e "s/@WS_URGENT_TEXT_FG@/${BAR_WS_URGENT_TEXT_FG}/g" \
+        -e "s/@WS_BINDING_BORDER@/${BAR_WS_BINDING_BORDER}/g" \
+        -e "s/@WS_BINDING_TEXT_BG@/${BAR_WS_BINDING_TEXT_BG}/g" \
+        -e "s/@WS_BINDING_TEXT_FG@/${BAR_WS_BINDING_TEXT_FG}/g" \
+        \
+        -e "s/@ACCENT_BG@/${BAR_ACCENT_BG}/g" \
+        -e "s/@ACCENT_FG@/${BAR_ACCENT_FG}/g" \
+        -e "s/@BLOCK_COLOR@/${BAR_BLOCK}/g" \
+        -e "s/@BLOCK_ALT_COLOR@/${BAR_BLOCK_ALT}/g" \
+        \
+        -e "s/@STATUS_GOOD@/${BAR_STATUS_GOOD}/g" \
+        -e "s/@STATUS_WARN@/${BAR_STATUS_WARN}/g" \
+        -e "s/@STATUS_BAD@/${BAR_STATUS_BAD}/g" \
+        \
+        <  ~/.config/waybar/style.css.in \
+        >> ~/.config/waybar/style.css
+fi
+# }}}

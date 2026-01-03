@@ -1,0 +1,13 @@
+# 0 matches font size
+set $bar_height 20
+set $bar_ws_min_width 24
+
+set $bar_separator ""
+
+set $bar_status_edge_padding 0
+set $bar_status_padding 0
+
+set $bar_tray_padding 2
+set $bar_tray_icon_theme "Papirus-Dark"
+
+# vim: ft=swayconfig

@@ -9,15 +9,15 @@
 }
 
 window#waybar {
-    background-color: #111111;
-    color: #ffffff;
+    background-color: @BAR_BG@;
+    color: @BAR_FG@;
 }
 
 #tags button, #workspaces button {
     padding: 0 8px; /* One space character's width */
     min-width: unset;
-    background-color: #222222;
-    color: #ffffff;
+    background-color: @WS_EMPTY_TEXT_BG@;
+    color: @BAR_FG@;
     border: 0;
 }
 
@@ -31,29 +31,30 @@ window#waybar {
 }
 
 #tags button.occupied, #workspaces button {
-    background-color: #333333;
-    color: #ffffff;
+    background-color: @WS_INACTIVE_TEXT_BG@;
+    color: @WS_INACTIVE_TEXT_FG@;
     margin: 0px;
 }
 #workspaces button.persistent {
-    background-color: #222222;
-    color: #ffffff;
+    background-color: @WS_EMPTY_TEXT_BG@;
+    color: @WS_EMPTY_TEXT_FG@;
     margin: 0px;
 }
 #tags button.focused, #workspaces button.focused {
-    background-color: #8855ff;
-    color: #ffffff;
+    background-color: @WS_FOCUSED_TEXT_BG@;
+    color: @WS_FOCUSED_TEXT_FG@;
     margin: 0px;
 }
 #tags button.urgent, #workspaces button.urgent {
-    background-color: #ff6600;
-    color: #ffffff;
+    background-color: @WS_URGENT_TEXT_BG@;
+    color: @WS_URGENT_TEXT_FG@;
     margin: 0px;
 }
 
 #mode {
-    background-color: #8855ff;
     padding: 0 8px 0 8px; /* One space character's width */
+    background-color: @WS_BINDING_TEXT_BG@;
+    color: @WS_BINDING_TEXT_FG@;
 }
 
 #window {
@@ -61,13 +62,17 @@ window#waybar {
 }
 
 
+#custom-sway-tree {
+    background-color: @BLOCK_COLOR@;
+}
+
 #custom-cmus {
-    background-color: #333333;
+    background-color: @BLOCK_ALT_COLOR@;
 }
 
 #tray {
     padding-left: 8px;
-    background-color: #222222;
+    background-color: @BLOCK_COLOR@;
 }
 
 #cpu,
@@ -75,16 +80,17 @@ window#waybar {
 #custom-separator,
 #pulseaudio,
 #battery {
-    background-color: #222222;
+    background-color: @BLOCK_COLOR@;
 }
 
 #battery.warning:not(.charging) {
-    color: #ff6600;
+    color: @STATUS_WARN@;
 }
 #battery.critical:not(.charging) {
-    color: #ee0000;
+    color: @STATUS_BAD@;
 }
 
 #clock {
-    background-color: #8855ff;
+    background-color: @ACCENT_BG@;
+    color: @ACCENT_FG@;
 }

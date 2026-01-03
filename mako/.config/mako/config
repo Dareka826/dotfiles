@@ -9,9 +9,9 @@ on-notify=exec mpv --volume=60 /usr/share/sounds/freedesktop/stereo/message.oga
 
 font=Source Code Pro 10
 background-color=#111111ee
-text-color=#ffffffee
-border-color=#6600ffee
-progress-color=over #ff6600ee
+text-color=#eeeeeeee
+border-color=#7755ffee
+progress-color=over #ff7733ee
 
 width=400
 height=300
@@ -38,16 +38,17 @@ anchor=top-right
 invisible=1
 
 [urgency="low"]
-text-color=#ffffff99
-border-color=#44444499
+text-color=#eeeeee99
+border-color=#4444449
 progress-color=over #33333399
 
 [urgency="critical"]
-text-color=#ffffffee
-border-color=#ff0000ee
-progress-color=over #ff0000ee
+text-color=#eeeeeeee
+border-color=#ff3333ee
+progress-color=over #ff3333ee
 default-timeout=0
 ignore-timeout=1
 
 [app-name="discord"]
 ignore-timeout=1
+default-timeout=5000

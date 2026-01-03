@@ -67,6 +67,8 @@
     "pulseaudio": {
         "format": " V:{volume}%",
         "format-muted": " V:M{volume}M%",
+        "ignored-sinks": ["System_Dummy Audio/Sink sink"] ,
+        "tooltip": false,
     },
     "battery": {
         "format": " B:{capacity}% ",
@@ -74,6 +76,7 @@
             "warning":  30,
             "critical": 19,
         },
+        "tooltip": false,
     },
     "clock": {
         "format": " {:%Y-%m-%d %H:%M:%S} ",
