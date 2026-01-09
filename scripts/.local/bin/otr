@@ -1,36 +1,53 @@
 #!/bin/sh
 set -eu
 
-# Illegal chars: "*/:<>?\|
-replace_special() {
-    tr '"*/:<>?\|' '_'
-}
+log() { printf "%s\n" "${@}" >&2; }
 
-# Rename music files
-for fname in "${@}"; do
-       EXT="${fname##*.}"
-     FPATH="${fname%/*}"
-    [ "${FPATH}" != "${fname}" ] || FPATH="."
+# Replace illegal filesystem chars with underscore
+replace_special() { tr '"*/:<>?\|' '_'; }
 
-     TRACK="$(fftag -file "${fname}" -tag TRACK )" || TRACK=""
-     TITLE="$(fftag -file "${fname}" -tag TITLE )" || continue
-    ARTIST="$(fftag -file "${fname}" -tag ARTIST)" || continue
+for FNAME in "${@}"; do
+    if ! [ -f "${FNAME}" ]; then
+        log "[W]: ${FNAME} not a regular file, skipping!"
+        continue
+    fi
 
-    [ -n "${TRACK}" ] && [ "${TRACK}" -le 9 ] && TRACK="0${TRACK}" || :
+    EXT="${FNAME##*.}"
 
-     TITLE="$(printf "%s" "${TITLE}"  | replace_special)"
+    # If no / in FNAME, prepend ./
+    if [ "${FNAME%/*}" = "${FNAME}" ]; then
+        FNAME="./${FNAME}"
+    fi
+
+    TITLE="$( fftag -file "${FNAME}" -tag TITLE )" || {
+        log "[W]: ${FNAME} missing TITLE tag, skipping!"
+        continue
+    }
+    ARTIST="$(fftag -file "${FNAME}" -tag ARTIST)" || {
+        log "[W]: ${FNAME} missing ARTIST tag, skipping!"
+        continue
+    }
+
+    TRACK="$( fftag -file "${FNAME}" -tag TRACK )" || TRACK=""
+    if [ "${TRACK}" = "" ] || [ "${TRACK}" -le 9 ]; then
+        TRACK="0${TRACK}"
+    fi
+
+    TITLE="$( printf "%s" "${TITLE}"  | replace_special)"
     ARTIST="$(printf "%s" "${ARTIST}" | replace_special)"
 
-    if [ -n "${TRACK}" ]; then
+    if [ "${TRACK}" != "" ]; then
         NEW_FNAME="$(printf "%s. %s - %s.%s\n" "${TRACK}" "${ARTIST}" "${TITLE}" "${EXT}")"
     else
         NEW_FNAME="$(printf "%s - %s.%s\n" "${ARTIST}" "${TITLE}" "${EXT}")"
     fi
-    NEW_FNAME="${FPATH}/${NEW_FNAME}"
+    PDIR="${FNAME%/*}"
+    NEW_FNAME="${PDIR}/${NEW_FNAME}"
 
     if [ -e "${NEW_FNAME}" ]; then
-        printf "already exists (skipping): %s\n" "${NEW_FNAME}"
-    else
-        mv -v "${fname}" "${FPATH}/${NEW_FNAME}"
+        log "[W]: ${NEW_FNAME} already exists, skipping!"
+        continue
     fi
+
+    mv -v "${FNAME}" "${NEW_FNAME}"
 done

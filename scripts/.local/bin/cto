@@ -1,11 +1,33 @@
 #!/bin/sh
 set -eu
 
-# Convert to opus
-for fname in "${@}"; do
+log() { printf "%s\n" "${@}" >&2; }
+
+for FNAME in "${@}"; do
+    if ! [ -f "${FNAME}" ]; then
+        log "[W]: ${FNAME} not a regular file, skipping!"
+        continue
+    fi
+
+    if [ "${FNAME##*.}" = "opus" ]; then
+        continue
+    fi
+
+    log "[I]: Processing: ${FNAME}"
+
+    STATUS="0"
     ffmpeg \
         -hide_banner \
-        -i "${fname}" \
+        -i "${FNAME}" \
+        -map_metadata 0:s:0 \
+        -map_metadata 0:g \
         -c:a libopus -b:a 128k \
-        "${fname%.*}.opus"
+        "${FNAME%.*}.opus" || STATUS="${?}"
+
+    if [ "${STATUS}" = "0" ]; then
+        log "[I]: Finished: ${FNAME}"
+    else
+        log "[E]: Failed on: ${FNAME}"
+        exit "${STATUS}"
+    fi
 done
