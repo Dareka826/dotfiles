@@ -1,14 +1,5 @@
 # Rin's .zshrc
 
-## Env {{{
-
-#unset LD_LIBRARY_PATH
-
-# Use nvim as the pager for man
-export MANPAGER='nvim +Man!'
-
-## }}}
-
 ## History {{{
 
 export HISTFILE="${HOME}/.zsh_history" # History file
@@ -282,3 +273,12 @@ compinit                                    # Initialize completion
 
 ## }}}
 
+## Sourcing other files {{{
+
+[ -e ~/.config/shell.d/s6-sudo.sh ] && \
+  . ~/.config/shell.d/s6-sudo.sh
+
+[ -e ~/.asdf/asdf.sh ] && \
+  . ~/.asdf/asdf.sh
+
+## }}}

@@ -1,85 +1,38 @@
+# Print args
+p() { printf '%s\n' "${@}"; }
+
 # Download vods
 dvod() {
-	[ $# = "0" ] && echo "dvod link out_filename" || \
-	streamlink "$1" "best" -o "$2"
+    if [ "${#}" = "0" ]; then
+        printf "%s\n" "dvod URL OUT_FILE"
+    else
+        streamlink "${1}" "best" -o "${2}"
+    fi
 }
 
-# Rename all opus files in directory according to their metadata
-otr() {
-	for o in *.opus; do
-		taffy --rename-fs "%N. %_R - %_T" "$o"
-	done
-}
-
-# Convert all files passed as arguments to opus
-cto() {
-	for f in "$@"; do
-		ffmpeg -i "$f" -c:a libopus -b:a 128k \
-			"$(echo "$f" | rev | cut -d'.' -f2- | rev).opus"
-	done
-}
-
-bell() { printf "\a" }
-
-# Cat range
-catr() {
-	tail -n "+$1" "$3" | head -n "$(( $2 - $1 + 1 ))"
-}
-
-# List all git object hashes
-goh() {
-	for object in .git/objects/??/*; do
-		echo $object;
-	done | sed 's/^.*\([a-zA-Z0-9]\{2\}\)\/\([a-zA-Z0-9]\+\)$/\1\2/'
-}
-
-# Pretty print all git objects
-gop() {
-	for obj in $(goh | sort); do
-		printf "==== OBJECT: %s\n" "$obj"
-		git cat-file -p $obj
-		printf "\n"
-	done
-}
-
-# Show all git objects
-gos() {
-	for obj in $(goh | sort); do
-		printf "==== OBJECT: %s\n" "$obj"
-		git show $obj
-		printf "\n"
-	done
-}
+bell() { printf '\a'; }
 
 # Check which program is used by xdg-open on a file
 xdg-which() {
-	TYPE="$(xdg-mime query filetype "$1")"
-	APP="$(xdg-mime query default "$TYPE")"
+    if [ "${#}" = "0" ] || { ! [ -f "${1}" ]; }; then
+        printf "%s\n" "xdg-which FILE"
+    fi
 
-	printf "File: %s\n" "$1"
-	printf "Type: %s\n" "$TYPE"
-	printf "App:  %s\n" "$APP"
+    __XDG_WHICH_TYPE="$(xdg-mime query filetype "${1}")"
+    __XDG_WHICH_APP="$( xdg-mime query default "${__XDG_WHICH_TYPE}")"
+
+    printf "File: %s\n" "${1}"
+    printf "Type: %s\n" "${__XDG_WHICH_TYPE}"
+    printf "App:  %s\n" "${__XDG_WHICH_APP}"
+
+    unset __XDG_WHICH_TYPE
+    unset __XDG_WHICH_APP
 }
 
 # Play last replay buffer
 lrb() {
-	cd /mnt/IDATA/OBS_Videos
-	ls Replay_* | sort -r | head -1 | xargs mpv
-}
-
-# fd/find + vim/nvim
-fv() {
-    FV_VIM="vim"
-    command -v nvim && FV_VIM="nvim"
-
-    # If fd exists
-    command -v fd && {
-        fd "$@" -X $FV_VIM \;
-        true # Prevent trigerring the find block
-
-    } || { # else
-        find "$@" -exec $FV_VIM \{\} +
-    }
+    cd /mnt/IDATA/OBS_Videos
+    mpv "$(p ./Replay_* | sort -r | head -1)"
 }
 
 # Display random nvim help page
@@ -88,29 +41,26 @@ v_randhelp() {
     nvim --cmd "help ${HELP_NUM}" --cmd "only"
 }
 
-reset_mt7921e() {
-    # Reload driver for wifi chip
-    doas rmmod mt7921e
-    doas modprobe mt7921e
-
-    # Restart connman
-    doas s6-svc -r /run/service/connmand-srv
-}
-
-find_gainless() {
-    fd -t f '\.(opus|flac|wav|mp3)$' -j 1 -x \
-        dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' '' '{}' \;
-
-    # fd --print0 -t f '\.(opus|flac|wav|mp3)$' \
-    #     | xargs -0 -n 1 \
-    #         dash -c 'ffprobe -hide_banner -pretty "$1" 2>&1 | grep R128 >/dev/null || printf "No gain? : %s\n" "$1"' ''
-}
-
-# vim ls time
-vlt() {
-    ls --sort=time -r | nvim
-}
-
 mounts() {
     mount | sed 's/\t/ /;s/^\(.*\) on \(.*\) type \(.*\) (\(.*\))$/\2\t->\t\1\t:\t\3\t[\4]/' | column -t -s$'\t'
+}
+
+cloa() {
+    for __CLOA_URL in "${@}"; do
+        curl -LO "${__CLOA_URL}"
+    done
+    unset __CLOA_URL
+}
+
+btrfs_sync() {
+    doas /usr/local/sbin/btrfs_sync.sh "${@}"
+}
+
+# Check mail
+m() {
+    if LC_ALL=C mail -e; then
+        p "You have new mail!"
+    else
+        p "No new mail."
+    fi
 }
