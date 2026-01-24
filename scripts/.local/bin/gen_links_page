@@ -1,7 +1,8 @@
 #!/bin/sh
+set -eu
 
-HTML="$(cat <<EOF
-
+page_style() {
+  cat <<'EOF'
 <style>
   body {
     margin: 0;
@@ -22,23 +23,35 @@ HTML="$(cat <<EOF
   a         { color: #58f; text-decoration: none; }
   a:visited { color: #85f; }
 </style>
-
 EOF
-)"
-
-add_link() {
-    HTML="${HTML}<span><a href=\"$1\" target=\"_blank\">$2</a></span>"
 }
 
-while [ "$#" -gt 0 ]; do
-    if [ "$#" -gt 1 ]; then
-        add_link "$1" "$2"
+HTML="$(page_style)"
+
+add_link() {
+    HTML="${HTML}<span><a href=\"${1}\" target=\"_blank\">${2}</a></span>"
+}
+
+TITLE=""
+if [ "${#}" = "2" ]; then
+  TITLE="${2}"
+fi
+
+while [ "${#}" -gt 0 ]; do
+    if [ "${#}" -gt 1 ]; then
+        add_link "${1}" "${2}"
         shift 1
     else
-        add_link "$1" "$1"
+        add_link "${1}" "${1}"
     fi
     shift 1
 done
 
-#python -c "import sys, urllib.parse as ul; print(ul.quote(sys.argv[1]))" "${HTML}" | sed -e 's/[+ ]/%20/g' -e '1 s|^|data:text/html,|'
+HTML="$(printf '%s' "${HTML}" | tr -s '\n' ' ')"
+
+if [ "${TITLE}" = "" ]; then
+  TITLE="Links $(printf '%s' "${HTML}" | md5sum | awk '{ print $1 }')"
+fi
+HTML="<title>${TITLE}</title>${HTML}"
+
 printf '%s' "${HTML}" | base64 -w0 - | tr -d '\n' | sed -e '1 s|^|data:text/html;base64,|' -e 's|$|\n|'
