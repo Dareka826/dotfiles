@@ -39,7 +39,7 @@ invisible=1
 
 [urgency="low"]
 text-color=#eeeeee99
-border-color=#4444449
+border-color=#44444499
 progress-color=over #33333399
 
 [urgency="critical"]
