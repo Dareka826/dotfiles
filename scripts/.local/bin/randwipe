@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+command -v openssl >/dev/null 2>&1 || exit 101
+command -v head >/dev/null 2>&1 || exit 101
+command -v xxd >/dev/null 2>&1 || exit 101
+command -v du >/dev/null 2>&1 || exit 101
+command -v awk >/dev/null 2>&1 || exit 101
+command -v pv >/dev/null 2>&1 || exit 101
+
+randgen() { openssl enc -e -aes-256-ctr -K "$(head -c32 /dev/urandom | xxd -p -c0)" -iv "$(head -c16 /dev/urandom | xxd -p -c0)" 2> /dev/null < /dev/zero; }
+p() { printf '%s\n' "$@"; }
+
+for FNAME in "$@"; do
+    if ! [ -f "${FNAME}" ]; then
+        p "[W]: Not a regular file, skipping: ${FNAME}"
+        continue
+    fi
+
+    FSIZE="$(du -b "${FNAME}" | awk '{ print $1 }')"
+
+    if ! [ "${FSIZE}" -gt 0 ]; then
+        p "[W]: File of size 0, skipping: ${FNAME}"
+        continue
+    fi
+
+    p "[I]: Overwriting: ${FNAME}"
+    randgen | head -c "${FSIZE}" | pv -pterab -s "${FSIZE}" > "${FNAME}"
+done
