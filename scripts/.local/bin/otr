@@ -29,7 +29,7 @@ for FNAME in "${@}"; do
     }
 
     TRACK="$( fftag -file "${FNAME}" -tag TRACK )" || TRACK=""
-    if [ "${TRACK}" = "" ] || [ "${TRACK}" -le 9 ]; then
+    if [ -n "${TRACK}" ] && [ "${TRACK}" -le 9 ]; then
         TRACK="0${TRACK}"
     fi
 
