@@ -26,7 +26,8 @@ page_style() {
 EOF
 }
 
-HTML="$(page_style)"
+HTML="<meta charset=\"utf-8\"/>"
+HTML="${HTML}$(page_style)"
 
 add_link() {
     HTML="${HTML}<span><a href=\"${1}\" target=\"_blank\">${2}</a></span>"
