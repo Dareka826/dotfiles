@@ -1,24 +1,49 @@
 #!/usr/bin/luajit
 -- vim: ft=lua sw=4 ts=4 et
 
-local stdout = io.stdout
-local stderr = io.stderr
-local stdin  = io.stdin
+-- User Vars
 
-PROG   = nil
-TARGET = nil
+CC = nil
+CFLAGS = "-Wall -Wextra -Wno-unused-parameter -Wconversion -std=c99"
 
+TRY_CLANG_FORMAT = false
+
+-- Vars
+
+---@alias target "top"|"pre"|"main"|"post"
+
+---@type { [target]: string[] }
+PROG = {
+    top = {},
+    pre = {},
+    main = {},
+    post = {},
+}
+
+---@type target
+TARGET = "main"
+
+---@type { [string]: (fun(): nil) }
 COMMANDS = {}
+
+---@type { [string]: string }
 DESCRIPTIONS = {}
 
--- iscmd(cmd: string) -> bool
-local function iscmd(cmd)
-    -- {{{
-    local ret = os.execute("command -v \"" .. cmd .. "\" >/dev/null 2>&1")
-    return (ret == 0)
-end -- }}}
+INDENT = "    "
 
--- has_key(t: table, k: string) -> bool
+AVAIL_CMD = {}
+
+-- Functions
+
+---@param str string
+---@return string
+local function shquote(str)
+    return "'" .. string.gsub(str, "'", "'\\''") .. "'"
+end
+
+---@param t { [string]: any }
+---@param key string
+---@return boolean
 local function has_key(t, key)
     -- {{{
     for k, _ in pairs(t) do
@@ -30,40 +55,72 @@ local function has_key(t, key)
     return false
 end -- }}}
 
--- reset() -> nil
+---@param cmd string
+---@return boolean
+local function iscmd(cmd)
+    -- {{{
+    if has_key(AVAIL_CMD, cmd) then
+        return AVAIL_CMD[cmd]
+    end
+
+    local ret = os.execute("command -v " .. shquote(cmd) .. " >/dev/null 2>&1")
+    local ok = (ret == 0)
+    AVAIL_CMD[cmd] = ok
+    return ok
+end -- }}}
+
+
+---@return nil
 local function reset()
     -- {{{
-    PROG = {
-        headers     = {
-            "#include <stdlib.h>",
-            "#include <stdio.h>",
-        },
-        definitions = {},
-        main        = {},
+    PROG.top = {
+        "#include <stdlib.h>",
+        "#include <stdio.h>",
     }
+
+    PROG.pre = {}
+    PROG.main = {}
+    PROG.post = {}
 
     TARGET = "main"
 end -- }}}
 
--- generate() -> table
+---@return string[]
 local function generate()
     -- {{{
     local ret = {}
 
-    for _, line in ipairs(PROG.headers)     do table.insert(ret, line) end
+    for _, line in ipairs(PROG.top) do
+        table.insert(ret, line)
+    end
+
     table.insert(ret, "")
-    for _, line in ipairs(PROG.definitions) do table.insert(ret, line) end
+
+    for _, line in ipairs(PROG.pre) do
+        table.insert(ret, line)
+    end
+
     table.insert(ret, "")
 
     table.insert(ret, "int main(int argc, char *argv[]) {")
-    for _, line in ipairs(PROG.main) do table.insert(ret, line) end
-    table.insert(ret, "return 0;")
+
+    for _, line in ipairs(PROG.main) do
+        table.insert(ret, INDENT .. line)
+    end
+
+    table.insert(ret, INDENT .. "return 0;")
     table.insert(ret, "}")
+
+    table.insert(ret, "")
+
+    for _, line in ipairs(PROG.post) do
+        table.insert(ret, line)
+    end
 
     return ret
 end -- }}}
 
--- run() -> nil
+---@return nil
 local function run()
     -- {{{
     assert(CC ~= nil)
@@ -79,26 +136,27 @@ local function run()
     f:close()
 
     -- Compile
-    local ret = os.execute(CC .. " " .. CFLAGS .. " -xc " .. name .. " -o " .. os.getenv("HOME") .. "/.crepl")
+    local outfile = os.getenv("HOME") .. "/.cache/.crepl"
+    local ret = os.execute(CC .. " " .. CFLAGS .. " -xc " .. shquote(name) .. " -o " .. shquote(outfile))
 
     if ret ~= 0 then
-        stderr:write("[E]: Compilation error!\n")
+        io.stderr:write("[E]: Compilation error!\n")
     else
-        os.execute(os.getenv("HOME") .. "/.crepl")
-        os.remove(os.getenv("HOME") .. "/.crepl")
+        os.execute(shquote(outfile))
+        os.remove(outfile)
     end
 
     os.remove(name)
 end -- }}}
 
--- pprint() -> nil
+---@return nil
 local function pprint()
     -- {{{
-    local prog_src_name = os.tmpname()
+    local name = os.tmpname()
 
     -- Try format
-    if iscmd("clang-format") then
-        local clang_fmt = io.popen("clang-format --style=\"file:${HOME}/clang-format.yaml\" >\"" .. prog_src_name .. "\"", "w")
+    if TRY_CLANG_FORMAT and iscmd("clang-format") then
+        local clang_fmt = io.popen("clang-format --style=\"file:${HOME}/clang-format.yaml\" >" .. shquote(name), "w")
         assert(clang_fmt ~= nil)
 
         for _, l in ipairs(generate()) do
@@ -107,29 +165,31 @@ local function pprint()
 
         clang_fmt:close()
     else
-        local prog_src = io.open(prog_src_name, "w")
-        assert(prog_src ~= nil)
+        local f = io.open(name, "w")
+        assert(f ~= nil)
 
         for _, l in ipairs(generate()) do
-            prog_src:write(l .. "\n")
+            f:write(l .. "\n")
         end
 
-        prog_src:close()
+        f:close()
     end
 
     -- Try bat, else just cat
     if iscmd("bat") then
-        os.execute("bat -lc --style=plain <\"" .. prog_src_name .. "\"")
+        os.execute("bat -lc --style=plain <" .. shquote(name))
     else
-        os.execute("cat <\"" .. prog_src_name .. "\"")
+        os.execute("cat <" .. shquote(name))
     end
 
-    os.remove(prog_src_name)
+    os.remove(name)
 end -- }}}
 
--- print_bufs() -> nil
+---@return nil
 local function print_bufs()
     -- {{{
+    ---@param buf string[]
+    ---@return nil
     local function print_buf(buf)
         -- {{{
         local cat_n = io.popen("cat -n", "w")
@@ -142,22 +202,27 @@ local function print_bufs()
         cat_n:close()
     end -- }}}
 
-    print("// Headers")
-    print_buf(PROG.headers)
+    print("// BUFFER: Top")
+    print_buf(PROG.top)
 
-    print("// Definitions")
-    print_buf(PROG.definitions)
+    print("// BUFFER: Pre")
+    print_buf(PROG.pre)
 
-    print("// Main")
+    print("// BUFFER: Main")
+    print_buf(PROG.main)
+
+    print("// BUFFER: Post")
     print_buf(PROG.main)
 end -- }}}
 
--- sed_edit() -> nil
+---@return nil
 local function sed_edit()
     -- {{{
-    stdout:write("sed> ")
-    stdout:flush()
-    local line = stdin:read()
+    io.stdout:write("sed> ")
+    io.stdout:flush()
+    local line = io.stdin:read()
+
+    -- EOF
     if line == nil then
         return
     end
@@ -171,8 +236,8 @@ local function sed_edit()
     end
     f:close()
 
-    line = string.gsub(line, "'", "'\\''")
-    local sed_f = io.popen("sed -e '" .. line .. "' <\"" .. name .. "\" ; printf '%s\n' \"$?\"", "r")
+    line = shquote(line)
+    local sed_f = io.popen("sed -e " .. line .. " <" .. shquote(name) .. " ; printf '%s\\n' \"$?\"", "r")
     if sed_f == nil then os.remove(name) end
     assert(sed_f ~= nil)
 
@@ -187,11 +252,11 @@ local function sed_edit()
     if status == "0" then
         PROG[TARGET] = new_buf
     else
-        stderr:write("[I]: Buffer not modified\n")
+        io.stderr:write("[I]: Buffer not modified\n")
     end
 end -- }}}
 
--- help() -> nil
+---@return nil
 local function help()
     -- {{{
     for cmd, desc in pairs(DESCRIPTIONS) do
@@ -199,74 +264,134 @@ local function help()
     end
 end -- }}}
 
-CC = nil
-CFLAGS = "-Wall -Wextra -Wno-unused-parameter -std=c99"
+---@param name string
+---@param aliases string[]
+---@param desc string
+---@param fn fun(): nil
+local function add_cmd(name, aliases, desc, fn)
+    -- {{{
+    DESCRIPTIONS[name] = desc
+    COMMANDS[name] = fn
 
-if     iscmd("clang") then CC = "clang"
-elseif iscmd("gcc")   then CC = "gcc"
-elseif iscmd("cc")    then CC = "cc"
+    for _, a in pairs(aliases) do
+        COMMANDS[a] = fn
+    end
+end -- }}}
+
+-- Find C compiler or check provided one {{{
+if CC == nil then
+    if     iscmd("gcc")   then CC = "gcc"
+    elseif iscmd("clang") then CC = "clang"
+    elseif iscmd("cc")    then CC = "cc"
+    else
+        io.stderr:write("[E]: No C compiler found!\n")
+        os.exit(1)
+    end
 else
-    stderr:write("[E]: No C compiler found!\n")
-    os.exit(1)
-end
+    if not iscmd(CC) then
+        io.stderr:write("[E]: Provided C compiler not found!\n")
+        os.exit(1)
+    end
+end -- }}}
 
-DESCRIPTIONS["quit"] = "Exit crepl"
-COMMANDS["quit"] = function() os.exit(0) end
-COMMANDS["q"] = COMMANDS["quit"]
+-- Add commands {{{
+add_cmd(
+    "quit",
+    {"q", "exit"},
+    "Exit crepl",
+    function() os.exit(0) end
+)
 
-DESCRIPTIONS["headers"] = "Switch to the top of the file"
-COMMANDS["headers"] = function() TARGET = "headers" end
-COMMANDS["head"] = COMMANDS["headers"]
-COMMANDS["h"] = COMMANDS["headers"]
+add_cmd(
+    "top",
+    {"t"},
+    "Switch to the \"top\" section",
+    function() TARGET = "top" end
+)
 
-DESCRIPTIONS["definitions"] = "Switch to before main"
-COMMANDS["definitions"] = function() TARGET = "definitions" end
-COMMANDS["def"]  = COMMANDS["definitions"]
-COMMANDS["d"] = COMMANDS["definitions"]
+add_cmd(
+    "pre",
+    {"pr", "before", "b"},
+    "Switch to the \"pre\" section (before main)",
+    function() TARGET = "pre" end
+)
 
-DESCRIPTIONS["main"] = "Switch to inside main"
-COMMANDS["main"] = function() TARGET = "main" end
-COMMANDS["m"] = COMMANDS["main"]
+add_cmd(
+    "main",
+    {"m"},
+    "Switch to inside main",
+    function() TARGET = "main" end
+)
 
-DESCRIPTIONS["reset"] = "Reset buffer to initial state"
-COMMANDS["reset"] = reset
-COMMANDS["c"] = COMMANDS["reset"] -- clear
+add_cmd(
+    "post",
+    {"ps", "end", "e", "after", "a"},
+    "Switch to the \"post\" section (after main)",
+    function() TARGET = "post" end
+)
 
-DESCRIPTIONS["run"] = "Compile and run thn program"
-COMMANDS["run"] = run
-COMMANDS["r"] = COMMANDS["run"]
 
-DESCRIPTIONS["print"] = "Print the buffer"
-COMMANDS["print"] = pprint
-COMMANDS["p"] = COMMANDS["print"]
+add_cmd(
+    "reset",
+    {"clear", "c"},
+    "Reset buffers to initial state",
+    reset
+)
 
-DESCRIPTIONS["help"] = "Print this help"
-COMMANDS["help"] = help
-COMMANDS["h"] = COMMANDS["help"]
+add_cmd(
+    "run",
+    {"r"},
+    "Compile and run the program",
+    run
+)
 
-DESCRIPTIONS["bprint"] = "Print buffers' contents"
-COMMANDS["bprint"] = print_bufs
-COMMANDS["bufprint"] = COMMANDS["bprint"]
-COMMANDS["bp"] = COMMANDS["bprint"]
-COMMANDS["printbuf"] = COMMANDS["bprint"]
-COMMANDS["printb"] = COMMANDS["bprint"]
-COMMANDS["pb"] = COMMANDS["bprint"]
+add_cmd(
+    "print",
+    {"p"},
+    "Print the buffer",
+    pprint
+)
 
-DESCRIPTIONS["selected"] = "Print selected buffer"
-COMMANDS["selected"] = function() print(TARGET) end
-COMMANDS["sel"] = COMMANDS["selected"]
-COMMANDS["s"] = COMMANDS["sel"]
+add_cmd(
+    "help",
+    {"h"},
+    "Print this help",
+    help
+)
 
-DESCRIPTIONS["sed"] = "Modify a buffer with sed"
-COMMANDS["sed"] = sed_edit
+add_cmd(
+    "bprint",
+    {"bufprint", "bp", "printbuf", "printb", "pb"},
+    "Print buffers' contents",
+    print_bufs
+)
+
+add_cmd(
+    "selected",
+    {"sel", "s"},
+    "Print selected buffer",
+    function() print(TARGET) end
+)
+
+add_cmd(
+    "sed",
+    {},
+    "Modify a buffer with sed",
+    sed_edit
+)
+-- }}}
 
 reset()
 
+-- Main loop {{{
 while true do
     -- Prompt
-    stdout:write("> ")
-    stdout:flush()
-    local line = stdin:read()
+    io.stdout:write("> ")
+    io.stdout:flush()
+
+    local line = io.stdin:read()
+
+    -- EOF
     if line == nil then
         print()
         break
@@ -276,6 +401,7 @@ while true do
     if string.sub(line, 1, 1) == "." then
         local cmd = string.sub(line, 2)
 
+        -- If starts with .. then ignore first . and treat as non-command
         if string.sub(line, 1, 2) == ".." then
             table.insert(PROG[TARGET], string.sub(line, 2))
 
@@ -283,12 +409,13 @@ while true do
             COMMANDS[cmd]()
 
         else
-            stderr:write("[E]: Unknown command: " .. cmd .. "\n")
+            io.stderr:write("[E]: Unknown command: " .. cmd .. "\n")
         end
     else
         table.insert(PROG[TARGET], line)
     end
 
-    stdout:flush()
-    stderr:flush()
+    io.stdout:flush()
+    io.stderr:flush()
 end
+-- }}}
