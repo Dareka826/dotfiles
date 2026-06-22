@@ -3,8 +3,22 @@ set -eu
 
 log() { printf "%s\n" "${@}" >&2; }
 
-# Replace illegal filesystem chars with underscore
-replace_special() { tr '"*/:<>?\|' '_'; }
+# Replace illegal filesystem chars with underscore or UTF8
+if [ "${UNDERSCORE:-}" = 1 ]; then
+    replace_special() { tr '"*/:<>?\|' '_'; }
+else
+    replace_special() {
+        sed -e 's/"/″/g' \
+            -e 's/\*/∗/g' \
+            -e 's/\//⧸/g' \
+            -e 's/:/꞉/g' \
+            -e 's/</﹤/g' \
+            -e 's/>/﹥/g' \
+            -e 's/?/？/g' \
+            -e 's/\\/⧹/g' \
+            -e 's/|/￨/g'
+    }
+fi
 
 for FNAME in "${@}"; do
     if ! [ -f "${FNAME}" ]; then
