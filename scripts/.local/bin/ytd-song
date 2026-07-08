@@ -1,77 +1,115 @@
 #!/bin/sh
 set -eu
 
-get_metadata_json() {
-    local URL="${1}"
-    shift 1
+MISSING_CMD=0
 
-    yt-dlp -f bestaudio -j "${URL}" \
-        | jq '{
-            id,
-            title,
-            fulltitle,
-            alt_title,
-            channel,
-            channel_id,
-            uploader_id,
-            description,
-            english_translated: '"$(\
-                yt-dlp -f bestaudio -j \
-                    --extractor-args 'youtube:lang=en' "${URL}" \
-                    | jq -c '{ title, fulltitle, description }')"',
-            timestamp,
-            upload_date,
-            release_timestamp,
-            release_date,
-            release_year,
-            tags,
-            artists,
-            creators,
-            album,
-            album_artists,
-            track,
-            track_number
-        } | if (.title == .english_translated.title and
-                .fulltitle == .english_translated.fulltitle and
-                .description == .english_translated.description) then
-                    del(.english_translated)
-            else . end'
-}
+if ! command -v yt-dlp >/dev/null 2>&1; then
+    printf '%s\n' '[E]: No yt-dlp!'
+    MISSING_CMD=1
+fi
 
-download() {
-    local URL="${1}"
-    shift 1
+if ! command -v jq >/dev/null 2>&1; then
+    printf '%s\n' '[E]: No jq!'
+    MISSING_CMD=1
+fi
 
-    yt-dlp \
-        --no-mtime \
-        -x \
-        -o "%(id)s.%(ext)s" \
-        -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best' \
-        --write-thumbnail \
-        "${URL}"
-}
+[ "${MISSING_CMD}" = 0 ] || exit 1
 
-[ -n "${1}" ] || exit 1
+FMT='bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best'
 
-_ORG_DIR_="$(pwd)"
+if [ "${#}" != 1 ]; then
+    printf '%s\n' "[E]: Invalid number of args: ${#} (!= 1)"
+    exit 1
+fi
+
+START_DIR="$(pwd)"
 
 _TMP_DIR_=""
 cleanup() {
-    [ -n "${_TMP_DIR_}" ] \
-        && [ -e "${_TMP_DIR_}" ] \
-        && rm -rf "${_TMP_DIR_}" || :
+    if [ -n "${_TMP_DIR_}" ]; then
+        if [ -e "${_TMP_DIR_}" ]; then
+            rm -rf "${_TMP_DIR_}"
+        fi
+    fi
 }
 trap cleanup TERM INT HUP EXIT
 _TMP_DIR_="$(mktemp -d)"
 
 cd "${_TMP_DIR_}"
 
-download "${1}"
-get_metadata_json "${1}" > "./info.json"
 
-DIR_NAME="$(cat info.json \
-    | jq -r '"[" + ([ if .uploader_id == null then .channel_id else .uploader_id end, .upload_date, .id ] | join("]_[")) + "]"')"
-mkdir "${_ORG_DIR_}/${DIR_NAME}"
-cd "${_ORG_DIR_}/${DIR_NAME}"
+if [ "${ONLY_META:-0}" = 0 ]; then
+    printf '%s\n' '##### Download audio #####'
+
+    yt-dlp \
+        --no-mtime \
+        -f "${FMT}" \
+        -x \
+        -o "%(id)s.%(ext)s" \
+        --write-thumbnail \
+        --extractor-args 'youtube:player-client=default,mweb' \
+        "${@}"
+
+    # Rename thumbnail
+    mv ./*.webp cover.webp || \
+        mv ./*.jpg cover.jpg
+fi
+
+
+##### METADATA ####
+printf '%s\n' '##### Get EN metadata #####'
+META_EN="$(yt-dlp \
+    -f "${FMT}" \
+    -j \
+    --extractor-args 'youtube:player-client=default,mweb;lang=en' \
+    "${@}")"
+
+META_EN="$(jq -c '{ title, fulltitle, description }' <<EOF
+${META_EN}
+EOF
+)"
+
+printf '%s\n' '##### Get metadata #####'
+META_ORIG="$(yt-dlp \
+    -f "${FMT}" \
+    -j \
+    --extractor-args 'youtube:player-client=default,mweb' \
+    "${@}")"
+
+jq '{
+        id,
+        title,
+        fulltitle,
+        alt_title,
+        channel,
+        channel_id,
+        uploader_id,
+        description,
+        english_translated: '"${META_EN}"',
+        timestamp,
+        upload_date,
+        release_timestamp,
+        release_date,
+        release_year,
+        tags,
+        artists,
+        creators,
+        album,
+        album_artists,
+        track,
+        track_number
+    } | if (.title == .english_translated.title and
+            .fulltitle == .english_translated.fulltitle and
+            .description == .english_translated.description) then
+                del(.english_translated)
+            else . end' > ./info.json <<EOF
+${META_ORIG}
+EOF
+##### METADATA ####
+
+
+DIR_NAME="$(jq -r '"[" + ([ if .uploader_id == null then .channel_id else .uploader_id end, .upload_date, .id ] | join("]_[")) + "]"' < ./info.json)"
+mkdir -p "${START_DIR}/${DIR_NAME}"
+cd "${START_DIR}/${DIR_NAME}"
 
 mv "${_TMP_DIR_}"/* ./
