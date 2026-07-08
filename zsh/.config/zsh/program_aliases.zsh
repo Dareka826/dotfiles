@@ -1,5 +1,5 @@
 # Youtube-dl
-YTD="yt-dlp --no-mtime -w -o '[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s' --write-info-json --write-thumbnail --extractor-args 'youtube:lang=en' --extractor-args 'youtube:player-client=default,mweb'"
+YTD="yt-dlp --no-mtime -w -o '[%(webpage_url_domain)s]_[%(upload_date)s]_[%(uploader_id)s]_[%(id)s]_%(title)s.%(ext)s' --write-info-json --write-thumbnail --extractor-args 'youtube:player-client=default,mweb;lang=en'"
 
 alias  ytd="${YTD} -f 'bestvideo*[height<=?1080]+bestaudio'"
 alias ytdx="${YTD} -x -f 'bestaudio[acodec=opus]/best[acodec=opus]/bestaudio/best'"
