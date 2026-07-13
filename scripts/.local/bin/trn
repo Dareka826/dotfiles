@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+for FNAME in "$@"; do
+    MTIME_SEC="$(stat -c '%Y' "${FNAME}")"
+    MTIME_STR="$(date -u -d "@${MTIME_SEC}" '+%Y-%m-%d %H%M%SZ')"
+
+    if grep '^\['"${MTIME_STR}"'\]' >/dev/null 2>&1 <<EOF
+${FNAME}
+EOF
+    then
+        continue
+    fi
+
+    mv -v "${FNAME}" "[${MTIME_STR}] ${FNAME}"
+done
