@@ -87,8 +87,10 @@ function M.compile(custom_fennelpath)
       end
 
       if not fennel then
+        local bkp = package.path
         package.path = package.path .. ';' .. fennelpath
         fennel = require('fennel')
+        package.path = bkp
       end
 
       vim.print("Compiling `" .. fnl_path:gsub('^' .. escape_pattern(confdir .. '/'), '') .. "'...")
