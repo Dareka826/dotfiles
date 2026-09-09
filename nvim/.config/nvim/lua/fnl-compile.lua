@@ -116,6 +116,8 @@ function M.compile(custom_fennelpath)
 
       lua_fh:write(lua_out)
       lua_fh:close()
+
+      vim.print('> Done')
     end
   end
 end
