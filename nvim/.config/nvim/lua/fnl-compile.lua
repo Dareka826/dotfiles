@@ -35,7 +35,7 @@ end
 local fennel = nil
 
 for _, fnl_path in ipairs(files) do
-  local lua_path = fnl_path:gsub('^' .. escape_pattern(fnldir), escape_repl(compiledir))
+  local lua_path = fnl_path:gsub('^' .. escape_pattern(fnldir) .. '(.+)%.fnl$', escape_repl(compiledir) .. '%1.lua')
   local lua_stat = vim.uv.fs_stat(lua_path)
 
   local do_compile = false
@@ -71,6 +71,16 @@ for _, fnl_path in ipairs(files) do
       end
     end
 
+    local fnl_fh = io.open(fnl_path, 'r')
+    if not fnl_fh then
+      vim.api.nvim_echo({
+        { "Failed to open `" .. fnl_path .. "'.", "ErrorMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
+
     if not fennel then
       package.path = package.path .. ';' .. fennelpath
       fennel = require('fennel')
@@ -78,7 +88,8 @@ for _, fnl_path in ipairs(files) do
 
     vim.print("Compiling `" .. fnl_path:gsub('^' .. escape_pattern(confdir .. '/'), '') .. "'...")
 
-    local lua_out = fennel.compile(fnl_path)
+    local lua_out = fennel.compile(fnl_fh, {})
+    fnl_fh:close()
     if not lua_out then
       vim.api.nvim_echo({
         { "Failed to compile `" .. fnl_path .. "'.", "ErrorMsg" },
@@ -88,7 +99,7 @@ for _, fnl_path in ipairs(files) do
       os.exit(1)
     end
 
-    local lua_fh = io.open(lua_path, "w")
+    local lua_fh = io.open(lua_path, 'w')
     if not lua_fh then
       vim.api.nvim_echo({
         { "Failed to open `" .. lua_path .. "'.", "ErrorMsg" },
