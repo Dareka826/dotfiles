@@ -38,6 +38,7 @@ function M.compile(custom_fennelpath)
   end
 
   local fennel = nil
+  local allowedGlobals = {}
 
   for _, fnl_path in ipairs(files) do
     local lua_path = fnl_path:gsub('^' .. escape_pattern(fnldir) .. '(.+)%.fnl$', escape_repl(compiledir) .. '%1.lua')
@@ -91,11 +92,19 @@ function M.compile(custom_fennelpath)
         package.path = package.path .. ';' .. fennelpath
         fennel = require('fennel')
         package.path = bkp
+
+        for k, _ in pairs(_G) do
+            table.insert(allowedGlobals, k)
+        end
       end
 
-      vim.print("Compiling `" .. fnl_path:gsub('^' .. escape_pattern(confdir .. '/'), '') .. "'...")
+      local short_name = fnl_path:gsub('^' .. escape_pattern(confdir .. '/'), '')
+      vim.print("Compiling `" .. short_name .. "'...")
 
-      local lua_out = fennel.compile(fnl_fh, {})
+      local lua_out = fennel.compile(fnl_fh, {
+        allowedGlobals = allowedGlobals,
+        filename = short_name,
+      })
       fnl_fh:close()
       if not lua_out then
         vim.api.nvim_echo({
